@@ -12,7 +12,7 @@ namespace Manage.Repository.Repository
 {
     public class HuTitleRepository : RepositoryBase<HuTitle>, IHuTitleRepository
     {
-        public HuTitleRepository(RepositoryContext context) : base(context)
+        public HuTitleRepository(DatabaseContext context) : base(context)
         {
         }
     }

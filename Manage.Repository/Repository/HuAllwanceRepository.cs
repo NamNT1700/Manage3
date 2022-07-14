@@ -17,12 +17,6 @@ namespace Manage.Repository.Repository
         public HuAllwanceRepository(DatabaseContext context) : base(context)
         {
         }
-
-        public async Task AddNew(HuAllwance huAllwance)
-        {
-            await Task.Run(()=>Create(huAllwance));
-        }
-
         public async Task<string> CheckData(AllwanceDTO allwance)
         {
             string valid = await CheckId.Check(allwance.Id);

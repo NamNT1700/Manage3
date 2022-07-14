@@ -8,7 +8,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuAllwanceRepository: IRepositoryBase<HuAllwance> 
     {
-        public Task AddNew(HuAllwance huAllwance);
         public Task<string> CheckData(AllwanceDTO allwance);
 
     }
