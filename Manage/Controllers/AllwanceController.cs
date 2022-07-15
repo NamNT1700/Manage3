@@ -16,7 +16,7 @@ namespace Manage.API.Controllers
     public class AllwanceController : ControllerBase
     {
         private IAllwanceService _allwanceService;
-        public AllwanceController (IAllwanceService allwanceService)
+        public AllwanceController(IAllwanceService allwanceService)
         {
             _allwanceService = allwanceService;
         }
@@ -24,6 +24,18 @@ namespace Manage.API.Controllers
         public async Task<IActionResult> AllNew([FromBody] AllwanceDTO allwanceDTO)
         {
             Response response = await _allwanceService.AddNew(allwanceDTO);
+            return Ok(response);
+        }
+        [HttpPost("GetAll")]
+        public async Task<IActionResult> GetAll([FromBody] Request request)
+        {
+            Response response = await _allwanceService.GetAll(request);
+            return Ok(response);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAll(int id)
+        {
+            Response response = await _allwanceService.GetById(id);
             return Ok(response);
         }
     }

@@ -19,16 +19,13 @@ namespace Manage.Service.Service
         private IMapper _mapper;
         private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context ;
-        private IConfiguration _configuration;
+        
 
-        public AllwanceService(IMapper mapper, IConfiguration configuration,
-            IRepositoryWrapper repositoryWrapper, DatabaseContext context)
+        public AllwanceService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _configuration = configuration;
             _repositoryWrapper = repositoryWrapper;
             _context = context;
-
         }
         public async Task<Response> AddNew(AllwanceDTO allwance)
         {
@@ -48,6 +45,47 @@ namespace Manage.Service.Service
             responce.status = "200";
             responce.item = allwanceDTO;
             return responce;
+        }
+
+        public async Task<Response> GetAll(Request request)
+        {
+            Response response = new Response();
+            List<HuAllwance> huAllwances = await _repositoryWrapper.Allwance.GetAll();
+            List<ListAllwanceDTO> listAllwance =  _mapper.Map<List<ListAllwanceDTO>>(huAllwances);
+            List<ListAllwanceDTO> lists = new List<ListAllwanceDTO>();
+            int firstIndex = (request.pageNum - 1) * request.pageSize;
+            if (firstIndex >= huAllwances.Count())
+            {
+                response.status = "400";
+                response.success = false;
+                response.message = "no user yet";
+                return response;
+            }
+            if (firstIndex + request.pageSize < huAllwances.Count())
+                lists = listAllwance.GetRange(firstIndex, request.pageSize);
+            else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
+            response.status = "200";
+            response.success = true;
+            response.item = lists;
+            return response;
+        }
+
+        public async Task<Response> GetById(int id)
+        {
+            Response response = new Response();
+            HuAllwance huAllwance = await _repositoryWrapper.Allwance.FindById(id);
+            if (huAllwance != null)
+            {
+                AllwanceDTO allwance = _mapper.Map<AllwanceDTO>(huAllwance);
+                response.item = allwance;
+                response.status = "200";
+                response.success = true;
+                return response;
+            }
+            response.message = $"no allwance with id {id} exist";
+            response.status = "400";
+            response.success = false;
+            return response;
         }
     }
 }

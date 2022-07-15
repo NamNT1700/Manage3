@@ -21,7 +21,7 @@ namespace Manage.Common
         //// object
             //public T item { get; set; }
         //// object filter
-        public string keyworks { get; set; }
+            //public string keyworks { get; set; }
         //// list object
             //public List<T> items { get; set; }
     }

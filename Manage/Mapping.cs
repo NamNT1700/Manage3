@@ -14,6 +14,8 @@ namespace Manage.API
         {
             CreateMap<HuAllwance, AllwanceDTO>();
             CreateMap<AllwanceDTO, HuAllwance>();
+            CreateMap<ListAllwanceDTO,HuAllwance>();
+            CreateMap<HuAllwance, ListAllwanceDTO>();
         }
     }
 }
