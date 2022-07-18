@@ -10,6 +10,7 @@ namespace Manage.Repository.Base.Repository
     {
         private readonly DatabaseContext _context;
         private  IHuAllwanceRepository _allwance;
+        private IUserRepository _user;
 
         public RepositoryWrapper(DatabaseContext context)
         {
@@ -23,6 +24,16 @@ namespace Manage.Repository.Base.Repository
                 if (_allwance == null)
                     _allwance = new HuAllwanceRepository(_context);
                 return _allwance;
+            }
+        }
+
+        public IUserRepository User
+        {
+            get 
+            {
+                if (_user == null)
+                    _user = new UserRepository(_context);
+                return _user;
             }
         }
 

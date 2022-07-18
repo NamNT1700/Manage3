@@ -15,7 +15,7 @@ namespace Manage.Model.Context
             : base(options)
         {
         }
-
+        public virtual DbSet<SeUser> SeUsers { get; set; }
         public virtual DbSet<HuAllwance> HuAllwances { get; set; }
         public virtual DbSet<HuBank> HuBanks { get; set; }
         public virtual DbSet<HuBankBranch> HuBankBranches { get; set; }
@@ -52,7 +52,15 @@ namespace Manage.Model.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.Entity<SeUser>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedNever();
 
+                entity.Property(e => e.username).IsUnicode(false);
+                entity.Property(e => e.password).IsUnicode(false);
+
+                entity.Property(e => e.token).IsUnicode(false);
+            });
             modelBuilder.Entity<HuAllwance>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();

@@ -29,7 +29,7 @@ namespace Manage.API
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IAllwanceService, AllwanceService>();
             services.AddDbContext<DatabaseContext>(options =>
-                        options.UseSqlServer(Configuration.GetConnectionString("database")));
+                        options.UseSqlServer(Configuration.GetConnectionString("database"),b=>b.MigrationsAssembly("Manage.API")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

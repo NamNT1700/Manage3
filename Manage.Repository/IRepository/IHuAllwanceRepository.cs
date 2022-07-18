@@ -12,6 +12,6 @@ namespace Manage.Repository.IRepository
         public Task<string> CheckData(AllwanceDTO allwance);
         public Task<HuAllwance> FindByCode(string code);
         public Task<HuAllwance> FindById(int id);
-        public Task<List<HuAllwance>> GetAll(); 
+        public Task<List<HuAllwance>> GetAll();
     }
 }

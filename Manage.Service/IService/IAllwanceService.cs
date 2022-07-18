@@ -13,5 +13,7 @@ namespace Manage.Service.IService
         Task<Response> AddNew(AllwanceDTO allwance);
         Task<Response> GetAll(Request request);
         Task<Response> GetById(int id);
+        Task<Response> Update(UpdateDTO update);
+        Task<Response> Delete(List<int> ids);
     }
 }

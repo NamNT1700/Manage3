@@ -26,7 +26,6 @@ namespace Manage.Repository.Repository
             huAllwance = await FindById(allwance.Id);
             if (huAllwance != null)
                 return "id already exist";
-
             return null;
         }
 

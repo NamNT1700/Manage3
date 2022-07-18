@@ -47,6 +47,8 @@ namespace Manage.Service.Service
             return responce;
         }
 
+       
+
         public async Task<Response> GetAll(Request request)
         {
             Response response = new Response();
@@ -85,6 +87,38 @@ namespace Manage.Service.Service
             response.message = $"no allwance with id {id} exist";
             response.status = "400";
             response.success = false;
+            return response;
+        }
+
+        public async Task<Response> Update(UpdateDTO update)
+        {
+            Response response = new Response();
+            HuAllwance allwance = await _repositoryWrapper.Allwance.FindById(update.id);
+            if(allwance!=null)
+            {
+                _mapper.Map(update.updateData, allwance);
+                await _repositoryWrapper.SaveAsync();
+                response.status = "200";
+                response.success = true;
+                response.item = allwance;
+                return response;
+            }
+            response.message = "update data fail";
+            response.status = "400";
+            response.success = false;
+            return response;
+        }
+        public async Task<Response> Delete(List<int> ids)
+        {
+            Response response = new Response();
+            foreach (int id in ids)
+            {
+                HuAllwance allwance = await _repositoryWrapper.Allwance.FindById(id);
+                await _repositoryWrapper.Allwance.Delete(allwance);
+            }
+            response.message = "Delete allwance";
+            response.status = "200";
+            response.success = true;
             return response;
         }
     }

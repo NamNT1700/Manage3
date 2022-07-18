@@ -6,6 +6,7 @@ namespace Manage.Repository.Base.IRepository
     public interface IRepositoryWrapper
     {
         IHuAllwanceRepository Allwance { get; }
+        IUserRepository User { get; }
         void Save();
         Task SaveAsync();
     }

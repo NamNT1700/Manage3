@@ -38,5 +38,17 @@ namespace Manage.API.Controllers
             Response response = await _allwanceService.GetById(id);
             return Ok(response);
         }
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(UpdateDTO update)
+        {
+            Response response = await _allwanceService.Update(update);
+            return Ok(response);
+        }
+        [HttpDelete("DeleteAllwance")]
+        public async Task<IActionResult> Delete(List<int> ids)
+        {
+            Response response = await _allwanceService.Delete(ids);
+            return Ok(response);
+        }
     }
 }
