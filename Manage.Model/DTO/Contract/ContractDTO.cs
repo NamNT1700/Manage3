@@ -1,12 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Manage.Model.DTO.Contract
 {
     public class ContractDTO
     {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? CreatedTime { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public DateTime? LastUpdateTime { get; set; }
+        public string Name { get; set; }
+        public string Note { get; set; }
+        public int? NumberOfMonth { get; set; }
+        public double? Money { get; set; }
+        public bool? Activeflg { get; set; }
     }
 }

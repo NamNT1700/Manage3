@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿
 
 #nullable disable
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
+using Microsoft.EntityFrameworkCore;
 namespace Manage.Model.Models
 {
     [Table("hu_employee")]
     [Index(nameof(ContractId), Name = "IX_hu_employee_contract_id")]
     [Index(nameof(OrgId), Name = "IX_hu_employee_org_id")]
     [Index(nameof(TitleId), Name = "IX_hu_employee_title_id")]
-    public partial class HuEmployee
+    public partial class HuEmployee : IEntityBase
     {
         public HuEmployee()
         {
@@ -20,11 +22,22 @@ namespace Manage.Model.Models
             HuFamilies = new HashSet<HuFamily>();
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
         }
-
         [Key]
         [Column("id")]
         public int Id { get; set; }
-        [Column("employee_code")]
+        [Column("code")]
+        [StringLength(255)]
+        public string Code { get; set; }
+        [Column("created_by")]
+        [StringLength(50)]
+        public string CreatedBy { get; set; }
+        [Column("created_time", TypeName = "datetime")]
+        public DateTime? CreatedTime { get; set; }
+        [Column("last_updated_by")]
+        [StringLength(50)]
+        public string LastUpdatedBy { get; set; }
+        [Column("last_update_time", TypeName = "datetime")]
+        public DateTime? LastUpdateTime { get; set; }
         [StringLength(255)]
         public string EmployeeCode { get; set; }
         [Column("first_name")]
@@ -57,17 +70,6 @@ namespace Manage.Model.Models
         public int? LastWorkingId { get; set; }
         [Column("last_working_day", TypeName = "datetime")]
         public DateTime? LastWorkingDay { get; set; }
-        [Column("created_by")]
-        [StringLength(50)]
-        public string CreatedBy { get; set; }
-        [Column("created_time", TypeName = "datetime")]
-        public DateTime? CreatedTime { get; set; }
-        [Column("last_updated_by")]
-        [StringLength(50)]
-        public string LastUpdatedBy { get; set; }
-        [Column("last_update_time", TypeName = "datetime")]
-        public DateTime? LastUpdateTime { get; set; }
-
         [ForeignKey(nameof(ContractId))]
         [InverseProperty(nameof(HuContract.HuEmployees))]
         public virtual HuContract Contract { get; set; }

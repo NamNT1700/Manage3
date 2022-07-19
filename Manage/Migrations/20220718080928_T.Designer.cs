@@ -10,14 +10,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220715100229_Migrations")]
-    partial class Migrations
+    [Migration("20220718080928_T")]
+    partial class T
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -25,8 +24,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuAllwance", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -34,14 +35,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -54,8 +53,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -71,8 +69,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuBank", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -80,14 +80,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -100,8 +98,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -117,8 +114,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuBankBranch", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -135,14 +134,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -155,8 +152,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.HasKey("Id");
@@ -169,8 +165,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuContract", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -178,14 +176,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -198,8 +194,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<double?>("Money")
@@ -228,8 +223,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuContractAllowance", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -239,14 +236,18 @@ namespace Manage.API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("allwance_id");
 
+                    b.Property<string>("Code")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("code");
+
                     b.Property<int?>("ContractId")
                         .HasColumnType("int")
                         .HasColumnName("contract_id");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -259,8 +260,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<double?>("Money")
@@ -279,12 +279,19 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuContractualBenefit", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
                         .HasColumnName("activeflg");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("code");
 
                     b.Property<int?>("ContractId")
                         .HasColumnType("int")
@@ -292,8 +299,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -306,8 +312,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<double?>("Money")
@@ -330,8 +335,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuDistrict", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -339,14 +346,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -359,8 +364,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -382,8 +386,15 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuEmployee", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("code");
 
                     b.Property<int?>("ContractId")
                         .HasColumnType("int")
@@ -391,8 +402,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -406,9 +416,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("EmployeeCode")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("employee_code");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(20)
@@ -439,8 +447,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<DateTime?>("LastWorkingDay")
@@ -481,8 +488,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuEmployeeCv", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("BankNumber")
                         .HasColumnType("int")
@@ -490,20 +499,17 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("ClothesSize")
                         .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
+                        .HasColumnType("nvarchar(20)")
                         .HasColumnName("clothes_size");
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -537,8 +543,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -580,8 +585,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuEmployeeEducation", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -589,14 +596,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -621,8 +626,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -645,8 +649,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuFamily", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
                         .HasMaxLength(50)
@@ -655,14 +661,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -699,8 +703,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Nation")
@@ -710,8 +713,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Phonenumber")
                         .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("nvarchar(15)")
                         .HasColumnName("phonenumber");
 
                     b.Property<string>("Province")
@@ -734,8 +736,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuHospital", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -748,14 +752,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -768,8 +770,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -785,8 +786,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuNation", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -794,14 +797,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -814,8 +815,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -831,13 +831,19 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuOrgTitle", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -850,13 +856,11 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<int?>("OrgId")
-                        .HasColumnType("int")
-                        .HasColumnName("org_id");
+                        .HasColumnType("int");
 
                     b.Property<int?>("TitleId")
                         .HasColumnType("int")
@@ -870,8 +874,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuOrganization", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -879,14 +885,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -899,8 +903,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -924,8 +927,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuProvince", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -933,14 +938,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -953,8 +956,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -976,13 +978,14 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuSalaryRecord", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<int?>("ContracId")
@@ -999,8 +1002,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -1008,8 +1010,7 @@ namespace Manage.API.Migrations
                         .HasColumnName("created_time");
 
                     b.Property<int?>("EmployeeId")
-                        .HasColumnType("int")
-                        .HasColumnName("employee_id");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastUpdateTime")
                         .HasColumnType("datetime")
@@ -1017,8 +1018,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<double?>("Money")
@@ -1041,28 +1041,24 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuTitle", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
                         .HasColumnType("datetime")
                         .HasColumnName("created_time");
-
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int")
-                        .HasColumnName("group_id");
 
                     b.Property<DateTime?>("LastUpdateTime")
                         .HasColumnType("datetime")
@@ -1070,8 +1066,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -1087,8 +1082,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuTypeOfContract", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -1096,8 +1093,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<int?>("ContractId")
@@ -1106,8 +1102,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -1120,8 +1115,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -1143,8 +1137,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuWard", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -1152,14 +1148,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -1176,8 +1170,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -1195,8 +1188,10 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuWelface", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool?>("Activeflg")
                         .HasColumnType("bit")
@@ -1204,14 +1199,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -1224,8 +1217,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -1250,14 +1242,12 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -1270,8 +1260,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<int?>("TypeId")
@@ -1288,19 +1277,19 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.OtherListType", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
@@ -1313,8 +1302,7 @@ namespace Manage.API.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
                     b.Property<string>("Name")
@@ -1329,9 +1317,16 @@ namespace Manage.API.Migrations
 
             modelBuilder.Entity("Manage.Model.Models.SeUser", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
@@ -1356,21 +1351,18 @@ namespace Manage.API.Migrations
                         .HasColumnName("ActiveFlg");
 
                     b.Property<string>("password")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Password");
 
                     b.Property<string>("token")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Token");
 
                     b.Property<string>("username")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Username");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Se_User");
                 });
@@ -1379,8 +1371,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuBank", "Bank")
                         .WithMany("HuBankBranches")
-                        .HasForeignKey("BankId")
-                        .HasConstraintName("FK_hu_bank_branch_hu_bank");
+                        .HasForeignKey("BankId");
 
                     b.Navigation("Bank");
                 });
@@ -1389,13 +1380,11 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuAllwance", "Allwance")
                         .WithMany("HuContractAllowances")
-                        .HasForeignKey("AllwanceId")
-                        .HasConstraintName("FK_hu_Contract_allowance_hu_allwance");
+                        .HasForeignKey("AllwanceId");
 
                     b.HasOne("Manage.Model.Models.HuContract", "Contract")
                         .WithMany("HuContractAllowances")
-                        .HasForeignKey("ContractId")
-                        .HasConstraintName("FK_hu_Contract_allowance_hu_contract");
+                        .HasForeignKey("ContractId");
 
                     b.Navigation("Allwance");
 
@@ -1406,13 +1395,11 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuContract", "Contract")
                         .WithMany("HuContractualBenefits")
-                        .HasForeignKey("ContractId")
-                        .HasConstraintName("FK_hu_contractual_benefits_hu_contract");
+                        .HasForeignKey("ContractId");
 
                     b.HasOne("Manage.Model.Models.HuWelface", "Welface")
                         .WithMany("HuContractualBenefits")
-                        .HasForeignKey("WelfaceId")
-                        .HasConstraintName("FK_hu_contractual_benefits_hu_welface");
+                        .HasForeignKey("WelfaceId");
 
                     b.Navigation("Contract");
 
@@ -1423,8 +1410,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuProvince", "Province")
                         .WithMany("HuDistricts")
-                        .HasForeignKey("ProvinceId")
-                        .HasConstraintName("FK_hu_district_hu_province");
+                        .HasForeignKey("ProvinceId");
 
                     b.Navigation("Province");
                 });
@@ -1433,18 +1419,15 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuContract", "Contract")
                         .WithMany("HuEmployees")
-                        .HasForeignKey("ContractId")
-                        .HasConstraintName("FK_hu_employee_hu_contract");
+                        .HasForeignKey("ContractId");
 
                     b.HasOne("Manage.Model.Models.HuOrgTitle", "Org")
                         .WithMany("HuEmployees")
-                        .HasForeignKey("OrgId")
-                        .HasConstraintName("FK_hu_employee_hu_org_title");
+                        .HasForeignKey("OrgId");
 
                     b.HasOne("Manage.Model.Models.HuTitle", "Title")
                         .WithMany("HuEmployees")
-                        .HasForeignKey("TitleId")
-                        .HasConstraintName("FK_hu_employee_hu_title");
+                        .HasForeignKey("TitleId");
 
                     b.Navigation("Contract");
 
@@ -1457,8 +1440,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuHospital", "Hospital")
                         .WithMany("HuEmployeeCvs")
-                        .HasForeignKey("HospitalId")
-                        .HasConstraintName("FK_hu_employee_cv_hu_hospital");
+                        .HasForeignKey("HospitalId");
 
                     b.Navigation("Hospital");
                 });
@@ -1467,8 +1449,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
                         .WithMany("HuEmployeeEducations")
-                        .HasForeignKey("EmployeeId")
-                        .HasConstraintName("FK_hu_employee_education_hu_employee");
+                        .HasForeignKey("EmployeeId");
 
                     b.Navigation("Employee");
                 });
@@ -1477,8 +1458,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
                         .WithMany("HuFamilies")
-                        .HasForeignKey("EmployeeId")
-                        .HasConstraintName("FK_hu_family_hu_employee");
+                        .HasForeignKey("EmployeeId");
 
                     b.Navigation("Employee");
                 });
@@ -1487,8 +1467,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuNation", "Nation")
                         .WithMany("HuProvinces")
-                        .HasForeignKey("NationId")
-                        .HasConstraintName("FK_hu_province_hu_nation");
+                        .HasForeignKey("NationId");
 
                     b.Navigation("Nation");
                 });
@@ -1497,23 +1476,19 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuContract", "Contrac")
                         .WithMany("HuSalaryRecords")
-                        .HasForeignKey("ContracId")
-                        .HasConstraintName("FK_hu_salary_records_hu_contract");
+                        .HasForeignKey("ContracId");
 
                     b.HasOne("Manage.Model.Models.HuContractAllowance", "ContractAllwance")
                         .WithMany("HuSalaryRecords")
-                        .HasForeignKey("ContractAllwanceId")
-                        .HasConstraintName("FK_hu_salary_records_hu_Contract_allowance");
+                        .HasForeignKey("ContractAllwanceId");
 
                     b.HasOne("Manage.Model.Models.HuWelface", "ContractWelface")
                         .WithMany("HuSalaryRecords")
-                        .HasForeignKey("ContractWelfaceId")
-                        .HasConstraintName("FK_hu_salary_records_hu_welface");
+                        .HasForeignKey("ContractWelfaceId");
 
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
                         .WithMany("HuSalaryRecords")
-                        .HasForeignKey("EmployeeId")
-                        .HasConstraintName("FK_hu_salary_records_hu_employee");
+                        .HasForeignKey("EmployeeId");
 
                     b.Navigation("Contrac");
 
@@ -1528,8 +1503,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuContract", "Contract")
                         .WithMany("HuTypeOfContracts")
-                        .HasForeignKey("ContractId")
-                        .HasConstraintName("FK_hu_type_of_contract_hu_contract");
+                        .HasForeignKey("ContractId");
 
                     b.Navigation("Contract");
                 });
@@ -1538,8 +1512,7 @@ namespace Manage.API.Migrations
                 {
                     b.HasOne("Manage.Model.Models.HuDistrict", "Distric")
                         .WithMany("HuWards")
-                        .HasForeignKey("DistricId")
-                        .HasConstraintName("FK_hu_ward_hu_district");
+                        .HasForeignKey("DistricId");
 
                     b.Navigation("Distric");
                 });
@@ -1549,13 +1522,12 @@ namespace Manage.API.Migrations
                     b.HasOne("Manage.Model.Models.OtherListType", "IdNavigation")
                         .WithOne("OtherList")
                         .HasForeignKey("Manage.Model.Models.OtherList", "Id")
-                        .HasConstraintName("FK_ID_OtherList")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Manage.Model.Models.HuTitle", "Type")
                         .WithMany("OtherLists")
-                        .HasForeignKey("TypeId")
-                        .HasConstraintName("FK_other_list_hu_title");
+                        .HasForeignKey("TypeId");
 
                     b.Navigation("IdNavigation");
 

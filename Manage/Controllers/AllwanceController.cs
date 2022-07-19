@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Manage.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [Controller]
     public class AllwanceController : ControllerBase
     {
         private IAllwanceService _allwanceService;
@@ -26,7 +26,7 @@ namespace Manage.API.Controllers
             Response response = await _allwanceService.AddNew(allwanceDTO);
             return Ok(response);
         }
-        [HttpPost("GetAll")]
+        [HttpPost("GetAllAllwance")]
         public async Task<IActionResult> GetAll([FromBody] Request request)
         {
             Response response = await _allwanceService.GetAll(request);
@@ -39,7 +39,7 @@ namespace Manage.API.Controllers
             return Ok(response);
         }
         [HttpPut("Update")]
-        public async Task<IActionResult> Update(UpdateDTO update)
+        public async Task<IActionResult> Update([FromBody] UpdateAllwanceDTO update)
         {
             Response response = await _allwanceService.Update(update);
             return Ok(response);

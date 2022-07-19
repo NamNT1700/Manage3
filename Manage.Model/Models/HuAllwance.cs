@@ -1,19 +1,29 @@
-﻿using System;
+﻿
+
+#nullable disable
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
-#nullable disable
+using Manage.Model.Base;
 
 namespace Manage.Model.Models
 {
     [Table("hu_allwance")]
-    public partial class HuAllwance
+    public partial class HuAllwance : IEntityBase
     {
         public HuAllwance()
         {
             HuContractAllowances = new HashSet<HuContractAllowance>();
         }
+        [Column("name")]
+        [StringLength(255)]
+        public string Name { get; set; }
+        [Column("activeflg")]
+        public bool? Activeflg { get; set; }
+        [InverseProperty(nameof(HuContractAllowance.Allwance))]
+        public virtual ICollection<HuContractAllowance> HuContractAllowances { get; set; }
 
         [Key]
         [Column("id")]
@@ -21,11 +31,6 @@ namespace Manage.Model.Models
         [Column("code")]
         [StringLength(255)]
         public string Code { get; set; }
-        [Column("name")]
-        [StringLength(255)]
-        public string Name { get; set; }
-        [Column("activeflg")]
-        public bool? Activeflg { get; set; }
         [Column("created_by")]
         [StringLength(50)]
         public string CreatedBy { get; set; }
@@ -37,7 +42,5 @@ namespace Manage.Model.Models
         [Column("last_update_time", TypeName = "datetime")]
         public DateTime? LastUpdateTime { get; set; }
 
-        [InverseProperty(nameof(HuContractAllowance.Allwance))]
-        public virtual ICollection<HuContractAllowance> HuContractAllowances { get; set; }
     }
 }

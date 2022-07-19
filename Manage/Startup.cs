@@ -1,6 +1,8 @@
 using Manage.Model.Context;
 using Manage.Repository.Base.IRepository;
+using Manage.Repository.Base.IRepository.IWrapper;
 using Manage.Repository.Base.Repository;
+using Manage.Repository.Base.Repository.Wrapper;
 using Manage.Service.IService;
 using Manage.Service.Service;
 using Microsoft.AspNetCore.Builder;
@@ -26,8 +28,22 @@ namespace Manage.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<IHuAllwanceRepositoryWrapper, HuAllwanceRepositoryWrapper>();
+            services.AddScoped<IHuBankRepositoryWrapper, HuBankRepositoryWrapper>();
+            services.AddScoped<IHuContractRepositoryWapper, HuContractRepositoryWapper>();
+            services.AddScoped<IHuHospitalRepositoryWrapper, HuHospitalRepositoryWrapper>();
+            services.AddScoped<IHuNationRepositoryWrapper, HuNationRepositoryWrapper>();
+            services.AddScoped<IHuTitleRepositoryWrapper, HuTitleRepositoryWrapper>();
+
+
+            services.AddScoped<IUserRepositoryWrapper, UserRepositoryWrapper>();
             services.AddScoped<IAllwanceService, AllwanceService>();
+            services.AddScoped<IBankService, BankService>();
+            services.AddScoped<IContractService, ContractService>();
+            services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<INationService, NationService>();
+            services.AddScoped<ITitleService, TitleService>();
+
             services.AddDbContext<DatabaseContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("database"),b=>b.MigrationsAssembly("Manage.API")));
             services.AddControllers();

@@ -11,34 +11,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Manage.Repository.Base.IRepository.IWrapper;
 
 namespace Manage.Service.Service
 {
     public class UserService : IUserService
     {
         private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
+        private IUserRepositoryWrapper _userRepositoryWrapper;
         private DatabaseContext _context;
         private IConfiguration _configuration;
 
-        public UserService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
+        public UserService(IMapper mapper, IUserRepositoryWrapper userRepositoryWrapper, DatabaseContext context,
             IConfiguration configuration)
         {
             _mapper = mapper;
-            _repositoryWrapper = repositoryWrapper;
+            _userRepositoryWrapper = userRepositoryWrapper;
             _context = context;
             _configuration = configuration;
         }
         public async Task<Response> ChangeStatusUser(UserDTO user)
         {
             Response respones = new Response();
-            SeUser existUser = await _repositoryWrapper.User.FindById(user.id);
+            SeUser existUser = await _userRepositoryWrapper.User.FindById(user.id);
             if (existUser.activeflg == "A")
                 existUser.activeflg = "I";
             if (existUser.activeflg == "I")
                 existUser.activeflg = "A";
-            await _repositoryWrapper.User.Update(existUser);
-            _repositoryWrapper.Save();
+            await _userRepositoryWrapper.User.Update(existUser);
+            await _context.SaveChangesAsync();
             respones.status = "200";
             respones.success = true;
             respones.message = $"Status of users is changed";
@@ -48,11 +49,11 @@ namespace Manage.Service.Service
         public async Task<Response> DeleteUsers(List<int> ids)
         {
             Response response = new Response();
-            foreach(int id in ids)
+            foreach (int id in ids)
             {
-                SeUser existUser = await _repositoryWrapper.User.FindById(id);
+                SeUser existUser = await _userRepositoryWrapper.User.FindById(id);
                 if (existUser != null)
-                    await _repositoryWrapper.User.Delete(existUser);
+                    await _userRepositoryWrapper.User.Delete(existUser);
             }
             response.status = "200";
             response.success = true;
@@ -63,7 +64,7 @@ namespace Manage.Service.Service
         public async Task<Response> FindUserById(int id)
         {
             Response respones = new Response();
-            SeUser existUser = await _repositoryWrapper.User.FindById(id);
+            SeUser existUser = await _userRepositoryWrapper.User.FindById(id);
             if (existUser == null)
             {
                 respones.status = "400";
@@ -79,8 +80,8 @@ namespace Manage.Service.Service
 
         public async Task<Response> GetAllUsers(Request request)
         {
-            List<SeUser> allUsers = await  _repositoryWrapper.User.FindAllData();
-            List<UserDTO> listUser =  _mapper.Map<List<UserDTO>>(allUsers);
+            List<SeUser> allUsers = await _userRepositoryWrapper.User.FindAllData();
+            List<UserDTO> listUser = _mapper.Map<List<UserDTO>>(allUsers);
             Response response = new Response();
             List<UserDTO> users = new List<UserDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -104,10 +105,10 @@ namespace Manage.Service.Service
         {
             Response respones = new Response();
             string encodePass = CodingPassword.EncodingUTF8(user.password);
-            string description = await _repositoryWrapper.User.CheckUserLogin(user.username, encodePass);
+            string description = await _userRepositoryWrapper.User.CheckUserLogin(user.username, encodePass);
             if (description == null)
             {
-                SeUser loginUser = await _repositoryWrapper.User.FindByUsername(user.username);
+                SeUser loginUser = await _userRepositoryWrapper.User.FindByUsername(user.username);
                 TokenGenarate accessToken = new TokenGenarate(_configuration);
                 string token = accessToken.GenerateAccessToken(loginUser);
                 respones.status = "200";
@@ -124,7 +125,7 @@ namespace Manage.Service.Service
         public async Task<Response> Register(UserDTO reUser)
         {
             Response response = new Response();
-            SeUser description = await _repositoryWrapper.User.FindByUsername(reUser.username);
+            SeUser description = await _userRepositoryWrapper.User.FindByUsername(reUser.username);
             if (description != null)
             {
                 response.status = "400";
@@ -135,8 +136,8 @@ namespace Manage.Service.Service
             reUser.password = CodingPassword.EncodingUTF8(reUser.password);
             SeUser newUser = _mapper.Map<SeUser>(reUser);
             newUser.activeflg = "A";
-            await _repositoryWrapper.User.Create(newUser);
-            await _repositoryWrapper.SaveAsync();
+            await _userRepositoryWrapper.User.Create(newUser);
+            await _context.SaveChangesAsync();
             response.status = "200";
             response.success = true;
             response.item = newUser;

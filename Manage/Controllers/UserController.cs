@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Manage.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [Controller]
     public class UserController : ControllerBase
     {
         private IUserService _userService;

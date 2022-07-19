@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Manage.Model.DTO.Allwance
+namespace Manage.Model.DTO.Province
 {
-    public class UpdateDTO
+    public class UpdateProvinceDTO
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public UpdateData updateData { get; set; }
     }
     public class UpdateData
     {
-        public string Name { get; set; }
-        public bool? Activeflg { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? CreatedTime { get; set; }
         public string LastUpdatedBy { get; set; }
         public DateTime? LastUpdateTime { get; set; }
+        public string Name { get; set; }
+        public int? NationId { get; set; }
+        public bool? Activeflg { get; set; }
     }
 }

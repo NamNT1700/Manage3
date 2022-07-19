@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Manage.Model.Base;
 
 namespace Manage.Repository.Base.IRepository
 {
-    public interface IRepositoryBase<T>
+    public interface IRepositoryBase<T>where T : class, IEntityBase
     {
         IQueryable<T> FindAll();
         IQueryable<T> FindByCondition(Expression<Func<T,bool>> expression);

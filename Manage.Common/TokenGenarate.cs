@@ -24,7 +24,7 @@ namespace Manage.Common
             {
                 new Claim(ClaimTypes.Name,user.username),
                 new Claim("Password",user.password),
-                new Claim("ID",$"{user.id}"),
+                new Claim("ID",$"{user.Id}"),
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
             claimsIdentity.AddClaims(userClaim);

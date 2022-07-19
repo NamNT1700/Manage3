@@ -3,34 +3,32 @@ using Manage.Common;
 using Manage.Model.DTO.Allwance;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Manage.Model.Context;
 using Manage.Model.Models;
-using Microsoft.Extensions.Configuration;
+using Manage.Repository.Base.IRepository.IWrapper;
 
 namespace Manage.Service.Service
 {
-    public class AllwanceService : IAllwanceService
+    public class AllwanceService :IAllwanceService
     {
         private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
+        private IHuAllwanceRepositoryWrapper _allwanceRepositoryWrapper;
         private DatabaseContext _context ;
         
 
-        public AllwanceService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
+        public AllwanceService(IMapper mapper, IHuAllwanceRepositoryWrapper allwanceRepositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _repositoryWrapper = repositoryWrapper;
+            _allwanceRepositoryWrapper = allwanceRepositoryWrapper;
             _context = context;
         }
         public async Task<Response> AddNew(AllwanceDTO allwance)
         {
             Response responce = new Response();
-            string message = await _repositoryWrapper.Allwance.CheckData(allwance);
+            string message = await _allwanceRepositoryWrapper.Allwance.CheckData(allwance);
             if (message != null)
             {
                 responce.message = message;
@@ -39,8 +37,8 @@ namespace Manage.Service.Service
             }
 
             HuAllwance huAllwance = _mapper.Map<HuAllwance>(allwance);
-            await _repositoryWrapper.Allwance.Create(huAllwance);
-            await _repositoryWrapper.SaveAsync();
+            await _allwanceRepositoryWrapper.Allwance.Create(huAllwance);
+            await _context.SaveChangesAsync();
             AllwanceDTO allwanceDTO = _mapper.Map<AllwanceDTO>(huAllwance);
             responce.status = "200";
             responce.item = allwanceDTO;
@@ -52,7 +50,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(Request request)
         {
             Response response = new Response();
-            List<HuAllwance> huAllwances = await _repositoryWrapper.Allwance.GetAll();
+            List<HuAllwance> huAllwances = await _allwanceRepositoryWrapper.Allwance.GetAll();
             List<ListAllwanceDTO> listAllwance =  _mapper.Map<List<ListAllwanceDTO>>(huAllwances);
             List<ListAllwanceDTO> lists = new List<ListAllwanceDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -75,7 +73,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuAllwance huAllwance = await _repositoryWrapper.Allwance.FindById(id);
+            HuAllwance huAllwance = await _allwanceRepositoryWrapper.Allwance.FindById(id);
             if (huAllwance != null)
             {
                 AllwanceDTO allwance = _mapper.Map<AllwanceDTO>(huAllwance);
@@ -90,14 +88,14 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> Update(UpdateDTO update)
+        public async Task<Response> Update(UpdateAllwanceDTO update)
         {
             Response response = new Response();
-            HuAllwance allwance = await _repositoryWrapper.Allwance.FindById(update.id);
+            HuAllwance allwance = await _allwanceRepositoryWrapper.Allwance.FindById(update.id);
             if(allwance!=null)
             {
                 _mapper.Map(update.updateData, allwance);
-                await _repositoryWrapper.SaveAsync();
+                await _context.SaveChangesAsync();
                 response.status = "200";
                 response.success = true;
                 response.item = allwance;
@@ -113,8 +111,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuAllwance allwance = await _repositoryWrapper.Allwance.FindById(id);
-                await _repositoryWrapper.Allwance.Delete(allwance);
+                HuAllwance allwance = await _allwanceRepositoryWrapper.Allwance.FindById(id);
+                await _allwanceRepositoryWrapper.Allwance.Delete(allwance);
             }
             response.message = "Delete allwance";
             response.status = "200";

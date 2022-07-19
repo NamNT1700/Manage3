@@ -28,18 +28,6 @@ namespace Manage.Repository.Repository
                 return "id already exist";
             return null;
         }
-
-        public async Task<HuAllwance> FindByCode(string code)
-        {
-            return await FindByCondition(a => a.Code.Equals(code)).FirstOrDefaultAsync();
-        }
-
-        public async Task<HuAllwance> FindById(int id)
-        {
-            return await FindByCondition(a => a.Id.Equals(id)).FirstOrDefaultAsync();
-
-        }
-
         public async Task<List<HuAllwance>> GetAll()
         {
             return await Task.Run(()=> FindAll().OrderBy(a => a.Id).ToList());

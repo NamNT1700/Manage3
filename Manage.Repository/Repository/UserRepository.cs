@@ -38,7 +38,7 @@ namespace Manage.Repository.Repository
 
         public async Task<SeUser> FindById(int id)
         {
-            return await FindByCondition(u => u.id.Equals(id)).FirstOrDefaultAsync();
+            return await FindByCondition(u => u.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
         public async Task<SeUser> FindByUsername(string username)
