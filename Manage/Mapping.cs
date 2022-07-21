@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Manage.Model.DTO.Allwance;
+using Manage.Model.DTO.Allowance;
 using Manage.Model.DTO.Bank;
 using Manage.Model.DTO.Contract;
 using Manage.Model.DTO.Hospital;
@@ -7,7 +7,7 @@ using Manage.Model.DTO.Nation;
 using Manage.Model.DTO.Title;
 using Manage.Model.DTO.User;
 using Manage.Model.Models;
-using UpdateData = Manage.Model.DTO.Allwance.UpdateData;
+
 
 namespace Manage.API
 {
@@ -15,9 +15,9 @@ namespace Manage.API
     {
         public Mapping()
         {
-            //map HuAllwance
-            CreateMap<HuAllwance, AllwanceDTO>();
-            CreateMap<AllwanceDTO, HuAllwance>();
+            //map HuAllowance
+            CreateMap<HuAllowance, AllowanceDTO>();
+            CreateMap<AllowanceDTO, HuAllowance>();
 
             CreateMap<BankDTO, HuBank>();
             CreateMap<HuBank, BankDTO>();
@@ -40,7 +40,7 @@ namespace Manage.API
 
 
 
-            CreateMap<HuAllwance, ListAllwanceDTO>();
+            CreateMap<HuAllowance, ListAllowanceDTO>();
             CreateMap<HuBank, ListBankDTO>();
             CreateMap<HuContract, ListContractDTO>();
             CreateMap<HuHospital, ListHospitalDTO>();
@@ -48,12 +48,12 @@ namespace Manage.API
             CreateMap<HuTitle, ListTitleDTO>();
            
 
-            CreateMap<UpdateData, HuAllwance>();
-            CreateMap<UpdateData, HuBank>();
-            CreateMap<UpdateData, HuContract>();
-            CreateMap<UpdateData, HuHospital>();
-            CreateMap<UpdateData, HuNation>();
-            CreateMap<UpdateData, HuTitle>();
+            CreateMap<UpdateDataAllowance, HuAllowance>();
+            CreateMap<UpdateBank, HuBank>();
+            CreateMap<UpdateContract, HuContract>();
+            CreateMap<UpdateHospital, HuHospital>();
+            CreateMap<UpdateNation, HuNation>();
+            CreateMap<UpdateTitle, HuTitle>();
 
             CreateMap<UserDTO, SeUser>();
             CreateMap<SeUser, UserDTO>();

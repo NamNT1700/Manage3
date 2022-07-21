@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manage.Common;
-using Manage.Model.DTO.Allwance;
 using Manage.Model.DTO.Hospital;
 using Manage.Service.IService;
 
@@ -21,13 +20,13 @@ namespace Manage.API.Controllers
             _hospitalService = hospitalService;
         }
         [HttpPost("AddNewHospital")]
-        public async Task<IActionResult> AllNew([FromBody] HospitalDTO hospital)
+        public async Task<IActionResult> AllNew( HospitalDTO hospital)
         {
             Response response = await _hospitalService.AddNew(hospital);
             return Ok(response);
         }
         [HttpPost("GetAllHospital")]
-        public async Task<IActionResult> GetAll([FromBody] Request request)
+        public async Task<IActionResult> GetAll(Request request)
         {
             Response response = await _hospitalService.GetAll(request);
             return Ok(response);

@@ -10,10 +10,10 @@ using Manage.Model.Base;
 
 namespace Manage.Model.Models
 {
-    [Table("hu_allwance")]
-    public partial class HuAllwance : IEntityBase
+    [Table("hu_allowance")]
+    public sealed partial class HuAllowance : IEntityBase
     {
-        public HuAllwance()
+        public HuAllowance()
         {
             HuContractAllowances = new HashSet<HuContractAllowance>();
         }
@@ -21,9 +21,9 @@ namespace Manage.Model.Models
         [StringLength(255)]
         public string Name { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [InverseProperty(nameof(HuContractAllowance.Allwance))]
-        public virtual ICollection<HuContractAllowance> HuContractAllowances { get; set; }
+        public ICollection<HuContractAllowance> HuContractAllowances { get; set; }
 
         [Key]
         [Column("id")]

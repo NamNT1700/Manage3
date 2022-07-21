@@ -54,6 +54,7 @@ namespace Manage.Repository.Base.Repository
             return await FindByCondition(a => a.Id.Equals(id)).FirstOrDefaultAsync();
 
         }
+       
         public async Task<List<T>> GetAll()
         {
             return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());

@@ -40,6 +40,8 @@ namespace Manage.Service.Service
             }
 
             HuTitle huTitle = _mapper.Map<HuTitle>(title);
+            huTitle.CreatedTime = DateTime.Now;
+            huTitle.LastUpdateTime = DateTime.Now;
             await _huTitleRepositoryWrapper.Title.Create(huTitle);
             await _context.SaveChangesAsync();
             TitleDTO hospitalDto = _mapper.Map<TitleDTO>(huTitle);
@@ -85,7 +87,7 @@ namespace Manage.Service.Service
                 response.success = true;
                 return response;
             }
-            response.message = $"no allwance with id {id} exist";
+            response.message = $"no Title with id {id} exist";
             response.status = "400";
             response.success = false;
             return response;
@@ -100,6 +102,7 @@ namespace Manage.Service.Service
             if (nation != null)
             {
                 _mapper.Map(update.updateData, nation);
+                nation.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
                 response.status = "200";
                 response.success = true;
@@ -119,7 +122,7 @@ namespace Manage.Service.Service
                 HuTitle title = await _huTitleRepositoryWrapper.Title.FindById(id);
                 await _huTitleRepositoryWrapper.Title.Delete(title);
             }
-            response.message = "Delete allwance";
+            response.message = "Delete Title";
             response.status = "200";
             response.success = true;
             return response;

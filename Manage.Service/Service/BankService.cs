@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
-using Manage.Model.DTO.Allwance;
 using Manage.Model.DTO.Bank;
 using Manage.Model.Models;
-using Manage.Repository.Base.IRepository;
 using Manage.Repository.Base.IRepository.IWrapper;
 using Manage.Service.IService;
 
@@ -41,6 +38,8 @@ namespace Manage.Service.Service
             }
 
             HuBank huBank = _mapper.Map<HuBank>(bank);
+            huBank.CreatedTime = DateTime.Now;
+            huBank.LastUpdateTime = DateTime.Now;
             await _bankRepositoryWrapper.Bank.Create(huBank);
             await _context.SaveChangesAsync();
             BankDTO bankDto = _mapper.Map<BankDTO>(huBank);
@@ -55,8 +54,8 @@ namespace Manage.Service.Service
         {
             Response response = new Response();
             List<HuBank> huBanks = await _bankRepositoryWrapper.Bank.GetAll();
-            List<ListBankDTO> listAllwance = _mapper.Map<List<ListBankDTO>>(huBanks);
-            List<ListBankDTO> lists = new List<ListBankDTO>();
+            List<ListBankDTO> listBankDtos = _mapper.Map<List<ListBankDTO>>(huBanks);
+            List<ListBankDTO> list = new List<ListBankDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huBanks.Count())
             {
@@ -66,11 +65,11 @@ namespace Manage.Service.Service
                 return response;
             }
             if (firstIndex + request.pageSize < huBanks.Count())
-                lists = listAllwance.GetRange(firstIndex, request.pageSize);
-            else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
+                list = listBankDtos.GetRange(firstIndex, request.pageSize);
+            else list = listBankDtos.GetRange(firstIndex, listBankDtos.Count - firstIndex);
             response.status = "200";
             response.success = true;
-            response.item = lists;
+            response.item = list;
             return response;
         }
 
@@ -80,13 +79,13 @@ namespace Manage.Service.Service
             HuBank huBank = await _bankRepositoryWrapper.Bank.FindById(id);
             if (huBank != null)
             {
-                AllwanceDTO allwance = _mapper.Map<AllwanceDTO>(huBank);
-                response.item = allwance;
+                BankDTO bank = _mapper.Map<BankDTO>(huBank);
+                response.item = bank;
                 response.status = "200";
                 response.success = true;
                 return response;
             }
-            response.message = $"no allwance with id {id} exist";
+            response.message = $"no bank with id {id} exist";
             response.status = "400";
             response.success = false;
             return response;
@@ -101,6 +100,7 @@ namespace Manage.Service.Service
             if (bank != null)
             {
                 _mapper.Map(update.updateData, bank);
+                bank.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
                 response.status = "200";
                 response.success = true;
@@ -120,7 +120,7 @@ namespace Manage.Service.Service
                 HuBank bank = await _bankRepositoryWrapper.Bank.FindById(id);
                 await _bankRepositoryWrapper.Bank.Delete(bank);
             }
-            response.message = "Delete allwance";
+            response.message = "Delete bank";
             response.status = "200";
             response.success = true;
             return response;

@@ -20,7 +20,7 @@ namespace Manage.Model.Models
         [Column("bank_id")]
         public int? BankId { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [ForeignKey(nameof(BankId))]
         [InverseProperty(nameof(HuBank.HuBankBranches))]
         public virtual HuBank Bank { get; set; }

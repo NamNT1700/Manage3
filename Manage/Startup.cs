@@ -27,8 +27,19 @@ namespace Manage.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "Origins",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200/")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowAnyOrigin();
+                    });
+            });
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IHuAllwanceRepositoryWrapper, HuAllwanceRepositoryWrapper>();
+            services.AddScoped<IHuAllowanceRepositoryWrapper, HuAllowanceRepositoryWrapper>();
             services.AddScoped<IHuBankRepositoryWrapper, HuBankRepositoryWrapper>();
             services.AddScoped<IHuContractRepositoryWapper, HuContractRepositoryWapper>();
             services.AddScoped<IHuHospitalRepositoryWrapper, HuHospitalRepositoryWrapper>();
@@ -37,7 +48,7 @@ namespace Manage.API
 
 
             services.AddScoped<IUserRepositoryWrapper, UserRepositoryWrapper>();
-            services.AddScoped<IAllwanceService, AllwanceService>();
+            services.AddScoped<IAllowanceService, AllowanceService>();
             services.AddScoped<IBankService, BankService>();
             services.AddScoped<IContractService, ContractService>();
             services.AddScoped<IHospitalService, HospitalService>();
@@ -64,9 +75,9 @@ namespace Manage.API
             }
 
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

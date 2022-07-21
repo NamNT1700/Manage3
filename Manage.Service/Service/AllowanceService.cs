@@ -1,34 +1,34 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Manage.Common;
-using Manage.Model.DTO.Allwance;
-using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manage.Model.Context;
+using Manage.Model.DTO.Allowance;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository.IWrapper;
 
 namespace Manage.Service.Service
 {
-    public class AllwanceService :IAllwanceService
+    public class AllowanceService :IAllowanceService
     {
         private IMapper _mapper;
-        private IHuAllwanceRepositoryWrapper _allwanceRepositoryWrapper;
+        private IHuAllowanceRepositoryWrapper _allowanceRepositoryWrapper;
         private DatabaseContext _context ;
         
 
-        public AllwanceService(IMapper mapper, IHuAllwanceRepositoryWrapper allwanceRepositoryWrapper, DatabaseContext context)
+        public AllowanceService(IMapper mapper, IHuAllowanceRepositoryWrapper allowanceRepositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _allwanceRepositoryWrapper = allwanceRepositoryWrapper;
+            _allowanceRepositoryWrapper = allowanceRepositoryWrapper;
             _context = context;
         }
-        public async Task<Response> AddNew(AllwanceDTO allwance)
+        public async Task<Response> AddNew(AllowanceDTO allowance)
         {
             Response responce = new Response();
-            string message = await _allwanceRepositoryWrapper.Allwance.CheckData(allwance);
+            string message = await _allowanceRepositoryWrapper.Allowance.CheckData(allowance);
             if (message != null)
             {
                 responce.message = message;
@@ -36,12 +36,14 @@ namespace Manage.Service.Service
                 return responce;
             }
 
-            HuAllwance huAllwance = _mapper.Map<HuAllwance>(allwance);
-            await _allwanceRepositoryWrapper.Allwance.Create(huAllwance);
+            HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
+            huAllowance.CreatedTime = DateTime.Now;
+            huAllowance.LastUpdateTime = DateTime.Now;
+            await _allowanceRepositoryWrapper.Allowance.Create(huAllowance);
             await _context.SaveChangesAsync();
-            AllwanceDTO allwanceDTO = _mapper.Map<AllwanceDTO>(huAllwance);
+            AllowanceDTO allowanceDTO = _mapper.Map<AllowanceDTO>(huAllowance);
             responce.status = "200";
-            responce.item = allwanceDTO;
+            responce.item = allowanceDTO;
             return responce;
         }
 
@@ -50,9 +52,9 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(Request request)
         {
             Response response = new Response();
-            List<HuAllwance> huAllwances = await _allwanceRepositoryWrapper.Allwance.GetAll();
-            List<ListAllwanceDTO> listAllwance =  _mapper.Map<List<ListAllwanceDTO>>(huAllwances);
-            List<ListAllwanceDTO> lists = new List<ListAllwanceDTO>();
+            List<HuAllowance> huAllwances = await _allowanceRepositoryWrapper.Allowance.GetAll();
+            List<ListAllowanceDTO> listAllwance =  _mapper.Map<List<ListAllowanceDTO>>(huAllwances);
+            List<ListAllowanceDTO> lists = new List<ListAllowanceDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huAllwances.Count())
             {
@@ -73,11 +75,11 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuAllwance huAllwance = await _allwanceRepositoryWrapper.Allwance.FindById(id);
-            if (huAllwance != null)
+            HuAllowance huAllowance = await _allowanceRepositoryWrapper.Allowance.FindById(id);
+            if (huAllowance != null)
             {
-                AllwanceDTO allwance = _mapper.Map<AllwanceDTO>(huAllwance);
-                response.item = allwance;
+                AllowanceDTO allowance = _mapper.Map<AllowanceDTO>(huAllowance);
+                response.item = allowance;
                 response.status = "200";
                 response.success = true;
                 return response;
@@ -88,17 +90,18 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> Update(UpdateAllwanceDTO update)
+        public async Task<Response> Update(UpdateAllowanceDTO update)
         {
             Response response = new Response();
-            HuAllwance allwance = await _allwanceRepositoryWrapper.Allwance.FindById(update.id);
-            if(allwance!=null)
+            HuAllowance allowance = await _allowanceRepositoryWrapper.Allowance.FindById(update.id);
+            if(allowance!=null)
             {
-                _mapper.Map(update.updateData, allwance);
+                _mapper.Map(update.updateData, allowance);
+                allowance.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
                 response.status = "200";
                 response.success = true;
-                response.item = allwance;
+                response.item = allowance;
                 return response;
             }
             response.message = "update data fail";
@@ -111,8 +114,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuAllwance allwance = await _allwanceRepositoryWrapper.Allwance.FindById(id);
-                await _allwanceRepositoryWrapper.Allwance.Delete(allwance);
+                HuAllowance allwance = await _allowanceRepositoryWrapper.Allowance.FindById(id);
+                await _allowanceRepositoryWrapper.Allowance.Delete(allwance);
             }
             response.message = "Delete allwance";
             response.status = "200";

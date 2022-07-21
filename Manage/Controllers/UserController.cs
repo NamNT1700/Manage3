@@ -21,7 +21,7 @@ namespace Manage.API.Controllers
             _userService = userService;
         }
         [HttpPost("Register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserDTO user)
+        public async Task<IActionResult> RegisterUser( UserDTO user)
         {
             Response res = await _userService.Register(user);
             return Ok(res);

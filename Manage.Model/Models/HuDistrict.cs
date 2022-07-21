@@ -40,7 +40,7 @@ namespace Manage.Model.Models
         [Column("province_id")]
         public int? ProvinceId { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [ForeignKey(nameof(ProvinceId))]
         [InverseProperty(nameof(HuProvince.HuDistricts))]
         public virtual HuProvince Province { get; set; }

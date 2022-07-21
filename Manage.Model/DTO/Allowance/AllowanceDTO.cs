@@ -1,13 +1,14 @@
 ﻿using System;
 
-namespace Manage.Model.DTO.Ward
+namespace Manage.Model.DTO.Allowance
 {
-    public class WardDTO
+    public class AllowanceDTO
     {
+      
         public int Id { get; set; }
+    
         public string Code { get; set; }
+    
         public string Name { get; set; }
-        public int? DistricId { get; set; }
-        public string Activeflg { get; set; }
     }
 }

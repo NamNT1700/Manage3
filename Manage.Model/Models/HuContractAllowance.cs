@@ -42,10 +42,10 @@ namespace Manage.Model.Models
         [Column("money")]
         public double? Money { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [ForeignKey(nameof(AllwanceId))]
-        [InverseProperty(nameof(HuAllwance.HuContractAllowances))]
-        public virtual HuAllwance Allwance { get; set; }
+        [InverseProperty(nameof(HuAllowance.HuContractAllowances))]
+        public virtual HuAllowance Allwance { get; set; }
         [ForeignKey(nameof(ContractId))]
         [InverseProperty(nameof(HuContract.HuContractAllowances))]
         public virtual HuContract Contract { get; set; }

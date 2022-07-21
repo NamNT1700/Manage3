@@ -36,7 +36,7 @@ namespace Manage.Model.Models
         [StringLength(255)]
         public string Name { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [Column("number_of_month")]
         public int? NumberOfMonth { get; set; }
         [ForeignKey(nameof(ContractId))]

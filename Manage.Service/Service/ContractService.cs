@@ -40,6 +40,8 @@ namespace Manage.Service.Service
             }
 
             HuContract huContract = _mapper.Map<HuContract>(contract);
+            huContract.CreatedTime = DateTime.Now;
+            huContract.LastUpdateTime = DateTime.Now;
             await _contractRepositoryWapper.Contract.Create(huContract);
             await _context.SaveChangesAsync();
             ContractDTO bankDto = _mapper.Map<ContractDTO>(huContract);
@@ -85,7 +87,7 @@ namespace Manage.Service.Service
                 response.success = true;
                 return response;
             }
-            response.message = $"no allwance with id {id} exist";
+            response.message = $"no contract with id {id} exist";
             response.status = "400";
             response.success = false;
             return response;
@@ -100,6 +102,7 @@ namespace Manage.Service.Service
             if (contract != null)
             {
                 _mapper.Map(update.updateData, contract);
+                contract.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
                 response.status = "200";
                 response.success = true;
@@ -119,7 +122,7 @@ namespace Manage.Service.Service
                 HuContract bank = await _contractRepositoryWapper.Contract.FindById(id);
                 await _contractRepositoryWapper.Contract.Delete(bank);
             }
-            response.message = "Delete allwance";
+            response.message = "Delete contract";
             response.status = "200";
             response.success = true;
             return response;

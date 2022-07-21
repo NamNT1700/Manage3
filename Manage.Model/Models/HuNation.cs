@@ -37,7 +37,7 @@ namespace Manage.Model.Models
         [StringLength(255)]
         public string Name { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [InverseProperty(nameof(HuProvince.Nation))]
         public virtual ICollection<HuProvince> HuProvinces { get; set; }
     }

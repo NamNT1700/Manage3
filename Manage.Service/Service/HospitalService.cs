@@ -40,6 +40,8 @@ namespace Manage.Service.Service
             }
 
             HuHospital huHospital = _mapper.Map<HuHospital>(hospital);
+            huHospital.CreatedTime = DateTime.Now;
+            huHospital.LastUpdateTime = DateTime.Now;
             await _hospitalRepositoryWrapper.Hospital.Create(huHospital);
             await _context.SaveChangesAsync();
             HospitalDTO hospitalDto = _mapper.Map<HospitalDTO>(huHospital);
@@ -85,7 +87,7 @@ namespace Manage.Service.Service
                 response.success = true;
                 return response;
             }
-            response.message = $"no allwance with id {id} exist";
+            response.message = $"no hospital with id {id} exist";
             response.status = "400";
             response.success = false;
             return response;
@@ -96,14 +98,15 @@ namespace Manage.Service.Service
         public async Task<Response> Update(UpdateHospitalDTO update)
         {
             Response response = new Response();
-            HuHospital contract = await _hospitalRepositoryWrapper.Hospital.FindById(update.Id);
-            if (contract != null)
+            HuHospital hospital = await _hospitalRepositoryWrapper.Hospital.FindById(update.Id);
+            if (hospital != null)
             {
-                _mapper.Map(update.updateData, contract);
+                _mapper.Map(update.updateData, hospital);
+                hospital.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
                 response.status = "200";
                 response.success = true;
-                response.item = contract;
+                response.item = hospital;
                 return response;
             }
             response.message = "update data fail";
@@ -119,7 +122,7 @@ namespace Manage.Service.Service
                 HuHospital hospital = await _hospitalRepositoryWrapper.Hospital.FindById(id);
                 await _hospitalRepositoryWrapper.Hospital.Delete(hospital);
             }
-            response.message = "Delete allwance";
+            response.message = "Delete hospital";
             response.status = "200";
             response.success = true;
             return response;

@@ -2,8 +2,8 @@
 
 namespace Manage.Repository.Base.IRepository.IWrapper
 {
-    public interface IHuAllwanceRepositoryWrapper
+    public interface IHuAllowanceRepositoryWrapper
     {
-        IHuAllwanceRepository Allwance { get; }
+        IHuAllowanceRepository Allowance { get; }
     }
 }

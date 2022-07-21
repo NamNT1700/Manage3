@@ -36,7 +36,7 @@ namespace Manage.Model.Models
         [Column("distric_id")]
         public int? DistricId { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [ForeignKey(nameof(DistricId))]
         [InverseProperty(nameof(HuDistrict.HuWards))]
         public virtual HuDistrict Distric { get; set; }

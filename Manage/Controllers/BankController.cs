@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manage.Common;
-using Manage.Model.DTO.Allwance;
 using Manage.Model.DTO.Bank;
 using Manage.Service.IService;
 
@@ -20,14 +19,14 @@ namespace Manage.API.Controllers
         {
             _bankService = bankService;
         }
-        [HttpPost("AddNewBank")]
-        public async Task<IActionResult> AllNew([FromBody] BankDTO bankDto)
+        [HttpPost("bank-insert")]
+        public async Task<IActionResult> AllNew( BankDTO bankDto)
         {
             Response response = await _bankService.AddNew(bankDto);
             return Ok(response);
         }
-        [HttpPost("GetBankAll")]
-        public async Task<IActionResult> GetAll([FromBody] Request request)
+        [HttpPost("bank-get-all")]
+        public async Task<IActionResult> GetAll( Request request)
         {
             Response response = await _bankService.GetAll(request);
             return Ok(response);
@@ -38,13 +37,13 @@ namespace Manage.API.Controllers
             Response response = await _bankService.GetById(id);
             return Ok(response);
         }
-        [HttpPut("UpdateBank")]
+        [HttpPut("bank-update")]
         public async Task<IActionResult> Update(UpdateBankDTO update)
         {
             Response response = await _bankService.Update(update);
             return Ok(response);
         }
-        [HttpDelete("DeleteBank")]
+        [HttpDelete("bank-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
             Response response = await _bankService.Delete(ids);

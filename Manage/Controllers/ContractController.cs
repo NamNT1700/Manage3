@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manage.Common;
-using Manage.Model.DTO.Allwance;
 using Manage.Model.DTO.Contract;
 using Manage.Service.IService;
 
@@ -21,13 +20,13 @@ namespace Manage.API.Controllers
             _contractService = contractService;
         }
         [HttpPost("AddNewContract")]
-        public async Task<IActionResult> AllNew([FromBody] ContractDTO contractDto)
+        public async Task<IActionResult> AllNew( ContractDTO contractDto)
         {
             Response response = await _contractService.AddNew(contractDto);
             return Ok(response);
         }
         [HttpPost("GetAllContract")]
-        public async Task<IActionResult> GetAll([FromBody] Request request)
+        public async Task<IActionResult> GetAll( Request request)
         {
             Response response = await _contractService.GetAll(request);
             return Ok(response);

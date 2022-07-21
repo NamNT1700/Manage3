@@ -33,7 +33,7 @@ namespace Manage.Model.Models
         [Column("money")]
         public double? Money { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
 
         [ForeignKey(nameof(ContractId))]
         [InverseProperty(nameof(HuContract.HuContractualBenefits))]

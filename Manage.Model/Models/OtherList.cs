@@ -33,7 +33,7 @@ namespace Manage.Model.Models
         [Column("type_id")]
         public int? TypeId { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [ForeignKey(nameof(Id))]
         [InverseProperty(nameof(OtherListType.OtherList))]
         public virtual OtherListType IdNavigation { get; set; }

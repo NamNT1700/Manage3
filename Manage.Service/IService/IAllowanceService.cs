@@ -1,16 +1,16 @@
 ﻿using Manage.Common;
-using Manage.Model.DTO.Allwance;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Manage.Model.DTO.Allowance;
 
 namespace Manage.Service.IService
 {
-    public interface IAllwanceService 
+    public interface IAllowanceService 
     {
-        Task<Response> AddNew(AllwanceDTO allwance);
+        Task<Response> AddNew(AllowanceDTO allowance);
         Task<Response> GetAll(Request request);
         Task<Response> GetById(int id);
-        Task<Response> Update(UpdateAllwanceDTO update);
+        Task<Response> Update(UpdateAllowanceDTO update);
         Task<Response> Delete(List<int> ids);
     }
 }

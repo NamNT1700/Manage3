@@ -14,7 +14,7 @@ namespace Manage.Model.Context
         {
         }
         public virtual DbSet<SeUser> SeUsers { get; set; }
-        public virtual DbSet<HuAllwance> HuAllwances { get; set; }
+        public virtual DbSet<HuAllowance> HuAllowances { get; set; }
         public virtual DbSet<HuBank> HuBanks { get; set; }
         public virtual DbSet<HuBankBranch> HuBankBranches { get; set; }
         public virtual DbSet<HuContract> HuContracts { get; set; }

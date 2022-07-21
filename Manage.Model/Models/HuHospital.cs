@@ -40,7 +40,7 @@ namespace Manage.Model.Models
         [StringLength(255)]
         public string Address { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [InverseProperty(nameof(HuEmployeeCv.Hospital))]
         public virtual ICollection<HuEmployeeCv> HuEmployeeCvs { get; set; }
     }

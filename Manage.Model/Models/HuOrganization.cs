@@ -37,6 +37,6 @@ namespace Manage.Model.Models
         [Column("order_number")]
         public int? OrderNumber { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
     }
 }

@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace Manage.Model.DTO.District
+﻿namespace Manage.Model.DTO.Allowance
 {
-    public class DistrictDTO
+    public class ListAllowanceDTO
     {
         public int Id { get; set; }
+
         public string Code { get; set; }
+
         public string Name { get; set; }
-        public int? ProvinceId { get; set; }
     }
 }

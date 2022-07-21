@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Manage.Common;
-using Manage.Model.DTO.Allwance;
 using Manage.Model.DTO.Nation;
 using Manage.Model.DTO.Title;
 using Manage.Service.IService;
@@ -22,13 +21,13 @@ namespace Manage.API.Controllers
             _titleService = titleService;
         }
         [HttpPost("AddNewNation")]
-        public async Task<IActionResult> AllNew([FromBody] TitleDTO title)
+        public async Task<IActionResult> AllNew( TitleDTO title)
         {
             Response response = await _titleService.AddNew(title);
             return Ok(response);
         }
         [HttpPost("GetAllNation")]
-        public async Task<IActionResult> GetAll([FromBody] Request request)
+        public async Task<IActionResult> GetAll( Request request)
         {
             Response response = await _titleService.GetAll(request);
             return Ok(response);

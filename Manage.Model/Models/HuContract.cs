@@ -48,7 +48,7 @@ namespace Manage.Model.Models
         [Column("money")]
         public double? Money { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [InverseProperty(nameof(HuContractAllowance.Contract))]
         public virtual ICollection<HuContractAllowance> HuContractAllowances { get; set; }
         [InverseProperty(nameof(HuContractualBenefit.Contract))]

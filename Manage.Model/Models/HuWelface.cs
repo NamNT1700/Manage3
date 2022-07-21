@@ -38,7 +38,7 @@ namespace Manage.Model.Models
         [StringLength(255)]
         public string Name { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [InverseProperty(nameof(HuContractualBenefit.Welface))]
         public virtual ICollection<HuContractualBenefit> HuContractualBenefits { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.ContractWelface))]

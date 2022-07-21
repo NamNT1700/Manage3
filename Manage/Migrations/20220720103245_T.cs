@@ -8,13 +8,13 @@ namespace Manage.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "hu_allwance",
+                name: "hu_allowance",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true),
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -23,7 +23,7 @@ namespace Manage.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_hu_allwance", x => x.id);
+                    table.PrimaryKey("PK_hu_allowance", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,7 +33,7 @@ namespace Manage.API.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true),
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -60,7 +60,7 @@ namespace Manage.API.Migrations
                     note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     number_of_month = table.Column<int>(type: "int", nullable: true),
                     money = table.Column<double>(type: "float", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -80,7 +80,7 @@ namespace Manage.API.Migrations
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -99,7 +99,7 @@ namespace Manage.API.Migrations
                     last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -139,7 +139,7 @@ namespace Manage.API.Migrations
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     parent_id = table.Column<int>(type: "int", nullable: true),
                     order_number = table.Column<int>(type: "int", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,7 +176,7 @@ namespace Manage.API.Migrations
                     last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,7 +230,7 @@ namespace Manage.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     bank_id = table.Column<int>(type: "int", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true),
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -262,15 +262,15 @@ namespace Manage.API.Migrations
                     contract_id = table.Column<int>(type: "int", nullable: true),
                     allwance_id = table.Column<int>(type: "int", nullable: true),
                     money = table.Column<double>(type: "float", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_hu_Contract_allowance", x => x.id);
                     table.ForeignKey(
-                        name: "FK_hu_Contract_allowance_hu_allwance_allwance_id",
+                        name: "FK_hu_Contract_allowance_hu_allowance_allwance_id",
                         column: x => x.allwance_id,
-                        principalTable: "hu_allwance",
+                        principalTable: "hu_allowance",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -294,7 +294,7 @@ namespace Manage.API.Migrations
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     contract_id = table.Column<int>(type: "int", nullable: true),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true),
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     number_of_month = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -357,7 +357,7 @@ namespace Manage.API.Migrations
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     nation_id = table.Column<int>(type: "int", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -433,7 +433,7 @@ namespace Manage.API.Migrations
                     contract_id = table.Column<int>(type: "int", nullable: true),
                     welface_id = table.Column<int>(type: "int", nullable: true),
                     money = table.Column<double>(type: "float", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -463,7 +463,7 @@ namespace Manage.API.Migrations
                     last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     type_id = table.Column<int>(type: "int", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -495,7 +495,7 @@ namespace Manage.API.Migrations
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     province_id = table.Column<int>(type: "int", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -524,7 +524,7 @@ namespace Manage.API.Migrations
                     employee_id = table.Column<int>(type: "int", nullable: true),
                     fisrt_date = table.Column<DateTime>(type: "datetime", nullable: true),
                     finsish_date = table.Column<DateTime>(type: "datetime", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -629,7 +629,7 @@ namespace Manage.API.Migrations
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     distric_id = table.Column<int>(type: "int", nullable: true),
-                    activeflg = table.Column<bool>(type: "bit", nullable: true)
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -800,7 +800,7 @@ namespace Manage.API.Migrations
                 name: "other_list_type");
 
             migrationBuilder.DropTable(
-                name: "hu_allwance");
+                name: "hu_allowance");
 
             migrationBuilder.DropTable(
                 name: "hu_contract");

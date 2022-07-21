@@ -43,7 +43,7 @@ namespace Manage.Model.Models
         [Column("finsish_date", TypeName = "datetime")]
         public DateTime? FinsishDate { get; set; }
         [Column("activeflg")]
-        public bool? Activeflg { get; set; }
+        public string Activeflg { get; set; }
         [ForeignKey(nameof(EmployeeId))]
         [InverseProperty(nameof(HuEmployee.HuEmployeeEducations))]
         public virtual HuEmployee Employee { get; set; }

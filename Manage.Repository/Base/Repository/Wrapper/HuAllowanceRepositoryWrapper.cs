@@ -5,21 +5,21 @@ using Manage.Repository.Repository;
 
 namespace Manage.Repository.Base.Repository.Wrapper
 {
-    public class HuAllwanceRepositoryWrapper : IHuAllwanceRepositoryWrapper
+    public class HuAllowanceRepositoryWrapper : IHuAllowanceRepositoryWrapper
     {
         private readonly DatabaseContext _context;
-        private IHuAllwanceRepository _allwance;
-        public HuAllwanceRepositoryWrapper(DatabaseContext context)
+        private IHuAllowanceRepository _allowance;
+        public HuAllowanceRepositoryWrapper(DatabaseContext context)
         {
             _context = context;
         }
-        public IHuAllwanceRepository Allwance
+        public IHuAllowanceRepository Allowance
         {
             get
             {
-                if (_allwance == null)
-                    _allwance = new HuAllwanceRepository(_context);
-                return _allwance;
+                if (_allowance == null)
+                    _allowance = new HuAllowanceRepository(_context);
+                return _allowance;
             }
         }
     }

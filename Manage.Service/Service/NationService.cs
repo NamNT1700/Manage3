@@ -41,6 +41,8 @@ namespace Manage.Service.Service
             }
 
             HuNation huNation = _mapper.Map<HuNation>(nation);
+            huNation.CreatedTime = DateTime.Now;
+            huNation.LastUpdateTime = DateTime.Now;
             await _huNationRepositoryWrapper.Nation.Create(huNation);
             await _context.SaveChangesAsync();
             NationDTO hospitalDto = _mapper.Map<NationDTO>(huNation);
@@ -86,7 +88,7 @@ namespace Manage.Service.Service
                 response.success = true;
                 return response;
             }
-            response.message = $"no allwance with id {id} exist";
+            response.message = $"no Nation with id {id} exist";
             response.status = "400";
             response.success = false;
             return response;
@@ -101,6 +103,7 @@ namespace Manage.Service.Service
             if (nation != null)
             {
                 _mapper.Map(update.updateData, nation);
+                nation.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
                 response.status = "200";
                 response.success = true;
@@ -120,7 +123,7 @@ namespace Manage.Service.Service
                 HuNation hospital = await _huNationRepositoryWrapper.Nation.FindById(id);
                 await _huNationRepositoryWrapper.Nation.Delete(hospital);
             }
-            response.message = "Delete allwance";
+            response.message = "Delete nation";
             response.status = "200";
             response.success = true;
             return response;

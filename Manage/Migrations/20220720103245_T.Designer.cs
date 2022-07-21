@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220718080928_T")]
+    [Migration("20220720103245_T")]
     partial class T
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Manage.API.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Manage.Model.Models.HuAllwance", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuAllowance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,8 +29,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -63,7 +63,7 @@ namespace Manage.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("hu_allwance");
+                    b.ToTable("hu_allowance");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuBank", b =>
@@ -74,8 +74,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -119,8 +119,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Address")
@@ -170,8 +170,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -228,8 +228,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<int?>("AllwanceId")
@@ -284,8 +284,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -340,8 +340,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -590,8 +590,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -741,8 +741,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Address")
@@ -791,8 +791,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -879,8 +879,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -932,8 +932,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -1087,8 +1087,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -1142,8 +1142,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -1193,8 +1193,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -1236,8 +1236,8 @@ namespace Manage.API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    b.Property<bool?>("Activeflg")
-                        .HasColumnType("bit")
+                    b.Property<string>("Activeflg")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("activeflg");
 
                     b.Property<string>("Code")
@@ -1378,7 +1378,7 @@ namespace Manage.API.Migrations
 
             modelBuilder.Entity("Manage.Model.Models.HuContractAllowance", b =>
                 {
-                    b.HasOne("Manage.Model.Models.HuAllwance", "Allwance")
+                    b.HasOne("Manage.Model.Models.HuAllowance", "Allwance")
                         .WithMany("HuContractAllowances")
                         .HasForeignKey("AllwanceId");
 
@@ -1534,7 +1534,7 @@ namespace Manage.API.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuAllwance", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuAllowance", b =>
                 {
                     b.Navigation("HuContractAllowances");
                 });
