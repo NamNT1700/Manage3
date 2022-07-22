@@ -24,7 +24,7 @@ namespace Manage.Common
         {
             var userClaim = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,user.username),
+                new Claim("Username",user.Username),
                 new Claim("ID",Convert.ToString(user.Id)),
                 new Claim("Role",user.Role)
             };

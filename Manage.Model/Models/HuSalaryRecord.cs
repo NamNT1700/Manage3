@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -13,7 +14,7 @@ namespace Manage.Model.Models
     [Index(nameof(ContractAllwanceId), Name = "IX_hu_salary_records_contract_allwance_id")]
     [Index(nameof(ContractWelfaceId), Name = "IX_hu_salary_records_contract_welface_id")]
     [Index(nameof(EmployeeId), Name = "IX_hu_salary_records_employee_id")]
-    public partial class HuSalaryRecord
+    public partial class HuSalaryRecord : IEntityBase
     {
         [Key]
         [Column("id")]

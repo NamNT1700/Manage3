@@ -43,10 +43,10 @@ namespace Manage.Service.Service
         {
             Response respones = new Response();
             SeUser existUser = await _userRepositoryWrapper.User.FindById(user.id);
-            if (existUser.activeflg == "A")
-                existUser.activeflg = "I";
-            if (existUser.activeflg == "I")
-                existUser.activeflg = "A";
+            if (existUser.ActiveFlg == "A")
+                existUser.ActiveFlg = "I";
+            if (existUser.ActiveFlg == "I")
+                existUser.ActiveFlg = "A";
             await _userRepositoryWrapper.User.Update(existUser);
             await _context.SaveChangesAsync();
             respones.status = "200";
@@ -162,7 +162,7 @@ namespace Manage.Service.Service
             }
             reUser.password = CodingPassword.EncodingUTF8(reUser.password);
             SeUser newUser = _mapper.Map<SeUser>(reUser);
-            newUser.activeflg = "A";
+            newUser.ActiveFlg = "A";
             await _userRepositoryWrapper.User.Create(newUser);
             await _context.SaveChangesAsync();
             response.status = "200";

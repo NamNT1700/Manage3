@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage.Model.Models
 {
     [Table("hu_hospital")]
-    public partial class HuHospital
+    public partial class HuHospital : IEntityBase
     {
         public HuHospital()
         {

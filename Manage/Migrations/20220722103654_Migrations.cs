@@ -11,8 +11,7 @@ namespace Manage.API.Migrations
                 name: "hu_allowance",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -30,8 +29,7 @@ namespace Manage.API.Migrations
                 name: "hu_bank",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -49,8 +47,7 @@ namespace Manage.API.Migrations
                 name: "hu_contract",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -71,8 +68,7 @@ namespace Manage.API.Migrations
                 name: "hu_hospital",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -91,8 +87,7 @@ namespace Manage.API.Migrations
                 name: "hu_nation",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -110,8 +105,7 @@ namespace Manage.API.Migrations
                 name: "hu_org_title",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -150,8 +144,7 @@ namespace Manage.API.Migrations
                 name: "hu_title",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -205,22 +198,22 @@ namespace Manage.API.Migrations
                 name: "Se_User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Created_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ActiveFlg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Se_User", x => x.Id);
+                    table.PrimaryKey("PK_Se_User", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -310,42 +303,6 @@ namespace Manage.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "hu_employee_cv",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    id_card = table.Column<int>(type: "int", nullable: true),
-                    sex = table.Column<bool>(type: "bit", nullable: true),
-                    date_of_birth = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Place_of_birth = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    ethnic = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    reiligion = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    temporary_address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    permanent_address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    hospital_id = table.Column<int>(type: "int", nullable: true),
-                    bank_number = table.Column<int>(type: "int", nullable: true),
-                    health_condition = table.Column<bool>(type: "bit", nullable: true),
-                    clothes_size = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_hu_employee_cv", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_hu_employee_cv_hu_hospital_hospital_id",
-                        column: x => x.hospital_id,
-                        principalTable: "hu_hospital",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "hu_province",
                 columns: table => new
                 {
@@ -410,6 +367,12 @@ namespace Manage.API.Migrations
                         name: "FK_hu_employee_hu_org_title_org_id",
                         column: x => x.org_id,
                         principalTable: "hu_org_title",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_hu_organization",
+                        column: x => x.org_id,
+                        principalTable: "hu_organization",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -510,6 +473,80 @@ namespace Manage.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "hu_employee_cv",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    employee_id = table.Column<int>(type: "int", nullable: true),
+                    gender = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    birth_day = table.Column<DateTime>(type: "datetime", nullable: true),
+                    birth_place = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    marital_status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    religion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    nation_id = table.Column<int>(type: "int", nullable: true),
+                    per_province = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    per_district = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    per_ward = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    per_address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    navprovice = table.Column<string>(name: "nav-provice", type: "nvarchar(max)", nullable: true),
+                    nav_district = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    nav_ward = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    nav_address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    id_no = table.Column<int>(type: "int", nullable: true),
+                    id_date = table.Column<DateTime>(type: "datetime", nullable: true),
+                    id_place = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    visa = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    visa_date = table.Column<DateTime>(type: "datetime", nullable: true),
+                    visa_place = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    work_email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    bank_id = table.Column<int>(type: "int", nullable: true),
+                    bank_brank_id = table.Column<int>(type: "int", nullable: true),
+                    hospital_id = table.Column<int>(type: "int", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_hu_employee_cv", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_cv_hu_bank",
+                        column: x => x.bank_id,
+                        principalTable: "hu_bank",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_cv_hu_bank_branch",
+                        column: x => x.bank_brank_id,
+                        principalTable: "hu_bank_branch",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_cv_hu_employee",
+                        column: x => x.employee_id,
+                        principalTable: "hu_employee",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_cv_hu_hospital",
+                        column: x => x.hospital_id,
+                        principalTable: "hu_hospital",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_cv_hu_nation",
+                        column: x => x.nation_id,
+                        principalTable: "hu_nation",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "hu_employee_education",
                 columns: table => new
                 {
@@ -544,21 +581,20 @@ namespace Manage.API.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    first_name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    last_name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     full_name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    relationship = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    nation = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    province = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    district = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    phonenumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
-                    employee_id = table.Column<int>(type: "int", nullable: true)
+                    employee_id = table.Column<int>(type: "int", nullable: true),
+                    relation_id = table.Column<int>(type: "int", nullable: true),
+                    id_no = table.Column<int>(type: "int", nullable: true),
+                    is_deduct = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    deduct_from = table.Column<DateTime>(type: "datetime", nullable: true),
+                    deduct_to = table.Column<DateTime>(type: "datetime", nullable: true),
+                    remark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -613,6 +649,37 @@ namespace Manage.API.Migrations
                         name: "FK_hu_salary_records_hu_welface_contract_welface_id",
                         column: x => x.contract_welface_id,
                         principalTable: "hu_welface",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "hu_shools",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false),
+                    employee_id = table.Column<int>(type: "int", nullable: true),
+                    from_date = table.Column<DateTime>(type: "datetime", nullable: true),
+                    to_date = table.Column<DateTime>(type: "datetime", nullable: true),
+                    year_gra = table.Column<int>(type: "int", nullable: true),
+                    schools = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    certificate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    certificate_from_date = table.Column<DateTime>(type: "datetime", nullable: true),
+                    certificate_todate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    train_form = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    created_by = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    last_updated_by = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_hu_shools", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_hu_shools_hu_employee",
+                        column: x => x.employee_id,
+                        principalTable: "hu_employee",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -689,9 +756,29 @@ namespace Manage.API.Migrations
                 column: "title_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_hu_employee_cv_bank_brank_id",
+                table: "hu_employee_cv",
+                column: "bank_brank_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hu_employee_cv_bank_id",
+                table: "hu_employee_cv",
+                column: "bank_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hu_employee_cv_employee_id",
+                table: "hu_employee_cv",
+                column: "employee_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_hu_employee_cv_hospital_id",
                 table: "hu_employee_cv",
                 column: "hospital_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hu_employee_cv_nation_id",
+                table: "hu_employee_cv",
+                column: "nation_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_hu_employee_education_employee_id",
@@ -729,6 +816,11 @@ namespace Manage.API.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_hu_shools_employee_id",
+                table: "hu_shools",
+                column: "employee_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_hu_type_of_contract_contract_id",
                 table: "hu_type_of_contract",
                 column: "contract_id");
@@ -747,9 +839,6 @@ namespace Manage.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "hu_bank_branch");
-
-            migrationBuilder.DropTable(
                 name: "hu_contractual_benefits");
 
             migrationBuilder.DropTable(
@@ -762,10 +851,10 @@ namespace Manage.API.Migrations
                 name: "hu_family");
 
             migrationBuilder.DropTable(
-                name: "hu_organization");
+                name: "hu_salary_records");
 
             migrationBuilder.DropTable(
-                name: "hu_salary_records");
+                name: "hu_shools");
 
             migrationBuilder.DropTable(
                 name: "hu_type_of_contract");
@@ -780,7 +869,7 @@ namespace Manage.API.Migrations
                 name: "Se_User");
 
             migrationBuilder.DropTable(
-                name: "hu_bank");
+                name: "hu_bank_branch");
 
             migrationBuilder.DropTable(
                 name: "hu_hospital");
@@ -789,16 +878,19 @@ namespace Manage.API.Migrations
                 name: "hu_Contract_allowance");
 
             migrationBuilder.DropTable(
-                name: "hu_employee");
+                name: "hu_welface");
 
             migrationBuilder.DropTable(
-                name: "hu_welface");
+                name: "hu_employee");
 
             migrationBuilder.DropTable(
                 name: "hu_district");
 
             migrationBuilder.DropTable(
                 name: "other_list_type");
+
+            migrationBuilder.DropTable(
+                name: "hu_bank");
 
             migrationBuilder.DropTable(
                 name: "hu_allowance");
@@ -808,6 +900,9 @@ namespace Manage.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "hu_org_title");
+
+            migrationBuilder.DropTable(
+                name: "hu_organization");
 
             migrationBuilder.DropTable(
                 name: "hu_title");

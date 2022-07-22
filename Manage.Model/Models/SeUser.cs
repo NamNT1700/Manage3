@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage.Model.Models
 {
     [Table("Se_User")]
-    public partial class SeUser
+    public partial class SeUser : IEntityBase
     {
         [Key]
         [Column("id")]
@@ -30,6 +31,7 @@ namespace Manage.Model.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
+        public string Role { get; set; }
         public string ActiveFlg { get; set; }
     }
 }

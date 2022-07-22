@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -10,7 +11,7 @@ namespace Manage.Model.Models
 {
     [Table("hu_bank_branch")]
     [Index(nameof(BankId), Name = "IX_hu_bank_branch_bank_id")]
-    public partial class HuBankBranch
+    public partial class HuBankBranch :IEntityBase
     {
         public HuBankBranch()
         {

@@ -10,13 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220721095537_Migrations")]
+    [Migration("20220722103654_Migrations")]
     partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -24,10 +25,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuAllowance", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -69,10 +68,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuBank", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -165,10 +162,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuContract", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -493,19 +488,25 @@ namespace Manage.API.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BankNumber")
+                    b.Property<int?>("BankBrankId")
                         .HasColumnType("int")
-                        .HasColumnName("bank_number");
+                        .HasColumnName("bank_brank_id");
 
-                    b.Property<string>("ClothesSize")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("clothes_size");
+                    b.Property<int?>("BankId")
+                        .HasColumnType("int")
+                        .HasColumnName("bank_id");
+
+                    b.Property<DateTime?>("BirthDay")
+                        .HasColumnType("datetime")
+                        .HasColumnName("birth_day");
+
+                    b.Property<string>("BirthPlace")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("birth_place");
 
                     b.Property<string>("Code")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("code");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
@@ -516,26 +517,38 @@ namespace Manage.API.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_time");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime")
-                        .HasColumnName("date_of_birth");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("email");
 
-                    b.Property<string>("Ethnic")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("ethnic");
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int")
+                        .HasColumnName("employee_id");
 
-                    b.Property<bool?>("HealthCondition")
-                        .HasColumnType("bit")
-                        .HasColumnName("health_condition");
+                    b.Property<string>("Gender")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("gender");
 
                     b.Property<int?>("HospitalId")
                         .HasColumnType("int")
                         .HasColumnName("hospital_id");
 
-                    b.Property<int?>("IdCard")
+                    b.Property<DateTime?>("IdDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("id_date");
+
+                    b.Property<int?>("IdNo")
                         .HasColumnType("int")
-                        .HasColumnName("id_card");
+                        .HasColumnName("id_no");
+
+                    b.Property<string>("IdPlace")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("id_place");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image");
 
                     b.Property<DateTime?>("LastUpdateTime")
                         .HasColumnType("datetime")
@@ -546,38 +559,79 @@ namespace Manage.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("name");
+                    b.Property<string>("MaritalStatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("marital_status");
 
-                    b.Property<string>("PermanentAddress")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("permanent_address");
+                    b.Property<int?>("NationId")
+                        .HasColumnType("int")
+                        .HasColumnName("nation_id");
 
-                    b.Property<string>("PlaceOfBirth")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("Place_of_birth");
+                    b.Property<string>("NavAddress")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nav_address");
 
-                    b.Property<string>("Reiligion")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("reiligion");
+                    b.Property<string>("NavDistrict")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nav_district");
 
-                    b.Property<bool?>("Sex")
-                        .HasColumnType("bit")
-                        .HasColumnName("sex");
+                    b.Property<string>("NavProvice")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nav-provice");
 
-                    b.Property<string>("TemporaryAddress")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("temporary_address");
+                    b.Property<string>("NavWard")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nav_ward");
+
+                    b.Property<string>("PerAddress")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("per_address");
+
+                    b.Property<string>("PerDistrict")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("per_district");
+
+                    b.Property<string>("PerProvince")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("per_province");
+
+                    b.Property<string>("PerWard")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("per_ward");
+
+                    b.Property<string>("Religion")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("religion");
+
+                    b.Property<string>("Visa")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("visa");
+
+                    b.Property<DateTime?>("VisaDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("visa_date");
+
+                    b.Property<string>("VisaPlace")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("visa_place");
+
+                    b.Property<string>("WorkEmail")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("work_email");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "HospitalId" }, "IX_hu_employee_cv_hospital_id");
+                    b.HasIndex("BankBrankId");
+
+                    b.HasIndex("BankId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("HospitalId");
+
+                    b.HasIndex("NationId");
 
                     b.ToTable("hu_employee_cv");
                 });
@@ -660,9 +714,7 @@ namespace Manage.API.Migrations
                         .HasColumnName("address");
 
                     b.Property<string>("Code")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("code");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
@@ -673,29 +725,30 @@ namespace Manage.API.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_time");
 
-                    b.Property<string>("District")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("district");
+                    b.Property<DateTime?>("DeductFrom")
+                        .HasColumnType("datetime")
+                        .HasColumnName("deduct_from");
+
+                    b.Property<DateTime?>("DeductTo")
+                        .HasColumnType("datetime")
+                        .HasColumnName("deduct_to");
 
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int")
                         .HasColumnName("employee_id");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("first_name");
 
                     b.Property<string>("FullName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("full_name");
 
-                    b.Property<string>("LastName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("last_name");
+                    b.Property<int?>("IdNo")
+                        .HasColumnType("int")
+                        .HasColumnName("id_no");
+
+                    b.Property<string>("IsDeduct")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("is_deduct");
 
                     b.Property<DateTime?>("LastUpdateTime")
                         .HasColumnType("datetime")
@@ -706,25 +759,13 @@ namespace Manage.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
-                    b.Property<string>("Nation")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("nation");
+                    b.Property<int?>("RelationId")
+                        .HasColumnType("int")
+                        .HasColumnName("relation_id");
 
-                    b.Property<string>("Phonenumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnName("phonenumber");
-
-                    b.Property<string>("Province")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("province");
-
-                    b.Property<string>("Relationship")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("relationship");
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("remark");
 
                     b.HasKey("Id");
 
@@ -736,10 +777,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuHospital", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -786,10 +825,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuNation", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -831,10 +868,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuOrgTitle", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
@@ -1038,13 +1073,79 @@ namespace Manage.API.Migrations
                     b.ToTable("hu_salary_records");
                 });
 
+            modelBuilder.Entity("Manage.Model.Models.HuShool", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Certificate")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("certificate");
+
+                    b.Property<DateTime?>("CertificateFromDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("certificate_from_date");
+
+                    b.Property<DateTime?>("CertificateTodate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("certificate_todate");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime?>("CreatedTime")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_time");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int")
+                        .HasColumnName("employee_id");
+
+                    b.Property<DateTime?>("FromDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("from_date");
+
+                    b.Property<DateTime?>("LastUpdateTime")
+                        .HasColumnType("datetime")
+                        .HasColumnName("last_update_time");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("last_updated_by");
+
+                    b.Property<string>("Schools")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("schools");
+
+                    b.Property<DateTime?>("ToDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("to_date");
+
+                    b.Property<string>("TrainForm")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("train_form");
+
+                    b.Property<int?>("YearGra")
+                        .HasColumnType("int")
+                        .HasColumnName("year_gra");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("hu_shools");
+                });
+
             modelBuilder.Entity("Manage.Model.Models.HuTitle", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
@@ -1320,52 +1421,46 @@ namespace Manage.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Id")
+                        .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActiveFlg")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
-                        .HasColumnName("Code");
+                        .HasColumnName("code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("Created_by");
+                        .HasColumnName("created_by");
 
                     b.Property<DateTime?>("CreatedTime")
                         .HasColumnType("datetime")
-                        .HasColumnName("Created_time");
+                        .HasColumnName("created_time");
 
                     b.Property<DateTime?>("LastUpdateTime")
                         .HasColumnType("datetime")
-                        .HasColumnName("Last_update_time");
+                        .HasColumnName("last_update_time");
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("Last_updated_by");
+                        .HasColumnName("last_updated_by");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("Role");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("activeflg")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ActiveFlg");
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("password")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Password");
-
-                    b.Property<string>("token")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Token");
-
-                    b.Property<string>("username")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Username");
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1430,6 +1525,11 @@ namespace Manage.API.Migrations
                         .WithMany("HuEmployees")
                         .HasForeignKey("OrgId");
 
+                    b.HasOne("Manage.Model.Models.HuOrganization", "OrgNavigation")
+                        .WithMany("HuEmployees")
+                        .HasForeignKey("OrgId")
+                        .HasConstraintName("FK_hu_employee_hu_organization");
+
                     b.HasOne("Manage.Model.Models.HuTitle", "Title")
                         .WithMany("HuEmployees")
                         .HasForeignKey("TitleId");
@@ -1438,16 +1538,47 @@ namespace Manage.API.Migrations
 
                     b.Navigation("Org");
 
+                    b.Navigation("OrgNavigation");
+
                     b.Navigation("Title");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuEmployeeCv", b =>
                 {
+                    b.HasOne("Manage.Model.Models.HuBankBranch", "BankBrank")
+                        .WithMany("HuEmployeeCvs")
+                        .HasForeignKey("BankBrankId")
+                        .HasConstraintName("FK_hu_employee_cv_hu_bank_branch");
+
+                    b.HasOne("Manage.Model.Models.HuBank", "Bank")
+                        .WithMany("HuEmployeeCvs")
+                        .HasForeignKey("BankId")
+                        .HasConstraintName("FK_hu_employee_cv_hu_bank");
+
+                    b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
+                        .WithMany("HuEmployeeCvs")
+                        .HasForeignKey("EmployeeId")
+                        .HasConstraintName("FK_hu_employee_cv_hu_employee");
+
                     b.HasOne("Manage.Model.Models.HuHospital", "Hospital")
                         .WithMany("HuEmployeeCvs")
-                        .HasForeignKey("HospitalId");
+                        .HasForeignKey("HospitalId")
+                        .HasConstraintName("FK_hu_employee_cv_hu_hospital");
+
+                    b.HasOne("Manage.Model.Models.HuNation", "Nation")
+                        .WithMany("HuEmployeeCvs")
+                        .HasForeignKey("NationId")
+                        .HasConstraintName("FK_hu_employee_cv_hu_nation");
+
+                    b.Navigation("Bank");
+
+                    b.Navigation("BankBrank");
+
+                    b.Navigation("Employee");
 
                     b.Navigation("Hospital");
+
+                    b.Navigation("Nation");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuEmployeeEducation", b =>
@@ -1504,6 +1635,16 @@ namespace Manage.API.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Manage.Model.Models.HuShool", b =>
+                {
+                    b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
+                        .WithMany("HuShools")
+                        .HasForeignKey("EmployeeId")
+                        .HasConstraintName("FK_hu_shools_hu_employee");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("Manage.Model.Models.HuTypeOfContract", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuContract", "Contract")
@@ -1547,6 +1688,13 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuBank", b =>
                 {
                     b.Navigation("HuBankBranches");
+
+                    b.Navigation("HuEmployeeCvs");
+                });
+
+            modelBuilder.Entity("Manage.Model.Models.HuBankBranch", b =>
+                {
+                    b.Navigation("HuEmployeeCvs");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuContract", b =>
@@ -1574,11 +1722,15 @@ namespace Manage.API.Migrations
 
             modelBuilder.Entity("Manage.Model.Models.HuEmployee", b =>
                 {
+                    b.Navigation("HuEmployeeCvs");
+
                     b.Navigation("HuEmployeeEducations");
 
                     b.Navigation("HuFamilies");
 
                     b.Navigation("HuSalaryRecords");
+
+                    b.Navigation("HuShools");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuHospital", b =>
@@ -1588,10 +1740,17 @@ namespace Manage.API.Migrations
 
             modelBuilder.Entity("Manage.Model.Models.HuNation", b =>
                 {
+                    b.Navigation("HuEmployeeCvs");
+
                     b.Navigation("HuProvinces");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuOrgTitle", b =>
+                {
+                    b.Navigation("HuEmployees");
+                });
+
+            modelBuilder.Entity("Manage.Model.Models.HuOrganization", b =>
                 {
                     b.Navigation("HuEmployees");
                 });

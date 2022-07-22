@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage.Model.Models
 {
     [Table("hu_employee_cv")]
-    public partial class HuEmployeeCv
+    public partial class HuEmployeeCv : IEntityBase
     {
         [Key]
         [Column("id")]
@@ -98,5 +99,6 @@ namespace Manage.Model.Models
         [ForeignKey(nameof(NationId))]
         [InverseProperty(nameof(HuNation.HuEmployeeCvs))]
         public virtual HuNation Nation { get; set; }
+        public string Code { get; set ; }
     }
 }

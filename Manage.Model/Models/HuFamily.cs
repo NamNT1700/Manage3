@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -10,7 +11,7 @@ namespace Manage.Model.Models
 {
     [Table("hu_family")]
     [Index(nameof(EmployeeId), Name = "IX_hu_family_employee_id")]
-    public partial class HuFamily
+    public partial class HuFamily : IEntityBase
     {
         [Key]
         [Column("id")]
@@ -49,5 +50,6 @@ namespace Manage.Model.Models
         [ForeignKey(nameof(EmployeeId))]
         [InverseProperty(nameof(HuEmployee.HuFamilies))]
         public virtual HuEmployee Employee { get; set; }
+        public string Code { get; set; }
     }
 }

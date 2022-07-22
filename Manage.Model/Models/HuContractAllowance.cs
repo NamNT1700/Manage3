@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -11,7 +12,7 @@ namespace Manage.Model.Models
     [Table("hu_Contract_allowance")]
     [Index(nameof(AllwanceId), Name = "IX_hu_Contract_allowance_allwance_id")]
     [Index(nameof(ContractId), Name = "IX_hu_Contract_allowance_contract_id")]
-    public partial class HuContractAllowance
+    public partial class HuContractAllowance : IEntityBase
     {
         public HuContractAllowance()
         {
