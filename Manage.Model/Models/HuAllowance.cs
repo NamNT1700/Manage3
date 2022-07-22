@@ -8,18 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Manage.Model.Models
 {
-    [Table("hu_district")]
-    [Index(nameof(ProvinceId), Name = "IX_hu_district_province_id")]
-    public partial class HuDistrict
+    [Table("hu_allowance")]
+    public partial class HuAllowance
     {
-        public HuDistrict()
+        public HuAllowance()
         {
-            HuWards = new HashSet<HuWard>();
+            HuContractAllowances = new HashSet<HuContractAllowance>();
         }
 
         [Key]
         [Column("id")]
         public int Id { get; set; }
+        [Column("name")]
+        [StringLength(255)]
+        public string Name { get; set; }
+        [Column("activeflg")]
+        public string Activeflg { get; set; }
         [Column("code")]
         [StringLength(255)]
         public string Code { get; set; }
@@ -33,18 +37,8 @@ namespace Manage.Model.Models
         public string LastUpdatedBy { get; set; }
         [Column("last_update_time", TypeName = "datetime")]
         public DateTime? LastUpdateTime { get; set; }
-        [Column("name")]
-        [StringLength(255)]
-        public string Name { get; set; }
-        [Column("province_id")]
-        public int? ProvinceId { get; set; }
-        [Column("activeflg")]
-        public string Activeflg { get; set; }
 
-        [ForeignKey(nameof(ProvinceId))]
-        [InverseProperty(nameof(HuProvince.HuDistricts))]
-        public virtual HuProvince Province { get; set; }
-        [InverseProperty(nameof(HuWard.Distric))]
-        public virtual ICollection<HuWard> HuWards { get; set; }
+        [InverseProperty(nameof(HuContractAllowance.Allwance))]
+        public virtual ICollection<HuContractAllowance> HuContractAllowances { get; set; }
     }
 }

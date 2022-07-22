@@ -1,23 +1,22 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_welface")]
-    public partial class HuWelface : IEntityBase
+    public partial class HuWelface
     {
         public HuWelface()
         {
             HuContractualBenefits = new HashSet<HuContractualBenefit>();
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
         }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -39,6 +38,7 @@ namespace Manage.Model.Models
         public string Name { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
+
         [InverseProperty(nameof(HuContractualBenefit.Welface))]
         public virtual ICollection<HuContractualBenefit> HuContractualBenefits { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.ContractWelface))]

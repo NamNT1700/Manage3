@@ -1,17 +1,15 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_contract")]
-    public partial class HuContract : IEntityBase
+    public partial class HuContract
     {
         public HuContract()
         {
@@ -21,6 +19,7 @@ namespace Manage.Model.Models
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
             HuTypeOfContracts = new HashSet<HuTypeOfContract>();
         }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -49,6 +48,7 @@ namespace Manage.Model.Models
         public double? Money { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
+
         [InverseProperty(nameof(HuContractAllowance.Contract))]
         public virtual ICollection<HuContractAllowance> HuContractAllowances { get; set; }
         [InverseProperty(nameof(HuContractualBenefit.Contract))]

@@ -1,24 +1,23 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_Contract_allowance")]
     [Index(nameof(AllwanceId), Name = "IX_hu_Contract_allowance_allwance_id")]
     [Index(nameof(ContractId), Name = "IX_hu_Contract_allowance_contract_id")]
-    public partial class HuContractAllowance : IEntityBase
+    public partial class HuContractAllowance
     {
         public HuContractAllowance()
         {
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
         }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -43,6 +42,7 @@ namespace Manage.Model.Models
         public double? Money { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
+
         [ForeignKey(nameof(AllwanceId))]
         [InverseProperty(nameof(HuAllowance.HuContractAllowances))]
         public virtual HuAllowance Allwance { get; set; }

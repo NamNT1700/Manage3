@@ -1,17 +1,15 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("other_list_type")]
-    public partial class OtherListType : IEntityBase
+    public partial class OtherListType
     {
         [Key]
         [Column("id")]
@@ -32,6 +30,7 @@ namespace Manage.Model.Models
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
+
         [InverseProperty("IdNavigation")]
         public virtual OtherList OtherList { get; set; }
     }

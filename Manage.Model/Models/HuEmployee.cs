@@ -1,27 +1,28 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_employee")]
     [Index(nameof(ContractId), Name = "IX_hu_employee_contract_id")]
     [Index(nameof(OrgId), Name = "IX_hu_employee_org_id")]
     [Index(nameof(TitleId), Name = "IX_hu_employee_title_id")]
-    public partial class HuEmployee : IEntityBase
+    public partial class HuEmployee
     {
         public HuEmployee()
         {
+            HuEmployeeCvs = new HashSet<HuEmployeeCv>();
             HuEmployeeEducations = new HashSet<HuEmployeeEducation>();
             HuFamilies = new HashSet<HuFamily>();
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
+            HuShools = new HashSet<HuShool>();
         }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -70,20 +71,28 @@ namespace Manage.Model.Models
         public int? LastWorkingId { get; set; }
         [Column("last_working_day", TypeName = "datetime")]
         public DateTime? LastWorkingDay { get; set; }
+
         [ForeignKey(nameof(ContractId))]
         [InverseProperty(nameof(HuContract.HuEmployees))]
         public virtual HuContract Contract { get; set; }
         [ForeignKey(nameof(OrgId))]
         [InverseProperty(nameof(HuOrgTitle.HuEmployees))]
         public virtual HuOrgTitle Org { get; set; }
+        [ForeignKey(nameof(OrgId))]
+        [InverseProperty(nameof(HuOrganization.HuEmployees))]
+        public virtual HuOrganization OrgNavigation { get; set; }
         [ForeignKey(nameof(TitleId))]
         [InverseProperty(nameof(HuTitle.HuEmployees))]
         public virtual HuTitle Title { get; set; }
+        [InverseProperty(nameof(HuEmployeeCv.Employee))]
+        public virtual ICollection<HuEmployeeCv> HuEmployeeCvs { get; set; }
         [InverseProperty(nameof(HuEmployeeEducation.Employee))]
         public virtual ICollection<HuEmployeeEducation> HuEmployeeEducations { get; set; }
         [InverseProperty(nameof(HuFamily.Employee))]
         public virtual ICollection<HuFamily> HuFamilies { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.Employee))]
         public virtual ICollection<HuSalaryRecord> HuSalaryRecords { get; set; }
+        [InverseProperty(nameof(HuShool.Employee))]
+        public virtual ICollection<HuShool> HuShools { get; set; }
     }
 }

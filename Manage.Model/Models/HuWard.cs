@@ -1,18 +1,16 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_ward")]
     [Index(nameof(DistricId), Name = "IX_hu_ward_distric_id")]
-    public partial class HuWard : IEntityBase
+    public partial class HuWard
     {
         [Key]
         [Column("id")]
@@ -37,6 +35,7 @@ namespace Manage.Model.Models
         public int? DistricId { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
+
         [ForeignKey(nameof(DistricId))]
         [InverseProperty(nameof(HuDistrict.HuWards))]
         public virtual HuDistrict Distric { get; set; }

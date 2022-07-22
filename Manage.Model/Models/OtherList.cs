@@ -1,18 +1,16 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("other_list")]
     [Index(nameof(TypeId), Name = "IX_other_list_type_id")]
-    public partial class OtherList : IEntityBase
+    public partial class OtherList
     {
         [Key]
         [Column("id")]
@@ -34,6 +32,7 @@ namespace Manage.Model.Models
         public int? TypeId { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
+
         [ForeignKey(nameof(Id))]
         [InverseProperty(nameof(OtherListType.OtherList))]
         public virtual OtherListType IdNavigation { get; set; }

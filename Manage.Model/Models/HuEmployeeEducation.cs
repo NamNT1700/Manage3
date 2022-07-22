@@ -1,18 +1,16 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_employee_education")]
     [Index(nameof(EmployeeId), Name = "IX_hu_employee_education_employee_id")]
-    public partial class HuEmployeeEducation : IEntityBase
+    public partial class HuEmployeeEducation
     {
         [Key]
         [Column("id")]
@@ -44,6 +42,7 @@ namespace Manage.Model.Models
         public DateTime? FinsishDate { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
+
         [ForeignKey(nameof(EmployeeId))]
         [InverseProperty(nameof(HuEmployee.HuEmployeeEducations))]
         public virtual HuEmployee Employee { get; set; }

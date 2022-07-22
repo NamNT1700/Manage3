@@ -1,13 +1,11 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_salary_records")]
@@ -15,7 +13,7 @@ namespace Manage.Model.Models
     [Index(nameof(ContractAllwanceId), Name = "IX_hu_salary_records_contract_allwance_id")]
     [Index(nameof(ContractWelfaceId), Name = "IX_hu_salary_records_contract_welface_id")]
     [Index(nameof(EmployeeId), Name = "IX_hu_salary_records_employee_id")]
-    public partial class HuSalaryRecord : IEntityBase
+    public partial class HuSalaryRecord
     {
         [Key]
         [Column("id")]
@@ -42,6 +40,7 @@ namespace Manage.Model.Models
         public int? ContractWelfaceId { get; set; }
         [Column("money")]
         public double? Money { get; set; }
+
         [ForeignKey(nameof(ContracId))]
         [InverseProperty(nameof(HuContract.HuSalaryRecords))]
         public virtual HuContract Contrac { get; set; }

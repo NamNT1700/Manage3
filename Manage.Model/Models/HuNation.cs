@@ -1,22 +1,22 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_nation")]
-    public partial class HuNation : IEntityBase
+    public partial class HuNation
     {
         public HuNation()
         {
+            HuEmployeeCvs = new HashSet<HuEmployeeCv>();
             HuProvinces = new HashSet<HuProvince>();
         }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -38,6 +38,9 @@ namespace Manage.Model.Models
         public string Name { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
+
+        [InverseProperty(nameof(HuEmployeeCv.Nation))]
+        public virtual ICollection<HuEmployeeCv> HuEmployeeCvs { get; set; }
         [InverseProperty(nameof(HuProvince.Nation))]
         public virtual ICollection<HuProvince> HuProvinces { get; set; }
     }

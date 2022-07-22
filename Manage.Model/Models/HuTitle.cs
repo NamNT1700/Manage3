@@ -1,23 +1,22 @@
-﻿
-
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Manage.Model.Base;
 using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
 namespace Manage.Model.Models
 {
     [Table("hu_title")]
-    public partial class HuTitle : IEntityBase
+    public partial class HuTitle
     {
         public HuTitle()
         {
             HuEmployees = new HashSet<HuEmployee>();
             OtherLists = new HashSet<OtherList>();
         }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -37,6 +36,7 @@ namespace Manage.Model.Models
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
+
         [InverseProperty(nameof(HuEmployee.Title))]
         public virtual ICollection<HuEmployee> HuEmployees { get; set; }
         [InverseProperty(nameof(OtherList.Type))]
