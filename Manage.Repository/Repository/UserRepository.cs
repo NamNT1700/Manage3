@@ -20,7 +20,7 @@ namespace Manage.Repository.Repository
         }
         public async Task<bool> CheckPassword(SeUser user,string password)
         {
-            if (user.password == password)
+            if (user.Password == password)
                 return true;
             return false;
         }
@@ -40,12 +40,12 @@ namespace Manage.Repository.Repository
         {
             List<SeUser> datas = new List<SeUser>();
 
-            datas = await Task.Run(()=> FindAll().Where(u => u.activeflg.Equals("A")).ToList());
+            datas = await Task.Run(()=> FindAll().Where(u => u.ActiveFlg.Equals("A")).ToList());
             return datas;
         }
         public async Task<SeUser> FindByUsername(string username)
         {
-            return await FindByCondition(u => u.username.Equals(username)).FirstOrDefaultAsync();
+            return await FindByCondition(u => u.Username.Equals(username)).FirstOrDefaultAsync();
         }
     }
 }
