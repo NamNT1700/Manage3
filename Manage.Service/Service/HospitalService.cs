@@ -52,7 +52,7 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> GetAll(Request request)
+        public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
             List<HuHospital> huContracts = await _hospitalRepositoryWrapper.Hospital.GetAll();

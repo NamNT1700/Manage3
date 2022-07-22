@@ -23,7 +23,7 @@ namespace Manage.API.Controllers
             return Ok(response);
         }
         [HttpPost("allowance-get-all")]
-        public async Task<IActionResult> GetAll( Request request)
+        public async Task<IActionResult> GetAll( BaseRequest request)
         {
             Response response = await _allowanceService.GetAll(request);
             return Ok(response);

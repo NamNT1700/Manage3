@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220720103245_T")]
-    partial class T
+    [Migration("20220721095537_Migrations")]
+    partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1320,31 +1320,36 @@ namespace Manage.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
+                        .HasColumnName("Id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
-                        .HasColumnName("code");
+                        .HasColumnName("Code");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("created_by");
+                        .HasColumnName("Created_by");
 
                     b.Property<DateTime?>("CreatedTime")
                         .HasColumnType("datetime")
-                        .HasColumnName("created_time");
+                        .HasColumnName("Created_time");
 
                     b.Property<DateTime?>("LastUpdateTime")
                         .HasColumnType("datetime")
-                        .HasColumnName("last_update_time");
+                        .HasColumnName("Last_update_time");
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("last_updated_by");
+                        .HasColumnName("Last_updated_by");
+
+                    b.Property<string>("Role")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Role");
 
                     b.Property<string>("activeflg")
                         .HasColumnType("nvarchar(max)")

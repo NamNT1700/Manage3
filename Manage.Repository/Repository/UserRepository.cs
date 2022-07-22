@@ -18,14 +18,22 @@ namespace Manage.Repository.Repository
         public UserRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<SeUser> CheckPassword(string passwword)
+        public async Task<bool> CheckPassword(SeUser user,string password)
         {
-            return await FindByCondition(u => u.password.Equals(passwword)).FirstOrDefaultAsync();
+            if (user.password == password)
+                return true;
+            return false;
         }
 
-        public Task<string> CheckUserLogin(string username, string password)
+        public async Task<string> CheckUserLogin(string username, string password)
         {
-            throw new NotImplementedException();
+            SeUser seUser = await FindByUsername(username);
+            if (seUser == null)
+                return "wrong username";
+            bool isTrue =  await CheckPassword(seUser,password);
+            if (isTrue == false)
+                return "wrong password";
+            return null;
         }
 
         public async Task<List<SeUser>> FindAllData()
@@ -35,12 +43,6 @@ namespace Manage.Repository.Repository
             datas = await Task.Run(()=> FindAll().Where(u => u.activeflg.Equals("A")).ToList());
             return datas;
         }
-
-        public async Task<SeUser> FindById(int id)
-        {
-            return await FindByCondition(u => u.Id.Equals(id)).FirstOrDefaultAsync();
-        }
-
         public async Task<SeUser> FindByUsername(string username)
         {
             return await FindByCondition(u => u.username.Equals(username)).FirstOrDefaultAsync();

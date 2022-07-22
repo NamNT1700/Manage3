@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Manage.API.Migrations
 {
-    public partial class T : Migration
+    public partial class Migrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -205,13 +205,14 @@ namespace Manage.API.Migrations
                 name: "Se_User",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Created_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -219,7 +220,7 @@ namespace Manage.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Se_User", x => x.id);
+                    table.PrimaryKey("PK_Se_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(

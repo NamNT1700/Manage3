@@ -5,13 +5,18 @@ using Manage.Repository.Base.Repository;
 using Manage.Repository.Base.Repository.Wrapper;
 using Manage.Service.IService;
 using Manage.Service.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Text;
 
 namespace Manage.API
 {
@@ -45,8 +50,7 @@ namespace Manage.API
             services.AddScoped<IHuHospitalRepositoryWrapper, HuHospitalRepositoryWrapper>();
             services.AddScoped<IHuNationRepositoryWrapper, HuNationRepositoryWrapper>();
             services.AddScoped<IHuTitleRepositoryWrapper, HuTitleRepositoryWrapper>();
-
-
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserRepositoryWrapper, UserRepositoryWrapper>();
             services.AddScoped<IAllowanceService, AllowanceService>();
             services.AddScoped<IBankService, BankService>();
@@ -54,6 +58,7 @@ namespace Manage.API
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<INationService, NationService>();
             services.AddScoped<ITitleService, TitleService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddDbContext<DatabaseContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("database"),b=>b.MigrationsAssembly("Manage.API")));
@@ -61,7 +66,51 @@ namespace Manage.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Manage", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,// = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
+            services.AddAuthentication(otp =>
+            {
+                otp.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                otp.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+          .AddJwtBearer(options =>
+          {
+              options.RequireHttpsMetadata = false;
+              options.SaveToken = true;
+              options.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuer = false,
+                  ValidateAudience = false,
+                  //ValidateLifetime = true,
+                  ValidateIssuerSigningKey = true,
+                  //ValidIssuer = issuer,
+                  //ValidAudience = true,
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                  ClockSkew = TimeSpan.Zero
+              };
+          });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +124,7 @@ namespace Manage.API
             }
 
             app.UseHttpsRedirection();
-            
+            app.UseAuthentication();
             app.UseRouting();
             
             app.UseAuthorization();

@@ -14,7 +14,7 @@ namespace Manage.Repository.IRepository
         public Task<string> CheckUserLogin(string username, string password);
         public Task<SeUser> FindById(int id);
         //public Task<string> CheckUserInfo(string username, string email);
-        public Task<SeUser> CheckPassword(string passwword);
+        public Task<bool> CheckPassword(SeUser user,string password);
         public Task<SeUser> FindByUsername(string username);
         public Task<List<SeUser>> FindAllData();
     }

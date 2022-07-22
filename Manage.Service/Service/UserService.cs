@@ -12,23 +12,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Manage.Repository.Base.IRepository.IWrapper;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using Microsoft.AspNetCore.Http;
+using System.Web;
+//using Microsoft.AspNetCore.Http.IHeaderDictionary;
 
 namespace Manage.Service.Service
 {
-    public class UserService : IUserService
+    public class UserService :  IUserService
     {
         private IMapper _mapper;
         private IUserRepositoryWrapper _userRepositoryWrapper;
         private DatabaseContext _context;
         private IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserService(IMapper mapper, IUserRepositoryWrapper userRepositoryWrapper, DatabaseContext context,
-            IConfiguration configuration)
+            IConfiguration configuration,IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _userRepositoryWrapper = userRepositoryWrapper;
             _context = context;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<Response> ChangeStatusUser(UserDTO user)
         {
@@ -78,11 +87,29 @@ namespace Manage.Service.Service
             return respones;
         }
 
-        public async Task<Response> GetAllUsers(Request request)
+        public async Task<Response> GetAllUsers(BaseRequest request,string token)
         {
+            HttpClient client = new HttpClient();
+            HttpRequestMessage httpRequest = new HttpRequestMessage();
+            //Authorization
+            var headerValue = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var a = headerValue.FirstOrDefault();
+            Response response = new Response();
+            //var a = _httpContextAccessor.HttpContext.Request.Headers["Authorization "];
+            TokenGenarate accessToken = new TokenGenarate(_configuration);
+            ClaimsPrincipal claimsPrincipal = accessToken.DecodeAccessToken(token);
+            string role = claimsPrincipal.Claims.FirstOrDefault(t => t.Type.Equals("Role")).Value;
+            if ( role != "string")
+            {
+                response.status = "403";
+                response.success = false;
+                response.message = "forbidden";
+                response.item = headerValue;
+                return response;
+            }    
             List<SeUser> allUsers = await _userRepositoryWrapper.User.FindAllData();
             List<UserDTO> listUser = _mapper.Map<List<UserDTO>>(allUsers);
-            Response response = new Response();
+            
             List<UserDTO> users = new List<UserDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= allUsers.Count())
@@ -97,7 +124,7 @@ namespace Manage.Service.Service
             else users = listUser.GetRange(firstIndex, listUser.Count - firstIndex);
             response.status = "Success";
             response.success = true;
-            response.item = users;
+            response.item = headerValue;
             return response;
         }
 
@@ -110,13 +137,13 @@ namespace Manage.Service.Service
             {
                 SeUser loginUser = await _userRepositoryWrapper.User.FindByUsername(user.username);
                 TokenGenarate accessToken = new TokenGenarate(_configuration);
-                string token = accessToken.GenerateAccessToken(loginUser);
+                SeToken token =  accessToken.GenerateToken(loginUser);
                 respones.status = "200";
                 respones.success = true;
                 respones.item = token;
                 return respones;
             }
-            respones.status = "200";
+            respones.status = "400";
             respones.success = false;
             respones.message = description;
             return respones;

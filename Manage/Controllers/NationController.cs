@@ -27,7 +27,7 @@ namespace Manage.API.Controllers
             return Ok(response);
         }
         [HttpPost("GetAllNation")]
-        public async Task<IActionResult> GetAll( Request request)
+        public async Task<IActionResult> GetAll( BaseRequest request)
         {
             Response response = await _titleService.GetAll(request);
             return Ok(response);
