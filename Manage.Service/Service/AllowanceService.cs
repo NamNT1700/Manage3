@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 using Manage.Model.Context;
 using Manage.Model.DTO.Allowance;
 using Manage.Model.Models;
-using Manage.Repository.Base.IRepository.IWrapper;
+using Manage.Repository.Base.IRepository;
 
 namespace Manage.Service.Service
 {
     public class AllowanceService :IAllowanceService
     {
         private IMapper _mapper;
-        private IHuAllowanceRepositoryWrapper _allowanceRepositoryWrapper;
+        private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context ;
         
 
-        public AllowanceService(IMapper mapper, IHuAllowanceRepositoryWrapper allowanceRepositoryWrapper, DatabaseContext context)
+        public AllowanceService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _allowanceRepositoryWrapper = allowanceRepositoryWrapper;
+            _repositoryWrapper = repositoryWrapper;
             _context = context;
         }
         public async Task<Response> AddNew(AllowanceDTO allowance)
         {
             Response responce = new Response();
-            string message = await _allowanceRepositoryWrapper.Allowance.CheckData(allowance);
+            string message = await _repositoryWrapper.Allowance.CheckData(allowance);
             if (message != null)
             {
                 responce.message = message;
@@ -39,7 +39,7 @@ namespace Manage.Service.Service
             HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
             huAllowance.CreatedTime = DateTime.Now;
             huAllowance.LastUpdateTime = DateTime.Now;
-            await _allowanceRepositoryWrapper.Allowance.Create(huAllowance);
+            await _repositoryWrapper.Allowance.Create(huAllowance);
             await _context.SaveChangesAsync();
             AllowanceDTO allowanceDTO = _mapper.Map<AllowanceDTO>(huAllowance);
             responce.status = "200";
@@ -52,7 +52,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuAllowance> huAllwances = await _allowanceRepositoryWrapper.Allowance.GetAll();
+            List<HuAllowance> huAllwances = await _repositoryWrapper.Allowance.GetAll();
             List<ListAllowanceDTO> listAllwance =  _mapper.Map<List<ListAllowanceDTO>>(huAllwances);
             List<ListAllowanceDTO> lists = new List<ListAllowanceDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -75,7 +75,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuAllowance huAllowance = await _allowanceRepositoryWrapper.Allowance.FindById(id);
+            HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindById(id);
             if (huAllowance != null)
             {
                 AllowanceDTO allowance = _mapper.Map<AllowanceDTO>(huAllowance);
@@ -93,7 +93,7 @@ namespace Manage.Service.Service
         public async Task<Response> Update(UpdateAllowanceDTO update)
         {
             Response response = new Response();
-            HuAllowance allowance = await _allowanceRepositoryWrapper.Allowance.FindById(update.id);
+            HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
             if(allowance!=null)
             {
                 _mapper.Map(update.updateData, allowance);
@@ -114,8 +114,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuAllowance allwance = await _allowanceRepositoryWrapper.Allowance.FindById(id);
-                await _allowanceRepositoryWrapper.Allowance.Delete(allwance);
+                HuAllowance allwance = await _repositoryWrapper.Allowance.FindById(id);
+                await _repositoryWrapper.Allowance.Delete(allwance);
             }
             response.message = "Delete allwance";
             response.status = "200";

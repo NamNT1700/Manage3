@@ -9,7 +9,6 @@ using Manage.Model.Context;
 using Manage.Model.DTO.Hospital;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
-using Manage.Repository.Base.IRepository.IWrapper;
 using Manage.Service.IService;
 
 namespace Manage.Service.Service
@@ -17,21 +16,21 @@ namespace Manage.Service.Service
     public class HospitalService : IHospitalService
     {
         private IMapper _mapper;
-        private IHuHospitalRepositoryWrapper _hospitalRepositoryWrapper;
+        private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context;
 
 
-        public HospitalService(IMapper mapper, IHuHospitalRepositoryWrapper hospitalRepositoryWrapper, DatabaseContext context)
+        public HospitalService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _hospitalRepositoryWrapper = hospitalRepositoryWrapper;
+            _repositoryWrapper = repositoryWrapper;
             _context = context;
         }
 
         public async Task<Response> AddNew(HospitalDTO hospital)
         {
             Response responce = new Response();
-            string message = await _hospitalRepositoryWrapper.Hospital.CheckData(hospital);
+            string message = await _repositoryWrapper.Hospital.CheckData(hospital);
             if (message != null)
             {
                 responce.message = message;
@@ -42,7 +41,7 @@ namespace Manage.Service.Service
             HuHospital huHospital = _mapper.Map<HuHospital>(hospital);
             huHospital.CreatedTime = DateTime.Now;
             huHospital.LastUpdateTime = DateTime.Now;
-            await _hospitalRepositoryWrapper.Hospital.Create(huHospital);
+            await _repositoryWrapper.Hospital.Create(huHospital);
             await _context.SaveChangesAsync();
             HospitalDTO hospitalDto = _mapper.Map<HospitalDTO>(huHospital);
             responce.status = "200";
@@ -55,7 +54,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuHospital> huContracts = await _hospitalRepositoryWrapper.Hospital.GetAll();
+            List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll();
             List<ListHospitalDTO> listAllwance = _mapper.Map<List<ListHospitalDTO>>(huContracts);
             List<ListHospitalDTO> lists = new List<ListHospitalDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -78,7 +77,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuHospital hospital = await _hospitalRepositoryWrapper.Hospital.FindById(id);
+            HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
             if (hospital != null)
             {
                 HospitalDTO contract = _mapper.Map<HospitalDTO>(hospital);
@@ -98,7 +97,7 @@ namespace Manage.Service.Service
         public async Task<Response> Update(UpdateHospitalDTO update)
         {
             Response response = new Response();
-            HuHospital hospital = await _hospitalRepositoryWrapper.Hospital.FindById(update.Id);
+            HuHospital hospital = await _repositoryWrapper.Hospital.FindById(update.Id);
             if (hospital != null)
             {
                 _mapper.Map(update.updateData, hospital);
@@ -119,8 +118,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuHospital hospital = await _hospitalRepositoryWrapper.Hospital.FindById(id);
-                await _hospitalRepositoryWrapper.Hospital.Delete(hospital);
+                HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
+                await _repositoryWrapper.Hospital.Delete(hospital);
             }
             response.message = "Delete hospital";
             response.status = "200";

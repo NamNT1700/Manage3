@@ -9,7 +9,6 @@ using Manage.Model.Context;
 using Manage.Model.DTO.Title;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
-using Manage.Repository.Base.IRepository.IWrapper;
 using Manage.Service.IService;
 
 namespace Manage.Service.Service
@@ -17,21 +16,21 @@ namespace Manage.Service.Service
     public class TitleService : ITitleService
     {
         private IMapper _mapper;
-        private IHuTitleRepositoryWrapper _huTitleRepositoryWrapper;
+        private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context;
 
 
-        public TitleService(IMapper mapper, IHuTitleRepositoryWrapper huTitleRepositoryWrapper, DatabaseContext context)
+        public TitleService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _huTitleRepositoryWrapper = huTitleRepositoryWrapper;
+            _repositoryWrapper = repositoryWrapper;
             _context = context;
         }
 
         public async Task<Response> AddNew(TitleDTO title)
         {
             Response responce = new Response();
-            string message = await _huTitleRepositoryWrapper.Title.CheckData(title);
+            string message = await _repositoryWrapper.Title.CheckData(title);
             if (message != null)
             {
                 responce.message = message;
@@ -42,7 +41,7 @@ namespace Manage.Service.Service
             HuTitle huTitle = _mapper.Map<HuTitle>(title);
             huTitle.CreatedTime = DateTime.Now;
             huTitle.LastUpdateTime = DateTime.Now;
-            await _huTitleRepositoryWrapper.Title.Create(huTitle);
+            await _repositoryWrapper.Title.Create(huTitle);
             await _context.SaveChangesAsync();
             TitleDTO hospitalDto = _mapper.Map<TitleDTO>(huTitle);
             responce.status = "200";
@@ -55,7 +54,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuTitle> huNations = await _huTitleRepositoryWrapper.Title.GetAll();
+            List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll();
             List<ListTitleDTO> listAllwance = _mapper.Map<List<ListTitleDTO>>(huNations);
             List<ListTitleDTO> lists = new List<ListTitleDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -78,7 +77,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuTitle nation = await _huTitleRepositoryWrapper.Title.FindById(id);
+            HuTitle nation = await _repositoryWrapper.Title.FindById(id);
             if (nation != null)
             {
                 TitleDTO contract = _mapper.Map<TitleDTO>(nation);
@@ -98,7 +97,7 @@ namespace Manage.Service.Service
         public async Task<Response> Update(UpdateTitleDTO update)
         {
             Response response = new Response();
-            HuTitle nation = await _huTitleRepositoryWrapper.Title.FindById(update.Id);
+            HuTitle nation = await _repositoryWrapper.Title.FindById(update.Id);
             if (nation != null)
             {
                 _mapper.Map(update.updateData, nation);
@@ -119,8 +118,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuTitle title = await _huTitleRepositoryWrapper.Title.FindById(id);
-                await _huTitleRepositoryWrapper.Title.Delete(title);
+                HuTitle title = await _repositoryWrapper.Title.FindById(id);
+                await _repositoryWrapper.Title.Delete(title);
             }
             response.message = "Delete Title";
             response.status = "200";

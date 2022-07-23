@@ -1,4 +1,5 @@
-﻿using Manage.Model.DTO.User;
+﻿using Manage.Common;
+using Manage.Model.DTO.User;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using System;
@@ -16,6 +17,7 @@ namespace Manage.Repository.IRepository
         //public Task<string> CheckUserInfo(string username, string email);
         public Task<bool> CheckPassword(SeUser user,string password);
         public Task<SeUser> FindByUsername(string username);
-        public Task<List<SeUser>> FindAllData();
+        public Task<List<SeUser>> FindAllData(BaseRequest request);
+        public Task<bool> CheckRefreshToken(string username, string refreshToken);
     }
 }

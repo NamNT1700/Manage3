@@ -1,5 +1,4 @@
-﻿using Manage.Model.DTO.Authentication;
-using Manage.Model.Models;
+﻿using Manage.Model.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -20,7 +19,7 @@ namespace Manage.Common
         {
             _configuration = configuration;
         }
-        public SeToken GenerateToken(SeUser user)
+        public string GenerateAccessToken(SeUser user)
         {
             var userClaim = new List<Claim>
             {
@@ -35,14 +34,11 @@ namespace Manage.Common
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretkeyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
-            SeToken tokens = new SeToken();
-            var accessToken = jwtTokenHandle.CreateToken(tokenDescription);
-            tokens.access_token = jwtTokenHandle.WriteToken(accessToken);
-            tokens.refresh_token = GenerateRefreshToken();
-            return tokens;
+            var accessToken = jwtTokenHandle.CreateToken(tokenDescription);           
+            return jwtTokenHandle.WriteToken(accessToken);
         }
         public string GenerateRefreshToken()
         {
@@ -68,5 +64,43 @@ namespace Manage.Common
             ClaimsPrincipal claims = handler.ValidateToken(Input, validations, out tokenSecure);
             return claims;
         }
+        public Response CheckToken(string token)
+        {
+            Response response = new Response();
+;           ClaimsPrincipal claimsPrincipal = DecodeAccessToken(token);
+            string role = claimsPrincipal.Claims.FirstOrDefault(t => t.Type.Equals("Role")).Value;
+            long expTime = long.Parse( claimsPrincipal.Claims.FirstOrDefault(t => t.Type.Equals("exp")).Value);
+            DateTime expTimeConverted = ConvertToDateTime(expTime);
+            if (expTimeConverted < DateTime.UtcNow)
+            {
+                response.status = "406";
+                response.success = false;
+                response.message = "token is expiration";
+                return response;
+            }
+            if (role != "admin")
+            {
+                response.status = "403";
+                response.success = false;
+                response.message = "forbidden";
+                return response;
+            }
+            
+            return null;
+        }
+        private DateTime ConvertToDateTime(long expDate)
+        {
+            DateTime dateTimeInterval = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTimeInterval = dateTimeInterval.AddSeconds(expDate).ToUniversalTime();
+            return dateTimeInterval;
+        }
+        public SeToken GenerateTokens (SeUser seUser)
+        {
+            SeToken tokens = new SeToken();
+            tokens.access_token = GenerateAccessToken(seUser);
+            tokens.refresh_token = GenerateRefreshToken();
+            return tokens;
+        }
     }
 }
+ 

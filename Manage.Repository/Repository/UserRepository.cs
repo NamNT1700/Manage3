@@ -1,4 +1,5 @@
-﻿using Manage.Model.Context;
+﻿using Manage.Common;
+using Manage.Model.Context;
 using Manage.Model.DTO.User;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
@@ -25,6 +26,14 @@ namespace Manage.Repository.Repository
             return false;
         }
 
+        public async Task<bool> CheckRefreshToken(string username, string refreshToken)
+        {
+            SeUser seUser = await FindByUsername(username);
+            if (seUser.refresh_token == refreshToken)
+                return true;
+            return false;
+        }
+
         public async Task<string> CheckUserLogin(string username, string password)
         {
             SeUser seUser = await FindByUsername(username);
@@ -36,11 +45,10 @@ namespace Manage.Repository.Repository
             return null;
         }
 
-        public async Task<List<SeUser>> FindAllData()
+        public async Task<List<SeUser>> FindAllData(BaseRequest request)
         {
             List<SeUser> datas = new List<SeUser>();
-
-            datas = await Task.Run(()=> FindAll().Where(u => u.ActiveFlg.Equals("A")).ToList());
+            datas = await GetAll(request);
             return datas;
         }
         public async Task<SeUser> FindByUsername(string username)

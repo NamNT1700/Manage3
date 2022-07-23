@@ -9,7 +9,7 @@ using Manage.Model.Context;
 using Manage.Model.DTO.Contract;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
-using Manage.Repository.Base.IRepository.IWrapper;
+using Manage.Repository.Base.Repository;
 using Manage.Service.IService;
 
 namespace Manage.Service.Service
@@ -17,21 +17,21 @@ namespace Manage.Service.Service
     public class ContractService : IContractService
     {
         private IMapper _mapper;
-        private IHuContractRepositoryWapper _contractRepositoryWapper;
+        private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context;
 
 
-        public ContractService(IMapper mapper, IHuContractRepositoryWapper contractRepositoryWapper, DatabaseContext context)
+        public ContractService(IMapper mapper, IRepositoryWrapper repositoryWapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _contractRepositoryWapper = contractRepositoryWapper;
+            _repositoryWrapper = repositoryWapper;
             _context = context;
         }
 
         public async Task<Response> AddNew(ContractDTO contract)
         {
             Response responce = new Response();
-            string message = await _contractRepositoryWapper.Contract.CheckData(contract);
+            string message = await _repositoryWrapper.Contract.CheckData(contract);
             if (message != null)
             {
                 responce.message = message;
@@ -42,7 +42,7 @@ namespace Manage.Service.Service
             HuContract huContract = _mapper.Map<HuContract>(contract);
             huContract.CreatedTime = DateTime.Now;
             huContract.LastUpdateTime = DateTime.Now;
-            await _contractRepositoryWapper.Contract.Create(huContract);
+            await _repositoryWrapper.Contract.Create(huContract);
             await _context.SaveChangesAsync();
             ContractDTO bankDto = _mapper.Map<ContractDTO>(huContract);
             responce.status = "200";
@@ -55,7 +55,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuContract> huContracts = await _contractRepositoryWapper.Contract.GetAll();
+            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll();
             List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
             List<ListContractDTO> lists = new List<ListContractDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -78,7 +78,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuContract huContract = await _contractRepositoryWapper.Contract.FindById(id);
+            HuContract huContract = await _repositoryWrapper.Contract.FindById(id);
             if (huContract != null)
             {
                 ContractDTO contract = _mapper.Map<ContractDTO>(huContract);
@@ -98,7 +98,7 @@ namespace Manage.Service.Service
         public async Task<Response> Update(UpdateContractDTO update)
         {
             Response response = new Response();
-            HuContract contract = await _contractRepositoryWapper.Contract.FindById(update.Id);
+            HuContract contract = await _repositoryWrapper.Contract.FindById(update.Id);
             if (contract != null)
             {
                 _mapper.Map(update.updateData, contract);
@@ -119,8 +119,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuContract bank = await _contractRepositoryWapper.Contract.FindById(id);
-                await _contractRepositoryWapper.Contract.Delete(bank);
+                HuContract bank = await _repositoryWrapper.Contract.FindById(id);
+                await _repositoryWrapper.Contract.Delete(bank);
             }
             response.message = "Delete contract";
             response.status = "200";

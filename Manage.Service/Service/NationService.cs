@@ -10,7 +10,6 @@ using Manage.Model.DTO.Hospital;
 using Manage.Model.DTO.Nation;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
-using Manage.Repository.Base.IRepository.IWrapper;
 using Manage.Service.IService;
 
 namespace Manage.Service.Service
@@ -18,21 +17,21 @@ namespace Manage.Service.Service
     public class NationService : INationService
     {
         private IMapper _mapper;
-        private IHuNationRepositoryWrapper _huNationRepositoryWrapper;
+        private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context;
 
 
-        public NationService(IMapper mapper, IHuNationRepositoryWrapper huNationRepositoryWrapper, DatabaseContext context)
+        public NationService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _huNationRepositoryWrapper = huNationRepositoryWrapper;
+            _repositoryWrapper = repositoryWrapper;
             _context = context;
         }
 
         public async Task<Response> AddNew(NationDTO nation)
         {
             Response responce = new Response();
-            string message = await _huNationRepositoryWrapper.Nation.CheckData(nation);
+            string message = await _repositoryWrapper.Nation.CheckData(nation);
             if (message != null)
             {
                 responce.message = message;
@@ -43,7 +42,7 @@ namespace Manage.Service.Service
             HuNation huNation = _mapper.Map<HuNation>(nation);
             huNation.CreatedTime = DateTime.Now;
             huNation.LastUpdateTime = DateTime.Now;
-            await _huNationRepositoryWrapper.Nation.Create(huNation);
+            await _repositoryWrapper.Nation.Create(huNation);
             await _context.SaveChangesAsync();
             NationDTO hospitalDto = _mapper.Map<NationDTO>(huNation);
             responce.status = "200";
@@ -56,7 +55,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuNation> huNations = await _huNationRepositoryWrapper.Nation.GetAll();
+            List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll();
             List<ListNationDTO> listAllwance = _mapper.Map<List<ListNationDTO>>(huNations);
             List<ListNationDTO> lists = new List<ListNationDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -79,7 +78,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuNation nation = await _huNationRepositoryWrapper.Nation.FindById(id);
+            HuNation nation = await _repositoryWrapper.Nation.FindById(id);
             if (nation != null)
             {
                 HospitalDTO contract = _mapper.Map<HospitalDTO>(nation);
@@ -99,7 +98,7 @@ namespace Manage.Service.Service
         public async Task<Response> Update(UpdateNationDTO update)
         {
             Response response = new Response();
-            HuNation nation = await _huNationRepositoryWrapper.Nation.FindById(update.Id);
+            HuNation nation = await _repositoryWrapper.Nation.FindById(update.Id);
             if (nation != null)
             {
                 _mapper.Map(update.updateData, nation);
@@ -120,8 +119,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuNation hospital = await _huNationRepositoryWrapper.Nation.FindById(id);
-                await _huNationRepositoryWrapper.Nation.Delete(hospital);
+                HuNation hospital = await _repositoryWrapper.Nation.FindById(id);
+                await _repositoryWrapper.Nation.Delete(hospital);
             }
             response.message = "Delete nation";
             response.status = "200";

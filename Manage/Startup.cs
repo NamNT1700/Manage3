@@ -1,8 +1,6 @@
 using Manage.Model.Context;
 using Manage.Repository.Base.IRepository;
-using Manage.Repository.Base.IRepository.IWrapper;
 using Manage.Repository.Base.Repository;
-using Manage.Repository.Base.Repository.Wrapper;
 using Manage.Service.IService;
 using Manage.Service.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,14 +42,8 @@ namespace Manage.API
                     });
             });
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IHuAllowanceRepositoryWrapper, HuAllowanceRepositoryWrapper>();
-            services.AddScoped<IHuBankRepositoryWrapper, HuBankRepositoryWrapper>();
-            services.AddScoped<IHuContractRepositoryWapper, HuContractRepositoryWapper>();
-            services.AddScoped<IHuHospitalRepositoryWrapper, HuHospitalRepositoryWrapper>();
-            services.AddScoped<IHuNationRepositoryWrapper, HuNationRepositoryWrapper>();
-            services.AddScoped<IHuTitleRepositoryWrapper, HuTitleRepositoryWrapper>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IUserRepositoryWrapper, UserRepositoryWrapper>();
             services.AddScoped<IAllowanceService, AllowanceService>();
             services.AddScoped<IBankService, BankService>();
             services.AddScoped<IContractService, ContractService>();

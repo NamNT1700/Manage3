@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Manage.Common;
 using Manage.Model.Base;
 using Manage.Model.Context;
 using Manage.Repository.Base.IRepository;
@@ -55,9 +56,12 @@ namespace Manage.Repository.Base.Repository
 
         }
        
-        public async Task<List<T>> GetAll()
+        public async Task<List<T>> GetAll(BaseRequest baseRequest)
         {
-            return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());
+            return await Task.Run(() => FindAll().OrderBy(a => a.Id)
+            .Skip((baseRequest.pageNum-1)* baseRequest.pageSize)
+            .Take(baseRequest.pageSize)
+            .ToList());
         }
     }
 }

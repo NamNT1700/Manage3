@@ -7,7 +7,7 @@ using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.Bank;
 using Manage.Model.Models;
-using Manage.Repository.Base.IRepository.IWrapper;
+using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
 
 namespace Manage.Service.Service
@@ -15,21 +15,21 @@ namespace Manage.Service.Service
     public class BankService : IBankService
     {
         private IMapper _mapper;
-        private IHuBankRepositoryWrapper _bankRepositoryWrapper;
+        private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context;
 
 
-        public BankService(IMapper mapper, IHuBankRepositoryWrapper bankRepositoryWrapper, DatabaseContext context)
+        public BankService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
         {
             _mapper = mapper;
-            _bankRepositoryWrapper = bankRepositoryWrapper;
+            _repositoryWrapper = repositoryWrapper;
             _context = context;
         }
 
         public async Task<Response> AddNew(BankDTO bank)
         {
             Response responce = new Response();
-            string message = await _bankRepositoryWrapper.Bank.CheckData(bank);
+            string message = await _repositoryWrapper.Bank.CheckData(bank);
             if (message != null)
             {
                 responce.message = message;
@@ -40,7 +40,7 @@ namespace Manage.Service.Service
             HuBank huBank = _mapper.Map<HuBank>(bank);
             huBank.CreatedTime = DateTime.Now;
             huBank.LastUpdateTime = DateTime.Now;
-            await _bankRepositoryWrapper.Bank.Create(huBank);
+            await _repositoryWrapper.Bank.Create(huBank);
             await _context.SaveChangesAsync();
             BankDTO bankDto = _mapper.Map<BankDTO>(huBank);
             responce.status = "200";
@@ -53,7 +53,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuBank> huBanks = await _bankRepositoryWrapper.Bank.GetAll();
+            List<HuBank> huBanks = await _repositoryWrapper.Bank.GetAll();
             List<ListBankDTO> listBankDtos = _mapper.Map<List<ListBankDTO>>(huBanks);
             List<ListBankDTO> list = new List<ListBankDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
@@ -76,7 +76,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
-            HuBank huBank = await _bankRepositoryWrapper.Bank.FindById(id);
+            HuBank huBank = await _repositoryWrapper.Bank.FindById(id);
             if (huBank != null)
             {
                 BankDTO bank = _mapper.Map<BankDTO>(huBank);
@@ -96,7 +96,7 @@ namespace Manage.Service.Service
         public async Task<Response> Update(UpdateBankDTO update)
         {
             Response response = new Response();
-            HuBank bank = await _bankRepositoryWrapper.Bank.FindById(update.Id);
+            HuBank bank = await _repositoryWrapper.Bank.FindById(update.Id);
             if (bank != null)
             {
                 _mapper.Map(update.updateData, bank);
@@ -117,8 +117,8 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                HuBank bank = await _bankRepositoryWrapper.Bank.FindById(id);
-                await _bankRepositoryWrapper.Bank.Delete(bank);
+                HuBank bank = await _repositoryWrapper.Bank.FindById(id);
+                await _repositoryWrapper.Bank.Delete(bank);
             }
             response.message = "Delete bank";
             response.status = "200";

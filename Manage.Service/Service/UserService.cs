@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Manage.Repository.Base.IRepository.IWrapper;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
@@ -25,16 +24,16 @@ namespace Manage.Service.Service
     public class UserService :  IUserService
     {
         private IMapper _mapper;
-        private IUserRepositoryWrapper _userRepositoryWrapper;
+        private IRepositoryWrapper _repositoryWrapper;
         private DatabaseContext _context;
         private IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(IMapper mapper, IUserRepositoryWrapper userRepositoryWrapper, DatabaseContext context,
+        public UserService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
             IConfiguration configuration,IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
-            _userRepositoryWrapper = userRepositoryWrapper;
+            _repositoryWrapper = repositoryWrapper;
             _context = context;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
@@ -42,12 +41,12 @@ namespace Manage.Service.Service
         public async Task<Response> ChangeStatusUser(UserDTO user)
         {
             Response respones = new Response();
-            SeUser existUser = await _userRepositoryWrapper.User.FindById(user.id);
+            SeUser existUser = await _repositoryWrapper.User.FindById(user.id);
             if (existUser.ActiveFlg == "A")
                 existUser.ActiveFlg = "I";
             if (existUser.ActiveFlg == "I")
                 existUser.ActiveFlg = "A";
-            await _userRepositoryWrapper.User.Update(existUser);
+            await _repositoryWrapper.User.Update(existUser);
             await _context.SaveChangesAsync();
             respones.status = "200";
             respones.success = true;
@@ -60,9 +59,9 @@ namespace Manage.Service.Service
             Response response = new Response();
             foreach (int id in ids)
             {
-                SeUser existUser = await _userRepositoryWrapper.User.FindById(id);
+                SeUser existUser = await _repositoryWrapper.User.FindById(id);
                 if (existUser != null)
-                    await _userRepositoryWrapper.User.Delete(existUser);
+                    await _repositoryWrapper.User.Delete(existUser);
             }
             response.status = "200";
             response.success = true;
@@ -73,7 +72,7 @@ namespace Manage.Service.Service
         public async Task<Response> FindUserById(int id)
         {
             Response respones = new Response();
-            SeUser existUser = await _userRepositoryWrapper.User.FindById(id);
+            SeUser existUser = await _repositoryWrapper.User.FindById(id);
             if (existUser == null)
             {
                 respones.status = "400";
@@ -87,44 +86,19 @@ namespace Manage.Service.Service
             return respones;
         }
 
-        public async Task<Response> GetAllUsers(BaseRequest request,string token)
+        public async Task<Response> GetAllUsers(BaseRequest request)
         {
-            HttpClient client = new HttpClient();
-            HttpRequestMessage httpRequest = new HttpRequestMessage();
-            //Authorization
-            var headerValue = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            var a = headerValue.FirstOrDefault();
+            //get token
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             Response response = new Response();
-            //var a = _httpContextAccessor.HttpContext.Request.Headers["Authorization "];
             TokenGenarate accessToken = new TokenGenarate(_configuration);
-            ClaimsPrincipal claimsPrincipal = accessToken.DecodeAccessToken(token);
-            string role = claimsPrincipal.Claims.FirstOrDefault(t => t.Type.Equals("Role")).Value;
-            if ( role != "string")
-            {
-                response.status = "403";
-                response.success = false;
-                response.message = "forbidden";
-                response.item = headerValue;
-                return response;
-            }    
-            List<SeUser> allUsers = await _userRepositoryWrapper.User.FindAllData();
+            response = accessToken.CheckToken(token);
+            if (response != null) return response;
+            List<SeUser> allUsers = await _repositoryWrapper.User.FindAllData(request);
             List<UserDTO> listUser = _mapper.Map<List<UserDTO>>(allUsers);
-            
-            List<UserDTO> users = new List<UserDTO>();
-            int firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= allUsers.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
-            if (firstIndex + request.pageSize < allUsers.Count())
-                users = listUser.GetRange(firstIndex, request.pageSize);
-            else users = listUser.GetRange(firstIndex, listUser.Count - firstIndex);
             response.status = "Success";
             response.success = true;
-            response.item = headerValue;
+            response.item = listUser;
             return response;
         }
 
@@ -132,15 +106,20 @@ namespace Manage.Service.Service
         {
             Response respones = new Response();
             string encodePass = CodingPassword.EncodingUTF8(user.password);
-            string description = await _userRepositoryWrapper.User.CheckUserLogin(user.username, encodePass);
+            string description = await _repositoryWrapper.User.CheckUserLogin(user.username, encodePass);
             if (description == null)
             {
-                SeUser loginUser = await _userRepositoryWrapper.User.FindByUsername(user.username);
-                TokenGenarate accessToken = new TokenGenarate(_configuration);
-                SeToken token =  accessToken.GenerateToken(loginUser);
+                SeToken seToken = new SeToken();
+                SeUser loginUser = await _repositoryWrapper.User.FindByUsername(user.username);
+                TokenGenarate genToken = new TokenGenarate(_configuration);
+                seToken = genToken.GenerateTokens(loginUser);
+                loginUser.access_token = seToken.access_token;
+                loginUser.refresh_token = seToken.refresh_token;
+                await _repositoryWrapper.User.Update(loginUser);
+                await _context.SaveChangesAsync();
                 respones.status = "200";
                 respones.success = true;
-                respones.item = token;
+                respones.item = seToken;
                 return respones;
             }
             respones.status = "400";
@@ -152,7 +131,7 @@ namespace Manage.Service.Service
         public async Task<Response> Register(UserDTO reUser)
         {
             Response response = new Response();
-            SeUser description = await _userRepositoryWrapper.User.FindByUsername(reUser.username);
+            SeUser description = await _repositoryWrapper.User.FindByUsername(reUser.username);
             if (description != null)
             {
                 response.status = "400";
@@ -163,11 +142,35 @@ namespace Manage.Service.Service
             reUser.password = CodingPassword.EncodingUTF8(reUser.password);
             SeUser newUser = _mapper.Map<SeUser>(reUser);
             newUser.ActiveFlg = "A";
-            await _userRepositoryWrapper.User.Create(newUser);
+            await _repositoryWrapper.User.Create(newUser);
             await _context.SaveChangesAsync();
             response.status = "200";
             response.success = true;
             response.item = newUser;
+            return response;
+        }
+
+        public async Task<Response> RenewToken(string username,string refreshToken)
+        {
+            Response response = new Response();
+            bool isTrue = await _repositoryWrapper.User.CheckRefreshToken(username, refreshToken);
+            if(!isTrue)
+            {
+                response.status = "407";
+                response.success = false;
+                response.message = "wrong refresh token";
+                return response;
+            }
+            SeUser loginUser = await _repositoryWrapper.User.FindByUsername(username);
+            TokenGenarate accessToken = new TokenGenarate(_configuration);
+            string access_token = accessToken.GenerateAccessToken(loginUser);
+            loginUser.access_token = access_token;
+            await _repositoryWrapper.User.Update(loginUser);
+            await _context.SaveChangesAsync();
+            response.status = "200";
+            response.success = true;
+            response.message = "token is renew";
+            response.item = access_token;
             return response;
         }
     }
