@@ -31,13 +31,6 @@ namespace Manage.Service.Service
         public async Task<Response> AddNew(ContractDTO contract)
         {
             Response responce = new Response();
-            string message = await _repositoryWrapper.Contract.CheckData(contract);
-            if (message != null)
-            {
-                responce.message = message;
-                responce.status = "400";
-                return responce;
-            }
 
             HuContract huContract = _mapper.Map<HuContract>(contract);
             huContract.CreatedTime = DateTime.Now;

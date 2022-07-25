@@ -16,17 +16,6 @@ namespace Manage.Repository.Repository
         public HuContractRepository(DatabaseContext context) : base(context)
         {
         }
-
-        public async Task<string> CheckData(ContractDTO contract)
-        {
-            HuContract huContract = await FindByCode(contract.Code);
-            if (huContract != null)
-                return "code already exist";
-            huContract = await FindById(contract.Id);
-            if (huContract != null)
-                return "id already exist";
-            return null;
-        }
         public async Task<List<HuContract>> GetAll()
         {
             return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());

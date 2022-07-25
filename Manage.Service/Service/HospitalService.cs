@@ -30,13 +30,6 @@ namespace Manage.Service.Service
         public async Task<Response> AddNew(HospitalDTO hospital)
         {
             Response responce = new Response();
-            string message = await _repositoryWrapper.Hospital.CheckData(hospital);
-            if (message != null)
-            {
-                responce.message = message;
-                responce.status = "400";
-                return responce;
-            }
 
             HuHospital huHospital = _mapper.Map<HuHospital>(hospital);
             huHospital.CreatedTime = DateTime.Now;

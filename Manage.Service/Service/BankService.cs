@@ -29,14 +29,6 @@ namespace Manage.Service.Service
         public async Task<Response> AddNew(BankDTO bank)
         {
             Response responce = new Response();
-            string message = await _repositoryWrapper.Bank.CheckData(bank);
-            if (message != null)
-            {
-                responce.message = message;
-                responce.status = "400";
-                return responce;
-            }
-
             HuBank huBank = _mapper.Map<HuBank>(bank);
             huBank.CreatedTime = DateTime.Now;
             huBank.LastUpdateTime = DateTime.Now;

@@ -30,13 +30,6 @@ namespace Manage.Service.Service
         public async Task<Response> AddNew(TitleDTO title)
         {
             Response responce = new Response();
-            string message = await _repositoryWrapper.Title.CheckData(title);
-            if (message != null)
-            {
-                responce.message = message;
-                responce.status = "400";
-                return responce;
-            }
 
             HuTitle huTitle = _mapper.Map<HuTitle>(title);
             huTitle.CreatedTime = DateTime.Now;

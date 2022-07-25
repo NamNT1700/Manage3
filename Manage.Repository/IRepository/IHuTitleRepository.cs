@@ -8,7 +8,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuTitleRepository : IRepositoryBase<HuTitle>
     {
-        public Task<string> CheckData(TitleDTO title);
         public Task<HuTitle> FindByCode(string code);
         public Task<HuTitle> FindById(int id);
         public Task<List<HuTitle>> GetAll();

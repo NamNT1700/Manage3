@@ -21,16 +21,24 @@ namespace Manage.Repository.Repository
         }
         public async Task<bool> CheckPassword(SeUser user,string password)
         {
-            if (user.Password == password)
+             if (user.Password == password)
                 return true;
             return false;
         }
 
         public async Task<bool> CheckRefreshToken(string username, string refreshToken)
         {
+
             SeUser seUser = await FindByUsername(username);
+            
             if (seUser.refresh_token == refreshToken)
-                return true;
+            {
+                long refresh_exp_long = long.Parse(seUser.refresh_token);
+                DateTime refresh_exp_datetime = ConvertToDateTime(refresh_exp_long);
+                if (refresh_exp_datetime < DateTime.UtcNow)
+                    return true;
+                return false;
+            }                 
             return false;
         }
 
@@ -54,6 +62,12 @@ namespace Manage.Repository.Repository
         public async Task<SeUser> FindByUsername(string username)
         {
             return await FindByCondition(u => u.Username.Equals(username)).FirstOrDefaultAsync();
+        }
+        private DateTime ConvertToDateTime(long expDate)
+        {
+            DateTime dateTimeInterval = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTimeInterval = dateTimeInterval.AddSeconds(expDate).ToUniversalTime();
+            return dateTimeInterval;
         }
     }
 }

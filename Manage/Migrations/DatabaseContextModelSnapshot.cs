@@ -23,8 +23,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuAllowance", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -66,8 +70,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuBank", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -160,8 +168,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuContract", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -382,6 +394,8 @@ namespace Manage.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -484,6 +498,8 @@ namespace Manage.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("BankBrankId")
@@ -775,8 +791,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuHospital", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -823,8 +843,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuNation", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -866,8 +890,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuOrgTitle", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
@@ -1071,11 +1099,15 @@ namespace Manage.API.Migrations
                     b.ToTable("hu_salary_records");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuShool", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuSchool", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Certificate")
                         .HasColumnType("nvarchar(max)")
@@ -1142,8 +1174,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuTitle", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .HasMaxLength(255)
@@ -1420,6 +1456,8 @@ namespace Manage.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ActiveFlg")
@@ -1454,10 +1492,16 @@ namespace Manage.API.Migrations
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Token")
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("access_token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("expired_time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("refresh_token")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1633,7 +1677,7 @@ namespace Manage.API.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuShool", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuSchool", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
                         .WithMany("HuShools")

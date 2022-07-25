@@ -11,7 +11,8 @@ namespace Manage.API.Migrations
                 name: "hu_allowance",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -29,7 +30,8 @@ namespace Manage.API.Migrations
                 name: "hu_bank",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -47,7 +49,8 @@ namespace Manage.API.Migrations
                 name: "hu_contract",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -68,7 +71,8 @@ namespace Manage.API.Migrations
                 name: "hu_hospital",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -87,7 +91,8 @@ namespace Manage.API.Migrations
                 name: "hu_nation",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -105,7 +110,8 @@ namespace Manage.API.Migrations
                 name: "hu_org_title",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -144,7 +150,8 @@ namespace Manage.API.Migrations
                 name: "hu_title",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -207,7 +214,9 @@ namespace Manage.API.Migrations
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    access_token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    refresh_token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    expired_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ActiveFlg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -657,7 +666,8 @@ namespace Manage.API.Migrations
                 name: "hu_shools",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     employee_id = table.Column<int>(type: "int", nullable: true),
                     from_date = table.Column<DateTime>(type: "datetime", nullable: true),
                     to_date = table.Column<DateTime>(type: "datetime", nullable: true),

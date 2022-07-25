@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Manage.Model.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -35,7 +36,7 @@ namespace Manage.Model.Context
         public virtual DbSet<HuOrganization> HuOrganizations { get; set; }
         public virtual DbSet<HuProvince> HuProvinces { get; set; }
         public virtual DbSet<HuSalaryRecord> HuSalaryRecords { get; set; }
-        public virtual DbSet<HuShool> HuShools { get; set; }
+        public virtual DbSet<HuSchool> HuShools { get; set; }
         public virtual DbSet<HuTitle> HuTitles { get; set; }
         public virtual DbSet<HuTypeOfContract> HuTypeOfContracts { get; set; }
         public virtual DbSet<HuWard> HuWards { get; set; }
@@ -59,17 +60,17 @@ namespace Manage.Model.Context
 
             modelBuilder.Entity<HuAllowance>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
             modelBuilder.Entity<HuBank>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
             modelBuilder.Entity<HuContract>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
             modelBuilder.Entity<HuEmployee>(entity =>
@@ -78,6 +79,8 @@ namespace Manage.Model.Context
                     .WithMany(p => p.HuEmployees)
                     .HasForeignKey(d => d.OrgId)
                     .HasConstraintName("FK_hu_employee_hu_organization");
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
+
             });
 
             modelBuilder.Entity<HuEmployeeCv>(entity =>
@@ -106,26 +109,27 @@ namespace Manage.Model.Context
                     .WithMany(p => p.HuEmployeeCvs)
                     .HasForeignKey(d => d.NationId)
                     .HasConstraintName("FK_hu_employee_cv_hu_nation");
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
             modelBuilder.Entity<HuHospital>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
             modelBuilder.Entity<HuNation>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
             modelBuilder.Entity<HuOrgTitle>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
-            modelBuilder.Entity<HuShool>(entity =>
+            modelBuilder.Entity<HuSchool>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.HuShools)
@@ -135,14 +139,17 @@ namespace Manage.Model.Context
 
             modelBuilder.Entity<HuTitle>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
 
             modelBuilder.Entity<OtherList>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
             });
-
+            modelBuilder.Entity<SeUser>(entity =>
+            {
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

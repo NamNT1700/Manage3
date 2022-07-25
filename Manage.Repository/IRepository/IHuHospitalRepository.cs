@@ -8,7 +8,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuHospitalRepository : IRepositoryBase<HuHospital>
     {
-        public Task<string> CheckData(HospitalDTO hospital);
         public Task<HuHospital> FindByCode(string code);
         public Task<HuHospital> FindById(int id);
         public Task<List<HuHospital>> GetAll();

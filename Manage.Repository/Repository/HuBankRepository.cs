@@ -17,17 +17,6 @@ namespace Manage.Repository.Repository
         {
            
         }
-
-        public async Task<string> CheckData(BankDTO bank)
-        {
-            HuBank huBank = await FindByCode(bank.Code);
-            if (huBank != null)
-                return "code already exist";
-            huBank = await FindById(bank.Id);
-            if (huBank != null)
-                return "id already exist";
-            return null;
-        }
         public async Task<List<HuBank>> GetAll()
         {
             return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());

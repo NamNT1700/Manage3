@@ -28,13 +28,6 @@ namespace Manage.Service.Service
         public async Task<Response> AddNew(AllowanceDTO allowance)
         {
             Response responce = new Response();
-            string message = await _repositoryWrapper.Allowance.CheckData(allowance);
-            if (message != null)
-            {
-                responce.message = message;
-                responce.status = "400";
-                return responce;
-            }
 
             HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
             huAllowance.CreatedTime = DateTime.Now;

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage.Model.Models
 {
     [Table("hu_shools")]
-    public partial class HuShool : IEntityBase
+    public partial class HuSchool : IEntityBase
     {
         [Key]
         [Column("id")]

@@ -32,6 +32,7 @@ namespace Manage.Model.Models
         public string Password { get; set; }
         public string access_token { get; set; }
         public string refresh_token { get; set; }
+        public DateTime expired_time { get; set; }
         public string Role { get; set; }
         public string ActiveFlg { get; set; }
     }

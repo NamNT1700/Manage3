@@ -115,6 +115,7 @@ namespace Manage.Service.Service
                 seToken = genToken.GenerateTokens(loginUser);
                 loginUser.access_token = seToken.access_token;
                 loginUser.refresh_token = seToken.refresh_token;
+                loginUser.expired_time = DateTime.UtcNow.AddMinutes(1);
                 await _repositoryWrapper.User.Update(loginUser);
                 await _context.SaveChangesAsync();
                 respones.status = "200";
@@ -158,7 +159,7 @@ namespace Manage.Service.Service
             {
                 response.status = "407";
                 response.success = false;
-                response.message = "wrong refresh token";
+                response.message = "refresh token invalid";
                 return response;
             }
             SeUser loginUser = await _repositoryWrapper.User.FindByUsername(username);
