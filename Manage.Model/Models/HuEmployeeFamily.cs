@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Manage.Model.Models
 {
-    [Table("hu_family")]
+    [Table("hu_employee_family")]
     [Index(nameof(EmployeeId), Name = "IX_hu_family_employee_id")]
-    public partial class HuFamily : IEntityBase
+    public partial class HuEmployeeFamily : IEntityBase
     {
         [Key]
         [Column("id")]

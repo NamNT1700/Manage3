@@ -1,4 +1,5 @@
-﻿using Manage.Model.Models;
+﻿using Manage.Model.DTO.User;
+using Manage.Model.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -23,9 +24,9 @@ namespace Manage.Common
         {
             var userClaim = new List<Claim>
             {
-                new Claim("Username",user.Username),
-                new Claim("ID",Convert.ToString(user.Id)),
-                new Claim("Role",user.Role)
+                new Claim("username",user.Username),
+                new Claim("id",Convert.ToString(user.Id)),
+                new Claim("role",user.Role)
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
             claimsIdentity.AddClaims(userClaim);
@@ -64,13 +65,19 @@ namespace Manage.Common
             ClaimsPrincipal claims = handler.ValidateToken(Input, validations, out tokenSecure);
             return claims;
         }
-        public Response CheckToken(string token)
+        public TokenDecode TokenInfo(string token)
+        {
+            TokenDecode tokenDecode = new TokenDecode();
+            ClaimsPrincipal claimsPrincipal = DecodeAccessToken(token);
+            tokenDecode.role = claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("role")).Value;
+            tokenDecode.username = claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("username")).Value;
+            tokenDecode.exp = long.Parse(claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("exp")).Value);
+            return tokenDecode;
+        }
+        public Response CheckToken(TokenDecode token)
         {
             Response response = new Response();
-;           ClaimsPrincipal claimsPrincipal = DecodeAccessToken(token);
-            string role = claimsPrincipal.Claims.FirstOrDefault(t => t.Type.Equals("Role")).Value;
-            long expTime = long.Parse( claimsPrincipal.Claims.FirstOrDefault(t => t.Type.Equals("exp")).Value);
-            DateTime expTimeConverted = ConvertToDateTime(expTime);
+            DateTime expTimeConverted = ConvertToDateTime(token.exp);
             if (expTimeConverted < DateTime.UtcNow)
             {
                 response.status = "406";
@@ -78,13 +85,13 @@ namespace Manage.Common
                 response.message = "token is expiration";
                 return response;
             }
-            if (role != "admin")
+            if (token.role != "Admin")
             {
                 response.status = "403";
                 response.success = false;
                 response.message = "forbidden";
                 return response;
-            }           
+            }
             return null;
         }
         private DateTime ConvertToDateTime(long expDate)

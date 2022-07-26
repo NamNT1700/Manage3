@@ -16,6 +16,6 @@ namespace Manage.Service.IService
         public Task<Response> DeleteUsers(List<int> ids);
         public Task<Response> FindUserById(int id);
         public Task<Response> ChangeStatusUser(UserDTO user);
-        public Task<Response> RenewToken(string username,string refreshToken);
+        public Task<Response> RenewToken(RefreshTokenDTO refreshTokenDTO);
     }
 }

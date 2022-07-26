@@ -31,13 +31,6 @@ namespace Manage.Service.Service
         public async Task<Response> AddNew(NationDTO nation)
         {
             Response responce = new Response();
-            string message = await _repositoryWrapper.Nation.CheckData(nation);
-            if (message != null)
-            {
-                responce.message = message;
-                responce.status = "400";
-                return responce;
-            }
 
             HuNation huNation = _mapper.Map<HuNation>(nation);
             huNation.CreatedTime = DateTime.Now;

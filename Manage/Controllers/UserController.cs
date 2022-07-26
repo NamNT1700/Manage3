@@ -53,9 +53,9 @@ namespace Manage.API.Controllers
         }
 
         [HttpPost("renew-token")]
-        public async Task<IActionResult> RenewToken(string user,string refreshToken)
+        public async Task<IActionResult> RenewToken(RefreshTokenDTO refreshTokenDTO)
         {
-            Response res = await _userService.RenewToken(user,refreshToken);
+            Response res = await _userService.RenewToken(refreshTokenDTO);
             return Ok(res);
         }
     }

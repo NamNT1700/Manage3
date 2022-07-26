@@ -29,7 +29,7 @@ namespace Manage.Model.Context
         public virtual DbSet<HuEmployee> HuEmployees { get; set; }
         public virtual DbSet<HuEmployeeCv> HuEmployeeCvs { get; set; }
         public virtual DbSet<HuEmployeeEducation> HuEmployeeEducations { get; set; }
-        public virtual DbSet<HuFamily> HuFamilies { get; set; }
+        public virtual DbSet<HuEmployeeFamily> HuFamilies { get; set; }
         public virtual DbSet<HuHospital> HuHospitals { get; set; }
         public virtual DbSet<HuNation> HuNations { get; set; }
         public virtual DbSet<HuOrgTitle> HuOrgTitles { get; set; }

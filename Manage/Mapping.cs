@@ -57,6 +57,7 @@ namespace Manage.API
 
             CreateMap<UserDTO, SeUser>();
             CreateMap<SeUser, UserDTO>();
+            CreateMap<SeUser, ListUserDTO>();
         }
     }
 }

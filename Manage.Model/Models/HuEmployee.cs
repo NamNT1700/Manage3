@@ -19,7 +19,7 @@ namespace Manage.Model.Models
         {
             HuEmployeeCvs = new HashSet<HuEmployeeCv>();
             HuEmployeeEducations = new HashSet<HuEmployeeEducation>();
-            HuFamilies = new HashSet<HuFamily>();
+            HuFamilies = new HashSet<HuEmployeeFamily>();
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
             HuShools = new HashSet<HuSchool>();
         }
@@ -89,8 +89,8 @@ namespace Manage.Model.Models
         public virtual ICollection<HuEmployeeCv> HuEmployeeCvs { get; set; }
         [InverseProperty(nameof(HuEmployeeEducation.Employee))]
         public virtual ICollection<HuEmployeeEducation> HuEmployeeEducations { get; set; }
-        [InverseProperty(nameof(HuFamily.Employee))]
-        public virtual ICollection<HuFamily> HuFamilies { get; set; }
+        [InverseProperty(nameof(HuEmployeeFamily.Employee))]
+        public virtual ICollection<HuEmployeeFamily> HuFamilies { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.Employee))]
         public virtual ICollection<HuSalaryRecord> HuSalaryRecords { get; set; }
         [InverseProperty(nameof(HuSchool.Employee))]
