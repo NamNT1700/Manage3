@@ -147,6 +147,7 @@ namespace Manage.Service.Service
             newUser.CreatedBy = newUser.LastUpdatedBy = tokenDecode.username;
             newUser.CreatedTime = newUser.LastUpdateTime = DateTime.UtcNow; 
             await _repositoryWrapper.User.Create(newUser);
+            newUser.Code = "Ue"+$"{newUser.Id}";
             await _context.SaveChangesAsync();
             response.status = "200";
             response.success = true;

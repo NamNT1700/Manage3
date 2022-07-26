@@ -26,7 +26,7 @@ namespace Manage.Common
             {
                 new Claim("username",user.Username),
                 new Claim("id",Convert.ToString(user.Id)),
-                new Claim("role",user.Role)
+                new Claim("Role",user.Role)
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
             claimsIdentity.AddClaims(userClaim);
@@ -69,7 +69,7 @@ namespace Manage.Common
         {
             TokenDecode tokenDecode = new TokenDecode();
             ClaimsPrincipal claimsPrincipal = DecodeAccessToken(token);
-            tokenDecode.role = claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("role")).Value;
+            tokenDecode.role = claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("Role")).Value;
             tokenDecode.username = claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("username")).Value;
             tokenDecode.exp = long.Parse(claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("exp")).Value);
             return tokenDecode;
