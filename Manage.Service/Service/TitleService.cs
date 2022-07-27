@@ -47,6 +47,7 @@ namespace Manage.Service.Service
         {
             BaseResponse response = new BaseResponse();
             List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll(request);
+            List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll();
             List<ListTitleDTO> listAllwance = _mapper.Map<List<ListTitleDTO>>(huNations);
             List<ListTitleDTO> lists = new List<ListTitleDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;

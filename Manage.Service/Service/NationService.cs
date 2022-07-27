@@ -48,6 +48,7 @@ namespace Manage.Service.Service
         {
             BaseResponse response = new BaseResponse();
             List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll(request);
+            List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll();
             List<ListNationDTO> listAllwance = _mapper.Map<List<ListNationDTO>>(huNations);
             List<ListNationDTO> lists = new List<ListNationDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;

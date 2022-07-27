@@ -14,7 +14,7 @@ namespace Manage.Model.Models
     {
         public HuWelface()
         {
-            HuContractualBenefits = new HashSet<HuContractualBenefit>();
+            HuContractualBenefits = new HashSet<HuContractWelface>();
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
         }
 
@@ -40,8 +40,8 @@ namespace Manage.Model.Models
         [Column("activeflg")]
         public string Activeflg { get; set; }
 
-        [InverseProperty(nameof(HuContractualBenefit.Welface))]
-        public virtual ICollection<HuContractualBenefit> HuContractualBenefits { get; set; }
+        [InverseProperty(nameof(HuContractWelface.Welface))]
+        public virtual ICollection<HuContractWelface> HuContractualBenefits { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.ContractWelface))]
         public virtual ICollection<HuSalaryRecord> HuSalaryRecords { get; set; }
     }

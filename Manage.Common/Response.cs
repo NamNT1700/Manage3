@@ -81,9 +81,5 @@ namespace Manage.Common
             response.message = "please fill all empty box";
             return response;
         }
-
-
-
-
     }
 }

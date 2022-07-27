@@ -48,6 +48,7 @@ namespace Manage.Service.Service
         {
             BaseResponse response = new BaseResponse();
             List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll(request);
+            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll();
             List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
             List<ListContractDTO> lists = new List<ListContractDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;

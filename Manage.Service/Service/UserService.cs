@@ -112,7 +112,7 @@ namespace Manage.Service.Service
                 seToken = genToken.GenerateTokens(loginUser);
                 loginUser.access_token = seToken.access_token;
                 loginUser.refresh_token = seToken.refresh_token;
-                loginUser.expired_time = DateTime.UtcNow.AddMinutes(1);
+                loginUser.expired_time = DateTime.UtcNow.AddDays(7);
                 await _repositoryWrapper.User.Update(loginUser);
                 await _context.SaveChangesAsync();
                 respones.status = "200";
@@ -143,14 +143,12 @@ namespace Manage.Service.Service
             }
             reUser.password = CodingPassword.EncodingUTF8(reUser.password);
             SeUser newUser = _mapper.Map<SeUser>(reUser);
-            newUser.ActiveFlg = "A";
-            newUser.CreatedBy = newUser.LastUpdatedBy = tokenDecode.username;
-            newUser.CreatedTime = newUser.LastUpdateTime = DateTime.UtcNow; 
             await _repositoryWrapper.User.Create(newUser);
-            newUser.Code = "Ue"+$"{newUser.Id}";
+            UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+            _mapper.Map(userInfoCreate, newUser);
+            newUser.Code = CreateCode.UserCode(newUser.Id);
             await _context.SaveChangesAsync();
-            response.status = "200";
-            response.success = true;
+            response = Response.SuccessResponse();
             response.item = newUser;
             return response;
         }
@@ -159,13 +157,7 @@ namespace Manage.Service.Service
         {
             BaseResponse response = new BaseResponse();
             bool isTrue = await _repositoryWrapper.User.CheckRefreshToken(refreshTokenDTO.username, refreshTokenDTO.refresh_token);
-            if(!isTrue)
-            {
-                response.status = "407";
-                response.success = false;
-                response.message = "refresh token invalid";
-                return response;
-            }
+            if(!isTrue) return Response.TokenInvalidResponse();
             SeUser loginUser = await _repositoryWrapper.User.FindByUsername(refreshTokenDTO.username);
             TokenGenarate accessToken = new TokenGenarate(_configuration);
             string access_token = accessToken.GenerateAccessToken(loginUser);

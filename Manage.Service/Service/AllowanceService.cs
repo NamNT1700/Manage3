@@ -28,6 +28,7 @@ namespace Manage.Service.Service
         public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
             BaseResponse response = new BaseResponse();
+            BaseResponse responce = new BaseResponse();
 
             HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
             huAllowance.CreatedTime = DateTime.Now;

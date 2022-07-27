@@ -26,7 +26,6 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-
         public Task<BaseResponse> AddNew(WelfaceDTO welfaceDto)
         {
             throw new NotImplementedException();
@@ -48,6 +47,7 @@ namespace Manage.Service.Service
         }
 
         public Task<BaseResponse> Delete(List<int> ids)
+        public Task<BaseResponse> AddNew(WelfaceDTO welface)
         {
             throw new NotImplementedException();
         }

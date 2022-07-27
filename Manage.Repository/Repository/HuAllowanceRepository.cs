@@ -14,7 +14,6 @@ namespace Manage.Repository.Repository
         public HuAllowanceRepository(DatabaseContext context) : base(context)
         {
         }
-       
     }
 
 }
