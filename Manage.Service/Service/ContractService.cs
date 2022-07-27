@@ -28,97 +28,73 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNew(ContractDTO contract)
+        public async Task<BaseResponse> AddNew(ContractDTO contract)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
 
             HuContract huContract = _mapper.Map<HuContract>(contract);
             huContract.CreatedTime = DateTime.Now;
             huContract.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Contract.Create(huContract);
+            huContract.Code = CreateCode.AllowanceCode(huContract.Id);
             await _context.SaveChangesAsync();
             ContractDTO bankDto = _mapper.Map<ContractDTO>(huContract);
-            responce.status = "200";
-            responce.item = bankDto;
-            return responce;
+            return Response.SuccessResponse();
         }
 
 
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
-            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll();
+            BaseResponse response = new BaseResponse();
+            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll(request);
             List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
             List<ListContractDTO> lists = new List<ListContractDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huContracts.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huContracts.Count())
                 lists = listAllwance.GetRange(firstIndex, request.pageSize);
             else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = lists;
-            return response;
+            return Response.SuccessResponse(lists);
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuContract huContract = await _repositoryWrapper.Contract.FindById(id);
             if (huContract != null)
             {
                 ContractDTO contract = _mapper.Map<ContractDTO>(huContract);
-                response.item = contract;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = $"no contract with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
 
 
-        public async Task<Response> Update(UpdateContractDTO update)
+        public async Task<BaseResponse> Update(UpdateContractDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuContract contract = await _repositoryWrapper.Contract.FindById(update.Id);
             if (contract != null)
             {
                 _mapper.Map(update.updateData, contract);
                 contract.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = contract;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuContract bank = await _repositoryWrapper.Contract.FindById(id);
                 await _repositoryWrapper.Contract.Delete(bank);
             }
-            response.message = "Delete contract";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }

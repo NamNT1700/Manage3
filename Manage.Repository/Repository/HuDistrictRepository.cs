@@ -15,5 +15,6 @@ namespace Manage.Repository.Repository
         public HuDistrictRepository(DatabaseContext context) : base(context)
         {
         }
+
     }
 }

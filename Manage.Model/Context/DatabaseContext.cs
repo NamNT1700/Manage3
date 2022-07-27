@@ -38,7 +38,6 @@ namespace Manage.Model.Context
         public virtual DbSet<HuSalaryRecord> HuSalaryRecords { get; set; }
         public virtual DbSet<HuSchool> HuShools { get; set; }
         public virtual DbSet<HuTitle> HuTitles { get; set; }
-        public virtual DbSet<HuTypeOfContract> HuTypeOfContracts { get; set; }
         public virtual DbSet<HuWard> HuWards { get; set; }
         public virtual DbSet<HuWelface> HuWelfaces { get; set; }
         public virtual DbSet<OtherList> OtherLists { get; set; }

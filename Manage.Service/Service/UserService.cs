@@ -30,10 +30,10 @@ namespace Manage.Service.Service
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<Response> ChangeStatusUser(UserDTO user)
+        public async Task<BaseResponse> ChangeStatusUser(UserDTO user)
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"]; //get token
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             TokenGenarate accessToken = new TokenGenarate(_configuration);
             TokenDecode tokenDecode = accessToken.TokenInfo(token);
             if (accessToken.CheckToken(tokenDecode) != null) return accessToken.CheckToken(tokenDecode);
@@ -52,9 +52,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> DeleteUsers(List<int> ids)
+        public async Task<BaseResponse> DeleteUsers(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 SeUser existUser = await _repositoryWrapper.User.FindById(id);
@@ -67,9 +67,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> FindUserById(int id)
+        public async Task<BaseResponse> FindUserById(int id)
         {
-            Response respones = new Response();
+            BaseResponse respones = new BaseResponse();
             SeUser existUser = await _repositoryWrapper.User.FindById(id);
             if (existUser == null)
             {
@@ -84,10 +84,10 @@ namespace Manage.Service.Service
             return respones;
         }
 
-        public async Task<Response> GetAllUsers(BaseRequest request)
+        public async Task<BaseResponse> GetAllUsers(BaseRequest request)
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"]; //get token
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             TokenGenarate accessToken = new TokenGenarate(_configuration);
             TokenDecode tokenDecode= accessToken.TokenInfo(token);
             if (accessToken.CheckToken(tokenDecode) != null) return accessToken.CheckToken(tokenDecode);
@@ -99,9 +99,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> Login(LoginDTO user)
+        public async Task<BaseResponse> Login(LoginDTO user)
         {
-            Response respones = new Response();
+            BaseResponse respones = new BaseResponse();
             string encodePass = CodingPassword.EncodingUTF8(user.password);
             string description = await _repositoryWrapper.User.CheckUserLogin(user.username, encodePass);
             if (description == null)
@@ -126,10 +126,10 @@ namespace Manage.Service.Service
             return respones;
         }
 
-        public async Task<Response> Register(UserDTO reUser)
+        public async Task<BaseResponse> Register(UserDTO reUser)
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"]; //get token
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             TokenGenarate accessToken = new TokenGenarate(_configuration);
             TokenDecode tokenDecode = accessToken.TokenInfo(token);
             if (accessToken.CheckToken(tokenDecode) != null) return accessToken.CheckToken(tokenDecode);
@@ -155,9 +155,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> RenewToken(RefreshTokenDTO refreshTokenDTO)
+        public async Task<BaseResponse> RenewToken(RefreshTokenDTO refreshTokenDTO)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             bool isTrue = await _repositoryWrapper.User.CheckRefreshToken(refreshTokenDTO.username, refreshTokenDTO.refresh_token);
             if(!isTrue)
             {

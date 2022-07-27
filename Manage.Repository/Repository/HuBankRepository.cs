@@ -17,9 +17,5 @@ namespace Manage.Repository.Repository
         {
            
         }
-        public async Task<List<HuBank>> GetAll()
-        {
-            return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());
-        }
     }
 }

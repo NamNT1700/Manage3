@@ -26,96 +26,72 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNew(BankDTO bank)
+        public async Task<BaseResponse> AddNew(BankDTO bank)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
             HuBank huBank = _mapper.Map<HuBank>(bank);
             huBank.CreatedTime = DateTime.Now;
             huBank.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Bank.Create(huBank);
+            huBank.Code = CreateCode.AllowanceCode(huBank.Id);
             await _context.SaveChangesAsync();
             BankDTO bankDto = _mapper.Map<BankDTO>(huBank);
-            responce.status = "200";
-            responce.item = bankDto;
-            return responce;
+            return Response.SuccessResponse();
         }
 
 
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
-            List<HuBank> huBanks = await _repositoryWrapper.Bank.GetAll();
+            BaseResponse response = new BaseResponse();
+            List<HuBank> huBanks = await _repositoryWrapper.Bank.GetAll(request);
             List<ListBankDTO> listBankDtos = _mapper.Map<List<ListBankDTO>>(huBanks);
             List<ListBankDTO> list = new List<ListBankDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huBanks.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huBanks.Count())
                 list = listBankDtos.GetRange(firstIndex, request.pageSize);
             else list = listBankDtos.GetRange(firstIndex, listBankDtos.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = list;
-            return response;
+            return Response.SuccessResponse(list);
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuBank huBank = await _repositoryWrapper.Bank.FindById(id);
             if (huBank != null)
             {
                 BankDTO bank = _mapper.Map<BankDTO>(huBank);
-                response.item = bank;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(bank);
             }
-            response.message = $"no bank with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
-       
 
-        public async Task<Response> Update(UpdateBankDTO update)
+
+        public async Task<BaseResponse> Update(UpdateBankDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuBank bank = await _repositoryWrapper.Bank.FindById(update.Id);
             if (bank != null)
             {
                 _mapper.Map(update.updateData, bank);
                 bank.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = bank;
-                return response;
+                return Response.SuccessResponse(bank);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuBank bank = await _repositoryWrapper.Bank.FindById(id);
                 await _repositoryWrapper.Bank.Delete(bank);
             }
-            response.message = "Delete bank";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }

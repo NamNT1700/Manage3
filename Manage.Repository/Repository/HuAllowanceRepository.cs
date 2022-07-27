@@ -14,10 +14,7 @@ namespace Manage.Repository.Repository
         public HuAllowanceRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<List<HuAllowance>> GetAll()
-        {
-            return await Task.Run(()=> FindAll().OrderBy(a => a.Id).ToList());
-        }
+       
     }
 
 }

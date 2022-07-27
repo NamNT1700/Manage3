@@ -26,7 +26,28 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public Task<Response> AddNew(WelfaceDTO welface)
+
+        public Task<BaseResponse> AddNew(WelfaceDTO welfaceDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BaseResponse> GetAll(BaseRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BaseResponse> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BaseResponse> Update(UpdateWelfaceDTO update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BaseResponse> Delete(List<int> ids)
         {
             throw new NotImplementedException();
         }

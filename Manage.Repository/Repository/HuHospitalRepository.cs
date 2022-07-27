@@ -16,9 +16,6 @@ namespace Manage.Repository.Repository
         public HuHospitalRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<List<HuHospital>> GetAll()
-        {
-            return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());
-        }
+       
     }
 }

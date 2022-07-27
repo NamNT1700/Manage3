@@ -23,31 +23,31 @@ namespace Manage.API.Controllers
         [HttpPost("AddNewNation")]
         public async Task<IActionResult> AllNew( TitleDTO title)
         {
-            Response response = await _titleService.AddNew(title);
+            BaseResponse response = await _titleService.AddNew(title);
             return Ok(response);
         }
         [HttpPost("GetAllNation")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            Response response = await _titleService.GetAll(request);
+            BaseResponse response = await _titleService.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            Response response = await _titleService.GetById(id);
+            BaseResponse response = await _titleService.GetById(id);
             return Ok(response);
         }
         [HttpPut("UpdateNation")]
         public async Task<IActionResult> Update(UpdateTitleDTO update)
         {
-            Response response = await _titleService.Update(update);
+            BaseResponse response = await _titleService.Update(update);
             return Ok(response);
         }
         [HttpDelete("DeleteNation")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            Response response = await _titleService.Delete(ids);
+            BaseResponse response = await _titleService.Delete(ids);
             return Ok(response);
         }
     }

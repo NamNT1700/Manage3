@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Manage.API.Migrations
 {
-    public partial class Migrations : Migration
+    public partial class Projectdone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -585,7 +585,7 @@ namespace Manage.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "hu_family",
+                name: "hu_employee_family",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -607,9 +607,9 @@ namespace Manage.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_hu_family", x => x.id);
+                    table.PrimaryKey("PK_hu_employee_family", x => x.id);
                     table.ForeignKey(
-                        name: "FK_hu_family_hu_employee_employee_id",
+                        name: "FK_hu_employee_family_hu_employee_employee_id",
                         column: x => x.employee_id,
                         principalTable: "hu_employee",
                         principalColumn: "id",
@@ -797,7 +797,7 @@ namespace Manage.API.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_hu_family_employee_id",
-                table: "hu_family",
+                table: "hu_employee_family",
                 column: "employee_id");
 
             migrationBuilder.CreateIndex(
@@ -858,7 +858,7 @@ namespace Manage.API.Migrations
                 name: "hu_employee_education");
 
             migrationBuilder.DropTable(
-                name: "hu_family");
+                name: "hu_employee_family");
 
             migrationBuilder.DropTable(
                 name: "hu_salary_records");

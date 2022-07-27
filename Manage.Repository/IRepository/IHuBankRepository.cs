@@ -8,8 +8,5 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuBankRepository : IRepositoryBase<HuBank>
     {
-        public Task<HuBank> FindByCode(string code);
-        public Task<HuBank> FindById(int id);
-        public Task<List<HuBank>> GetAll();
     }
 }

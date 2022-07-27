@@ -16,9 +16,5 @@ namespace Manage.Repository.Repository
         public HuNationRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<List<HuNation>> GetAll()
-        {
-            return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());
-        }
     }
 }

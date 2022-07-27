@@ -22,31 +22,31 @@ namespace Manage.API.Controllers
         [HttpPost("AddNewHospital")]
         public async Task<IActionResult> AllNew( HospitalDTO hospital)
         {
-            Response response = await _hospitalService.AddNew(hospital);
+            BaseResponse response = await _hospitalService.AddNew(hospital);
             return Ok(response);
         }
         [HttpPost("GetAllHospital")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            Response response = await _hospitalService.GetAll(request);
+            BaseResponse response = await _hospitalService.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            Response response = await _hospitalService.GetById(id);
+            BaseResponse response = await _hospitalService.GetById(id);
             return Ok(response);
         }
         [HttpPut("UpdateHospital")]
         public async Task<IActionResult> Update(UpdateHospitalDTO update)
         {
-            Response response = await _hospitalService.Update(update);
+            BaseResponse response = await _hospitalService.Update(update);
             return Ok(response);
         }
         [HttpDelete("DeleteHospital")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            Response response = await _hospitalService.Delete(ids);
+            BaseResponse response = await _hospitalService.Delete(ids);
             return Ok(response);
         }
     }

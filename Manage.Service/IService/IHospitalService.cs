@@ -10,10 +10,10 @@ namespace Manage.Service.IService
 {
     public interface IHospitalService
     {
-        Task<Response> AddNew(HospitalDTO hospital);
-        Task<Response> GetAll(BaseRequest request);
-        Task<Response> GetById(int id);
-        Task<Response> Update(UpdateHospitalDTO update);
-        Task<Response> Delete(List<int> ids);
+        Task<BaseResponse> AddNew(HospitalDTO hospital);
+        Task<BaseResponse> GetAll(BaseRequest request);
+        Task<BaseResponse> GetById(int id);
+        Task<BaseResponse> Update(UpdateHospitalDTO update);
+        Task<BaseResponse> Delete(List<int> ids);
     }
 }

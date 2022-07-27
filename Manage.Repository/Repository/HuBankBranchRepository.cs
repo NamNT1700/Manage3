@@ -15,5 +15,6 @@ namespace Manage.Repository.Repository
         public HuBankBranchRepository(DatabaseContext context) : base(context)
         {
         }
+
     }
 }

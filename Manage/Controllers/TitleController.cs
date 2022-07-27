@@ -22,31 +22,31 @@ namespace Manage.API.Controllers
         [HttpPost("AddNewTitle")]
         public async Task<IActionResult> AllNew(TitleDTO titleDto)
         {
-            Response response = await _titleService.AddNew(titleDto);
+            BaseResponse response = await _titleService.AddNew(titleDto);
             return Ok(response);
         }
         [HttpPost("GetAllTitle")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            Response response = await _titleService.GetAll(request);
+            BaseResponse response = await _titleService.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            Response response = await _titleService.GetById(id);
+            BaseResponse response = await _titleService.GetById(id);
             return Ok(response);
         }
         [HttpPut("UpdateTitle")]
         public async Task<IActionResult> Update(UpdateTitleDTO update)
         {
-            Response response = await _titleService.Update(update);
+            BaseResponse response = await _titleService.Update(update);
             return Ok(response);
         }
         [HttpDelete("DeleteTitle")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            Response response = await _titleService.Delete(ids);
+            BaseResponse response = await _titleService.Delete(ids);
             return Ok(response);
         }
     }

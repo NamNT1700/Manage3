@@ -25,95 +25,73 @@ namespace Manage.Service.Service
             _repositoryWrapper = repositoryWrapper;
             _context = context;
         }
-        public async Task<Response> AddNew(AllowanceDTO allowance)
+        public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
-            Response responce = new Response();
+            BaseResponse response = new BaseResponse();
 
             HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
             huAllowance.CreatedTime = DateTime.Now;
             huAllowance.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Allowance.Create(huAllowance);
+            huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
             await _context.SaveChangesAsync();
             AllowanceDTO allowanceDTO = _mapper.Map<AllowanceDTO>(huAllowance);
-            responce.status = "200";
-            responce.item = allowanceDTO;
-            return responce;
+            response = Response.SuccessResponse();
+            //response.item = allowance;
+            return response;
         }
 
        
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
-            List<HuAllowance> huAllwances = await _repositoryWrapper.Allowance.GetAll();
+            BaseResponse response = new BaseResponse();
+            List<HuAllowance> huAllwances = await _repositoryWrapper.Allowance.GetAll(request);
             List<ListAllowanceDTO> listAllwance =  _mapper.Map<List<ListAllowanceDTO>>(huAllwances);
             List<ListAllowanceDTO> lists = new List<ListAllowanceDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huAllwances.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huAllwances.Count())
                 lists = listAllwance.GetRange(firstIndex, request.pageSize);
             else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = lists;
-            return response;
+            return  Response.SuccessResponse(lists); ;
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindById(id);
             if (huAllowance != null)
             {
                 AllowanceDTO allowance = _mapper.Map<AllowanceDTO>(huAllowance);
-                response.item = allowance;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(allowance);
             }
-            response.message = $"no allwance with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
-        public async Task<Response> Update(UpdateAllowanceDTO update)
+        public async Task<BaseResponse> Update(UpdateAllowanceDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
             if(allowance!=null)
             {
                 _mapper.Map(update.updateData, allowance);
                 allowance.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = allowance;
-                return response;
+                return Response.SuccessResponse(allowance);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuAllowance allwance = await _repositoryWrapper.Allowance.FindById(id);
                 await _repositoryWrapper.Allowance.Delete(allwance);
             }
-            response.message = "Delete allwance";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }

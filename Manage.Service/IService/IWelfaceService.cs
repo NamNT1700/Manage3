@@ -10,6 +10,10 @@ namespace Manage.Service.IService
 {
     public interface IWelfaceService
     {
-        Task<Response> AddNew(WelfaceDTO welface);
+        Task<BaseResponse> AddNew(WelfaceDTO welfaceDto);
+        Task<BaseResponse> GetAll(BaseRequest request);
+        Task<BaseResponse> GetById(int id);
+        Task<BaseResponse> Update(UpdateWelfaceDTO update);
+        Task<BaseResponse> Delete(List<int> ids);
     }
 }
