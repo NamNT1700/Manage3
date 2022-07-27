@@ -22,6 +22,7 @@ namespace Manage.Common
             response.success = true;
             response.message = "success";
             response.status = "200";
+            response.item = item;
             return response;
         }
         public static BaseResponse DuplicateDataResponse(string message)
@@ -72,10 +73,13 @@ namespace Manage.Common
             response.message = "wrong username or password";
             return response;
         }
-        
-
-
-
-
+        public static BaseResponse DataNullResponse()
+        {
+            BaseResponse response = new BaseResponse();
+            response.success = false;
+            response.status = "406";
+            response.message = "please fill all empty box";
+            return response;
+        }
     }
 }

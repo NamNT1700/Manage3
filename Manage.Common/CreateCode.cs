@@ -1,3 +1,4 @@
+﻿using System;
 ﻿using Manage.Model.Models;
 using System;
 using System.Collections.Generic;
@@ -92,6 +93,18 @@ namespace Manage.Common
         public static string ProvinceCode(int id)
         {
             string code;
+            switch (id)
+            {
+                case < 10:
+                    code = "PRO00" + $"{id}";
+                    break;
+                case < 100:
+                    code = "PRO0" + $"{id}";
+                    break;
+                default:
+                    code = "PRO" + $"{id}";
+                    break;
+            }
             if (id < 10)
                 code = "PRO00" + $"{id}";
             else if (id < 100)
@@ -129,6 +142,7 @@ namespace Manage.Common
             else code = "ORG" + $"{id}";
             return code;
         }
+        public static string WelfareCode(int id)
         public static string WelfaceCode(int id)
         {
             string code;
@@ -159,6 +173,7 @@ namespace Manage.Common
             else code = "CA" + $"{id}";
             return code;
         }
+        public static string ContractWelfareCode(int id)
         public static string ContractWelfaceCode(int id)
         {
             string code;

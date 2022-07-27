@@ -57,5 +57,6 @@ namespace Manage.Model.Models
         public virtual ICollection<HuEmployee> HuEmployees { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.Contrac))]
         public virtual ICollection<HuSalaryRecord> HuSalaryRecords { get; set; }
+
     }
 }

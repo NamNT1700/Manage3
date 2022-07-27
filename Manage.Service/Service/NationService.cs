@@ -36,11 +36,10 @@ namespace Manage.Service.Service
             huNation.CreatedTime = DateTime.Now;
             huNation.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Nation.Create(huNation);
+            huNation.Code = CreateCode.AllowanceCode(huNation.Id);
             await _context.SaveChangesAsync();
             NationDTO hospitalDto = _mapper.Map<NationDTO>(huNation);
-            responce.status = "200";
-            responce.item = hospitalDto;
-            return responce;
+            return Response.SuccessResponse();
         }
 
 
@@ -48,24 +47,17 @@ namespace Manage.Service.Service
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
             BaseResponse response = new BaseResponse();
+            List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll(request);
             List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll();
             List<ListNationDTO> listAllwance = _mapper.Map<List<ListNationDTO>>(huNations);
             List<ListNationDTO> lists = new List<ListNationDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huNations.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huNations.Count())
                 lists = listAllwance.GetRange(firstIndex, request.pageSize);
             else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = lists;
-            return response;
+            return Response.SuccessResponse(lists);
         }
 
         public async Task<BaseResponse> GetById(int id)
@@ -75,15 +67,9 @@ namespace Manage.Service.Service
             if (nation != null)
             {
                 HospitalDTO contract = _mapper.Map<HospitalDTO>(nation);
-                response.item = contract;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = $"no Nation with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
 
@@ -97,15 +83,9 @@ namespace Manage.Service.Service
                 _mapper.Map(update.updateData, nation);
                 nation.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = nation;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
@@ -115,10 +95,7 @@ namespace Manage.Service.Service
                 HuNation hospital = await _repositoryWrapper.Nation.FindById(id);
                 await _repositoryWrapper.Nation.Delete(hospital);
             }
-            response.message = "Delete nation";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }

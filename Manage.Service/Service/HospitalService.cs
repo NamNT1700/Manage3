@@ -35,11 +35,10 @@ namespace Manage.Service.Service
             huHospital.CreatedTime = DateTime.Now;
             huHospital.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Hospital.Create(huHospital);
+            huHospital.Code = CreateCode.AllowanceCode(huHospital.Id);
             await _context.SaveChangesAsync();
             HospitalDTO hospitalDto = _mapper.Map<HospitalDTO>(huHospital);
-            responce.status = "200";
-            responce.item = hospitalDto;
-            return responce;
+            return Response.SuccessResponse();
         }
 
 
@@ -47,24 +46,17 @@ namespace Manage.Service.Service
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
             BaseResponse response = new BaseResponse();
+            List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll(request);
             List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll();
             List<ListHospitalDTO> listAllwance = _mapper.Map<List<ListHospitalDTO>>(huContracts);
             List<ListHospitalDTO> lists = new List<ListHospitalDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huContracts.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huContracts.Count())
                 lists = listAllwance.GetRange(firstIndex, request.pageSize);
             else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = lists;
-            return response;
+            return Response.SuccessResponse(lists);
         }
 
         public async Task<BaseResponse> GetById(int id)
@@ -74,15 +66,9 @@ namespace Manage.Service.Service
             if (hospital != null)
             {
                 HospitalDTO contract = _mapper.Map<HospitalDTO>(hospital);
-                response.item = contract;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = $"no hospital with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
 
@@ -96,15 +82,9 @@ namespace Manage.Service.Service
                 _mapper.Map(update.updateData, hospital);
                 hospital.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = hospital;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
@@ -114,10 +94,7 @@ namespace Manage.Service.Service
                 HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
                 await _repositoryWrapper.Hospital.Delete(hospital);
             }
-            response.message = "Delete hospital";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }

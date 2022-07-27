@@ -27,17 +27,19 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
+            BaseResponse response = new BaseResponse();
             BaseResponse responce = new BaseResponse();
 
             HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
             huAllowance.CreatedTime = DateTime.Now;
             huAllowance.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Allowance.Create(huAllowance);
+            huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
             await _context.SaveChangesAsync();
             AllowanceDTO allowanceDTO = _mapper.Map<AllowanceDTO>(huAllowance);
-            responce.status = "200";
-            responce.item = allowanceDTO;
-            return responce;
+            response = Response.SuccessResponse();
+            //response.item = allowance;
+            return response;
         }
 
        
@@ -50,19 +52,11 @@ namespace Manage.Service.Service
             List<ListAllowanceDTO> lists = new List<ListAllowanceDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huAllwances.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huAllwances.Count())
                 lists = listAllwance.GetRange(firstIndex, request.pageSize);
             else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = lists;
-            return response;
+            return  Response.SuccessResponse(lists); ;
         }
 
         public async Task<BaseResponse> GetById(int id)
@@ -72,15 +66,9 @@ namespace Manage.Service.Service
             if (huAllowance != null)
             {
                 AllowanceDTO allowance = _mapper.Map<AllowanceDTO>(huAllowance);
-                response.item = allowance;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(allowance);
             }
-            response.message = $"no allwance with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
         public async Task<BaseResponse> Update(UpdateAllowanceDTO update)
@@ -92,15 +80,9 @@ namespace Manage.Service.Service
                 _mapper.Map(update.updateData, allowance);
                 allowance.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = allowance;
-                return response;
+                return Response.SuccessResponse(allowance);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
@@ -110,10 +92,7 @@ namespace Manage.Service.Service
                 HuAllowance allwance = await _repositoryWrapper.Allowance.FindById(id);
                 await _repositoryWrapper.Allowance.Delete(allwance);
             }
-            response.message = "Delete allwance";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }

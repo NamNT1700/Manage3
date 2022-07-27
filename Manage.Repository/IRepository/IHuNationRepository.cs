@@ -8,8 +8,5 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuNationRepository : IRepositoryBase<HuNation>
     {
-        public Task<HuNation> FindByCode(string code);
-        public Task<HuNation> FindById(int id);
-        public Task<List<HuNation>> GetAll();
     }
 }

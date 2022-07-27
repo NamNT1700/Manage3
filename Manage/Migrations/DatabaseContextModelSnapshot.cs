@@ -714,7 +714,7 @@ namespace Manage.API.Migrations
                     b.ToTable("hu_employee_education");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuFamily", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuEmployeeFamily", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -785,7 +785,7 @@ namespace Manage.API.Migrations
 
                     b.HasIndex(new[] { "EmployeeId" }, "IX_hu_family_employee_id");
 
-                    b.ToTable("hu_family");
+                    b.ToTable("hu_employee_family");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuHospital", b =>
@@ -1632,7 +1632,7 @@ namespace Manage.API.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuFamily", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuEmployeeFamily", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
                         .WithMany("HuFamilies")

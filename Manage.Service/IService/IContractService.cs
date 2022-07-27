@@ -10,6 +10,7 @@ namespace Manage.Service.IService
 {
     public interface IContractService
     {
+        Task<BaseResponse> AddNew(ContractDTO contractDto);
         Task<BaseResponse> AddNew(ContractDTO bank);
         Task<BaseResponse> GetAll(BaseRequest request);
         Task<BaseResponse> GetById(int id);

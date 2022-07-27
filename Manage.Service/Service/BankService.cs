@@ -27,6 +27,7 @@ namespace Manage.Service.Service
             _context = context;
         }
 
+        public async Task<BaseResponse> AddNew(BankDTO bank)
         public async Task<BaseResponse> AddNewBank(BankDTO bank)
         {
             BaseResponse responce = new BaseResponse();
@@ -34,11 +35,10 @@ namespace Manage.Service.Service
             huBank.CreatedTime = DateTime.Now;
             huBank.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Bank.Create(huBank);
+            huBank.Code = CreateCode.AllowanceCode(huBank.Id);
             await _context.SaveChangesAsync();
             BankDTO bankDto = _mapper.Map<BankDTO>(huBank);
-            responce.status = "200";
-            responce.item = bankDto;
-            return responce;
+            return Response.SuccessResponse();
         }
 
 
@@ -48,6 +48,16 @@ namespace Manage.Service.Service
             BaseResponse response = new BaseResponse();
             List<HuBank> huBanks = await _repositoryWrapper.Bank.GetAll(request);
             List<ListBankDTO> listBankDtos = _mapper.Map<List<ListBankDTO>>(huBanks);
+            List<ListBankDTO> list = new List<ListBankDTO>();
+            int firstIndex = (request.pageNum - 1) * request.pageSize;
+            if (firstIndex >= huBanks.Count())
+                response = Response.DuplicateDataResponse("no user yet");
+            if (firstIndex + request.pageSize < huBanks.Count())
+                list = listBankDtos.GetRange(firstIndex, request.pageSize);
+            else list = listBankDtos.GetRange(firstIndex, listBankDtos.Count - firstIndex);
+            return Response.SuccessResponse(list);
+        }
+
             response.status = "200";
             response.success = true;
             response.item = listBankDtos;
@@ -60,19 +70,10 @@ namespace Manage.Service.Service
             if (huBank != null)
             {
                 BankDTO bank = _mapper.Map<BankDTO>(huBank);
-                response.item = bank;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(bank);
             }
-            response.message = $"no bank with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
-
-       
-
         public async Task<BaseResponse> Update(UpdateBankDTO update)
         {
             BaseResponse response = new BaseResponse();
@@ -82,15 +83,9 @@ namespace Manage.Service.Service
                 _mapper.Map(update.updateData, bank);
                 bank.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = bank;
-                return response;
+                return Response.SuccessResponse(bank);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
@@ -100,10 +95,7 @@ namespace Manage.Service.Service
                 HuBank bank = await _repositoryWrapper.Bank.FindById(id);
                 await _repositoryWrapper.Bank.Delete(bank);
             }
-            response.message = "Delete bank";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
 
         public async Task<BaseResponse> AddNewBranch(BankBranchDTO bankBranch)

@@ -36,11 +36,10 @@ namespace Manage.Service.Service
             huContract.CreatedTime = DateTime.Now;
             huContract.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Contract.Create(huContract);
+            huContract.Code = CreateCode.AllowanceCode(huContract.Id);
             await _context.SaveChangesAsync();
             ContractDTO bankDto = _mapper.Map<ContractDTO>(huContract);
-            responce.status = "200";
-            responce.item = bankDto;
-            return responce;
+            return Response.SuccessResponse();
         }
 
 
@@ -48,24 +47,17 @@ namespace Manage.Service.Service
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
             BaseResponse response = new BaseResponse();
+            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll(request);
             List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll();
             List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
             List<ListContractDTO> lists = new List<ListContractDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huContracts.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huContracts.Count())
                 lists = listAllwance.GetRange(firstIndex, request.pageSize);
             else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = lists;
-            return response;
+            return Response.SuccessResponse(lists);
         }
 
         public async Task<BaseResponse> GetById(int id)
@@ -75,15 +67,9 @@ namespace Manage.Service.Service
             if (huContract != null)
             {
                 ContractDTO contract = _mapper.Map<ContractDTO>(huContract);
-                response.item = contract;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = $"no contract with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
 
@@ -97,15 +83,9 @@ namespace Manage.Service.Service
                 _mapper.Map(update.updateData, contract);
                 contract.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = contract;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
@@ -115,10 +95,7 @@ namespace Manage.Service.Service
                 HuContract bank = await _repositoryWrapper.Contract.FindById(id);
                 await _repositoryWrapper.Contract.Delete(bank);
             }
-            response.message = "Delete contract";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }

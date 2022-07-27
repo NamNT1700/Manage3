@@ -14,14 +14,14 @@ using System.Threading.Tasks;
 
 namespace Manage.Repository.Repository
 {
-    public class UserRepository : RepositoryBase<SeUser>,IUserRepository
+    public class UserRepository : RepositoryBase<SeUser>, IUserRepository
     {
         public UserRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<bool> CheckPassword(SeUser user,string password)
+        public async Task<bool> CheckPassword(SeUser user, string password)
         {
-             if (user.Password == password)
+            if (user.Password == password)
                 return true;
             return false;
         }
@@ -30,7 +30,7 @@ namespace Manage.Repository.Repository
         {
 
             SeUser seUser = await FindByUsername(username);
-            
+
             if (seUser.refresh_token == refreshToken)
             {
                 long refresh_exp_long = long.Parse(seUser.refresh_token);
@@ -38,7 +38,7 @@ namespace Manage.Repository.Repository
                 if (refresh_exp_datetime < DateTime.UtcNow)
                     return true;
                 return false;
-            }                 
+            }
             return false;
         }
 
@@ -47,7 +47,7 @@ namespace Manage.Repository.Repository
             SeUser seUser = await FindByUsername(username);
             if (seUser == null)
                 return "wrong username";
-            bool isTrue =  await CheckPassword(seUser,password);
+            bool isTrue = await CheckPassword(seUser, password);
             if (isTrue == false)
                 return "wrong password";
             return null;

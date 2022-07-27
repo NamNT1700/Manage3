@@ -35,11 +35,10 @@ namespace Manage.Service.Service
             huTitle.CreatedTime = DateTime.Now;
             huTitle.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Title.Create(huTitle);
+            huTitle.Code = CreateCode.AllowanceCode(huTitle.Id);
             await _context.SaveChangesAsync();
             TitleDTO hospitalDto = _mapper.Map<TitleDTO>(huTitle);
-            responce.status = "200";
-            responce.item = hospitalDto;
-            return responce;
+            return Response.SuccessResponse();
         }
 
 
@@ -47,24 +46,17 @@ namespace Manage.Service.Service
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
             BaseResponse response = new BaseResponse();
+            List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll(request);
             List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll();
             List<ListTitleDTO> listAllwance = _mapper.Map<List<ListTitleDTO>>(huNations);
             List<ListTitleDTO> lists = new List<ListTitleDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huNations.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
+                response = Response.DuplicateDataResponse("no user yet");
             if (firstIndex + request.pageSize < huNations.Count())
                 lists = listAllwance.GetRange(firstIndex, request.pageSize);
             else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            response.status = "200";
-            response.success = true;
-            response.item = lists;
-            return response;
+            return Response.SuccessResponse(lists);
         }
 
         public async Task<BaseResponse> GetById(int id)
@@ -74,15 +66,9 @@ namespace Manage.Service.Service
             if (nation != null)
             {
                 TitleDTO contract = _mapper.Map<TitleDTO>(nation);
-                response.item = contract;
-                response.status = "200";
-                response.success = true;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = $"no Title with id {id} exist";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.NotFoundResponse();
         }
 
 
@@ -96,15 +82,9 @@ namespace Manage.Service.Service
                 _mapper.Map(update.updateData, nation);
                 nation.LastUpdateTime = DateTime.Now;
                 await _context.SaveChangesAsync();
-                response.status = "200";
-                response.success = true;
-                response.item = nation;
-                return response;
+                return Response.SuccessResponse(response);
             }
-            response.message = "update data fail";
-            response.status = "400";
-            response.success = false;
-            return response;
+            return Response.DataNullResponse();
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
@@ -114,10 +94,7 @@ namespace Manage.Service.Service
                 HuTitle title = await _repositoryWrapper.Title.FindById(id);
                 await _repositoryWrapper.Title.Delete(title);
             }
-            response.message = "Delete Title";
-            response.status = "200";
-            response.success = true;
-            return response;
+            return Response.SuccessResponse();
         }
     }
 }
