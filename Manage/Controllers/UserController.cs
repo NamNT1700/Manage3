@@ -23,39 +23,39 @@ namespace Manage.API.Controllers
         [HttpPost("register-user")]
         public async Task<IActionResult> RegisterUser( UserDTO user)
         {
-            Response res = await _userService.Register(user);
+            BaseResponse res = await _userService.Register(user);
             return Ok(res);
         }
         [HttpPost("get-all-users")]
         public async Task<IActionResult> GetAllUsers(BaseRequest baseRequest)
         {
-            Response res = await _userService.GetAllUsers(baseRequest);
+            BaseResponse res = await _userService.GetAllUsers(baseRequest);
             return Ok(res);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO user)
         {
-            Response res = await _userService.Login(user);
+            BaseResponse res = await _userService.Login(user);
             return Ok(res);
         }
         [HttpDelete("delete-user")]
         public async Task<IActionResult> Delete(List<int> id)
         {
-            Response res = await _userService.DeleteUsers(id);
+            BaseResponse res = await _userService.DeleteUsers(id);
             return Ok(res);
         }
         [HttpPut("update-status-user")]
         // [Authorize(Roles="Admin")]
         public async Task<IActionResult> UpdateStatusToInActive(UserDTO user)
         {
-            Response res = await _userService.ChangeStatusUser(user);
+            BaseResponse res = await _userService.ChangeStatusUser(user);
             return Ok(res);
         }
 
         [HttpPost("renew-token")]
         public async Task<IActionResult> RenewToken(RefreshTokenDTO refreshTokenDTO)
         {
-            Response res = await _userService.RenewToken(refreshTokenDTO);
+            BaseResponse res = await _userService.RenewToken(refreshTokenDTO);
             return Ok(res);
         }
     }

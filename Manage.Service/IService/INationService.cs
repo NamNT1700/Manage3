@@ -10,10 +10,10 @@ namespace Manage.Service.IService
 {
     public interface INationService
     {
-        Task<Response> AddNew(NationDTO nation);
-        Task<Response> GetAll(BaseRequest request);
-        Task<Response> GetById(int id);
-        Task<Response> Update(UpdateNationDTO update);
-        Task<Response> Delete(List<int> ids);
+        Task<BaseResponse> AddNew(NationDTO nation);
+        Task<BaseResponse> GetAll(BaseRequest request);
+        Task<BaseResponse> GetById(int id);
+        Task<BaseResponse> Update(UpdateNationDTO update);
+        Task<BaseResponse> Delete(List<int> ids);
     }
 }

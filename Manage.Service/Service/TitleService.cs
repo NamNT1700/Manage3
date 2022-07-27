@@ -27,9 +27,9 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNew(TitleDTO title)
+        public async Task<BaseResponse> AddNew(TitleDTO title)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
 
             HuTitle huTitle = _mapper.Map<HuTitle>(title);
             huTitle.CreatedTime = DateTime.Now;
@@ -44,9 +44,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll();
             List<ListTitleDTO> listAllwance = _mapper.Map<List<ListTitleDTO>>(huNations);
             List<ListTitleDTO> lists = new List<ListTitleDTO>();
@@ -67,9 +67,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuTitle nation = await _repositoryWrapper.Title.FindById(id);
             if (nation != null)
             {
@@ -87,9 +87,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> Update(UpdateTitleDTO update)
+        public async Task<BaseResponse> Update(UpdateTitleDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuTitle nation = await _repositoryWrapper.Title.FindById(update.Id);
             if (nation != null)
             {
@@ -106,9 +106,9 @@ namespace Manage.Service.Service
             response.success = false;
             return response;
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuTitle title = await _repositoryWrapper.Title.FindById(id);

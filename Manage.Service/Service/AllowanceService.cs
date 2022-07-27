@@ -25,9 +25,9 @@ namespace Manage.Service.Service
             _repositoryWrapper = repositoryWrapper;
             _context = context;
         }
-        public async Task<Response> AddNew(AllowanceDTO allowance)
+        public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
 
             HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
             huAllowance.CreatedTime = DateTime.Now;
@@ -42,9 +42,9 @@ namespace Manage.Service.Service
 
        
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             List<HuAllowance> huAllwances = await _repositoryWrapper.Allowance.GetAll(request);
             List<ListAllowanceDTO> listAllwance =  _mapper.Map<List<ListAllowanceDTO>>(huAllwances);
             List<ListAllowanceDTO> lists = new List<ListAllowanceDTO>();
@@ -65,9 +65,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindById(id);
             if (huAllowance != null)
             {
@@ -83,9 +83,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> Update(UpdateAllowanceDTO update)
+        public async Task<BaseResponse> Update(UpdateAllowanceDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
             if(allowance!=null)
             {
@@ -102,9 +102,9 @@ namespace Manage.Service.Service
             response.success = false;
             return response;
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuAllowance allwance = await _repositoryWrapper.Allowance.FindById(id);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Manage.Common
 {
-    public class CreateCode
+    public static class CreateCode
     {
         public static string UserCode(int id)
         {

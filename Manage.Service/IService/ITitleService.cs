@@ -10,10 +10,10 @@ namespace Manage.Service.IService
 {
     public interface ITitleService
     {
-        Task<Response> AddNew(TitleDTO title);
-        Task<Response> GetAll(BaseRequest request);
-        Task<Response> GetById(int id);
-        Task<Response> Update(UpdateTitleDTO update);
-        Task<Response> Delete(List<int> ids);
+        Task<BaseResponse> AddNew(TitleDTO title);
+        Task<BaseResponse> GetAll(BaseRequest request);
+        Task<BaseResponse> GetById(int id);
+        Task<BaseResponse> Update(UpdateTitleDTO update);
+        Task<BaseResponse> Delete(List<int> ids);
     }
 }

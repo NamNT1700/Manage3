@@ -22,31 +22,31 @@ namespace Manage.API.Controllers
         [HttpPost("AddNewContract")]
         public async Task<IActionResult> AllNew( ContractDTO contractDto)
         {
-            Response response = await _contractService.AddNew(contractDto);
+            BaseResponse response = await _contractService.AddNew(contractDto);
             return Ok(response);
         }
         [HttpPost("GetAllContract")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            Response response = await _contractService.GetAll(request);
+            BaseResponse response = await _contractService.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            Response response = await _contractService.GetById(id);
+            BaseResponse response = await _contractService.GetById(id);
             return Ok(response);
         }
         [HttpPut("UpdateContract")]
         public async Task<IActionResult> Update(UpdateContractDTO update)
         {
-            Response response = await _contractService.Update(update);
+            BaseResponse response = await _contractService.Update(update);
             return Ok(response);
         }
         [HttpDelete("DeleteContract")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            Response response = await _contractService.Delete(ids);
+            BaseResponse response = await _contractService.Delete(ids);
             return Ok(response);
         }
     }

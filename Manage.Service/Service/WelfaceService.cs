@@ -26,7 +26,7 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public Task<Response> AddNew(WelfaceDTO welface)
+        public Task<BaseResponse> AddNew(WelfaceDTO welface)
         {
             throw new NotImplementedException();
         }

@@ -28,9 +28,9 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNew(NationDTO nation)
+        public async Task<BaseResponse> AddNew(NationDTO nation)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
 
             HuNation huNation = _mapper.Map<HuNation>(nation);
             huNation.CreatedTime = DateTime.Now;
@@ -45,9 +45,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll();
             List<ListNationDTO> listAllwance = _mapper.Map<List<ListNationDTO>>(huNations);
             List<ListNationDTO> lists = new List<ListNationDTO>();
@@ -68,9 +68,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuNation nation = await _repositoryWrapper.Nation.FindById(id);
             if (nation != null)
             {
@@ -88,9 +88,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> Update(UpdateNationDTO update)
+        public async Task<BaseResponse> Update(UpdateNationDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuNation nation = await _repositoryWrapper.Nation.FindById(update.Id);
             if (nation != null)
             {
@@ -107,9 +107,9 @@ namespace Manage.Service.Service
             response.success = false;
             return response;
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuNation hospital = await _repositoryWrapper.Nation.FindById(id);

@@ -28,9 +28,9 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNew(ContractDTO contract)
+        public async Task<BaseResponse> AddNew(ContractDTO contract)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
 
             HuContract huContract = _mapper.Map<HuContract>(contract);
             huContract.CreatedTime = DateTime.Now;
@@ -45,9 +45,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll();
             List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
             List<ListContractDTO> lists = new List<ListContractDTO>();
@@ -68,9 +68,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuContract huContract = await _repositoryWrapper.Contract.FindById(id);
             if (huContract != null)
             {
@@ -88,9 +88,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> Update(UpdateContractDTO update)
+        public async Task<BaseResponse> Update(UpdateContractDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuContract contract = await _repositoryWrapper.Contract.FindById(update.Id);
             if (contract != null)
             {
@@ -107,9 +107,9 @@ namespace Manage.Service.Service
             response.success = false;
             return response;
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuContract bank = await _repositoryWrapper.Contract.FindById(id);

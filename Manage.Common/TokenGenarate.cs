@@ -74,9 +74,9 @@ namespace Manage.Common
             tokenDecode.exp = long.Parse(claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("exp")).Value);
             return tokenDecode;
         }
-        public Response CheckToken(TokenDecode token)
+        public BaseResponse CheckToken(TokenDecode token)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             DateTime expTimeConverted = ConvertToDateTime(token.exp);
             if (expTimeConverted < DateTime.UtcNow)
             {

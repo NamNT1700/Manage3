@@ -27,9 +27,9 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNewBank(BankDTO bank)
+        public async Task<BaseResponse> AddNewBank(BankDTO bank)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
             HuBank huBank = _mapper.Map<HuBank>(bank);
             huBank.CreatedTime = DateTime.Now;
             huBank.LastUpdateTime = DateTime.Now;
@@ -43,9 +43,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             List<HuBank> huBanks = await _repositoryWrapper.Bank.GetAll(request);
             List<ListBankDTO> listBankDtos = _mapper.Map<List<ListBankDTO>>(huBanks);
             response.status = "200";
@@ -53,9 +53,9 @@ namespace Manage.Service.Service
             response.item = listBankDtos;
             return response;
         }
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuBank huBank = await _repositoryWrapper.Bank.FindById(id);
             if (huBank != null)
             {
@@ -73,9 +73,9 @@ namespace Manage.Service.Service
 
        
 
-        public async Task<Response> Update(UpdateBankDTO update)
+        public async Task<BaseResponse> Update(UpdateBankDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuBank bank = await _repositoryWrapper.Bank.FindById(update.Id);
             if (bank != null)
             {
@@ -92,9 +92,9 @@ namespace Manage.Service.Service
             response.success = false;
             return response;
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuBank bank = await _repositoryWrapper.Bank.FindById(id);
@@ -106,11 +106,16 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> AddNewBranch(BankBranchDTO bankBranch)
+        public async Task<BaseResponse> AddNewBranch(BankBranchDTO bankBranch)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuBank bank = await _repositoryWrapper.Bank.FindByName(bankBranch.BankName);
-            if (bank == null) return response;
+            if (bank == null)
+            {
+                response.message = "Bank doesnt exilt";
+                response.status = "400";
+                response.success = false;
+            }               
             HuBankBranch huBankBranch = _mapper.Map<HuBankBranch>(bankBranch);
             huBankBranch.BankId = bank.Id;
             response.message = "success";

@@ -27,9 +27,9 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNew(HospitalDTO hospital)
+        public async Task<BaseResponse> AddNew(HospitalDTO hospital)
         {
-            Response responce = new Response();
+            BaseResponse responce = new BaseResponse();
 
             HuHospital huHospital = _mapper.Map<HuHospital>(hospital);
             huHospital.CreatedTime = DateTime.Now;
@@ -44,9 +44,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> GetAll(BaseRequest request)
+        public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll();
             List<ListHospitalDTO> listAllwance = _mapper.Map<List<ListHospitalDTO>>(huContracts);
             List<ListHospitalDTO> lists = new List<ListHospitalDTO>();
@@ -67,9 +67,9 @@ namespace Manage.Service.Service
             return response;
         }
 
-        public async Task<Response> GetById(int id)
+        public async Task<BaseResponse> GetById(int id)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
             if (hospital != null)
             {
@@ -87,9 +87,9 @@ namespace Manage.Service.Service
 
 
 
-        public async Task<Response> Update(UpdateHospitalDTO update)
+        public async Task<BaseResponse> Update(UpdateHospitalDTO update)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             HuHospital hospital = await _repositoryWrapper.Hospital.FindById(update.Id);
             if (hospital != null)
             {
@@ -106,9 +106,9 @@ namespace Manage.Service.Service
             response.success = false;
             return response;
         }
-        public async Task<Response> Delete(List<int> ids)
+        public async Task<BaseResponse> Delete(List<int> ids)
         {
-            Response response = new Response();
+            BaseResponse response = new BaseResponse();
             foreach (int id in ids)
             {
                 HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
