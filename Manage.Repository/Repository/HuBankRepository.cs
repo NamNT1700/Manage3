@@ -8,6 +8,7 @@ using Manage.Model.DTO.Bank;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manage.Repository.Repository
 {
@@ -17,9 +18,9 @@ namespace Manage.Repository.Repository
         {
            
         }
-        public async Task<List<HuBank>> GetAll()
+        public async Task<HuBank> FindByName(string name)
         {
-            return await Task.Run(() => FindAll().OrderBy(a => a.Id).ToList());
+            return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

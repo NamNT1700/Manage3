@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Manage.Common;
 using Manage.Model.Base;
 
 namespace Manage.Repository.Base.IRepository
@@ -13,6 +15,9 @@ namespace Manage.Repository.Base.IRepository
         Task Create(T entity);
         Task Update(T entity);
         Task Delete(T entity);
+        Task<T> FindByCode(string code);
+        Task<T> FindById(int id);
+        Task<List<T>> GetAll(BaseRequest baseRequest);
 
     }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.Bank;
+using Manage.Model.DTO.BankBranch;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
@@ -26,7 +27,7 @@ namespace Manage.Service.Service
             _context = context;
         }
 
-        public async Task<Response> AddNew(BankDTO bank)
+        public async Task<Response> AddNewBank(BankDTO bank)
         {
             Response responce = new Response();
             HuBank huBank = _mapper.Map<HuBank>(bank);
@@ -45,26 +46,13 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuBank> huBanks = await _repositoryWrapper.Bank.GetAll();
+            List<HuBank> huBanks = await _repositoryWrapper.Bank.GetAll(request);
             List<ListBankDTO> listBankDtos = _mapper.Map<List<ListBankDTO>>(huBanks);
-            List<ListBankDTO> list = new List<ListBankDTO>();
-            int firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= huBanks.Count())
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "no user yet";
-                return response;
-            }
-            if (firstIndex + request.pageSize < huBanks.Count())
-                list = listBankDtos.GetRange(firstIndex, request.pageSize);
-            else list = listBankDtos.GetRange(firstIndex, listBankDtos.Count - firstIndex);
             response.status = "200";
             response.success = true;
-            response.item = list;
+            response.item = listBankDtos;
             return response;
         }
-
         public async Task<Response> GetById(int id)
         {
             Response response = new Response();
@@ -116,6 +104,20 @@ namespace Manage.Service.Service
             response.status = "200";
             response.success = true;
             return response;
+        }
+
+        public async Task<Response> AddNewBranch(BankBranchDTO bankBranch)
+        {
+            Response response = new Response();
+            HuBank bank = await _repositoryWrapper.Bank.FindByName(bankBranch.BankName);
+            if (bank == null) return response;
+            HuBankBranch huBankBranch = _mapper.Map<HuBankBranch>(bankBranch);
+            huBankBranch.BankId = bank.Id;
+            response.message = "success";
+            response.status = "200";
+            response.success = true;
+            return response;
+
         }
     }
 }

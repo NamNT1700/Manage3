@@ -20,9 +20,9 @@ namespace Manage.API.Controllers
             _bankService = bankService;
         }
         [HttpPost("bank-insert")]
-        public async Task<IActionResult> AllNew(BankDTO bankDto)
+        public async Task<IActionResult> AllNewBank(BankDTO bankDto)
         {
-            Response response = await _bankService.AddNew(bankDto);
+            Response response = await _bankService.AddNewBank(bankDto);
             return Ok(response);
         }
         [HttpPost("bank-get-all")]

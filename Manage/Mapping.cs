@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Manage.Common;
 using Manage.Model.DTO.Allowance;
 using Manage.Model.DTO.Bank;
 using Manage.Model.DTO.Contract;
@@ -58,6 +59,8 @@ namespace Manage.API
             CreateMap<UserDTO, SeUser>();
             CreateMap<SeUser, UserDTO>();
             CreateMap<SeUser, ListUserDTO>();
+            CreateMap<UserInfoCreate, SeUser>();
+            CreateMap<UserInfoUpdate, SeUser>();
         }
     }
 }

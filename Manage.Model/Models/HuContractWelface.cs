@@ -9,9 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Manage.Model.Models
 {
-    [Table("hu_type_of_contract")]
-    [Index(nameof(ContractId), Name = "IX_hu_type_of_contract_contract_id")]
-    public partial class HuTypeOfContract : IEntityBase
+    [Table("hu_contractual_benefits")]
+    [Index(nameof(ContractId), Name = "IX_hu_contractual_benefits_contract_id")]
+    [Index(nameof(WelfaceId), Name = "IX_hu_contractual_benefits_welface_id")]
+    public partial class HuContractWelface : IEntityBase
     {
         [Key]
         [Column("id")]
@@ -31,16 +32,18 @@ namespace Manage.Model.Models
         public DateTime? LastUpdateTime { get; set; }
         [Column("contract_id")]
         public int? ContractId { get; set; }
-        [Column("name")]
-        [StringLength(255)]
-        public string Name { get; set; }
+        [Column("welface_id")]
+        public int? WelfaceId { get; set; }
+        [Column("money")]
+        public double? Money { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
-        [Column("number_of_month")]
-        public int? NumberOfMonth { get; set; }
 
         [ForeignKey(nameof(ContractId))]
-        [InverseProperty(nameof(HuContract.HuTypeOfContracts))]
+        [InverseProperty(nameof(HuContract.HuContractualBenefits))]
         public virtual HuContract Contract { get; set; }
+        [ForeignKey(nameof(WelfaceId))]
+        [InverseProperty(nameof(HuWelface.HuContractualBenefits))]
+        public virtual HuWelface Welface { get; set; }
     }
 }

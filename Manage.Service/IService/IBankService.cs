@@ -1,5 +1,6 @@
 ﻿using Manage.Common;
 using Manage.Model.DTO.Bank;
+using Manage.Model.DTO.BankBranch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace Manage.Service.IService
 {
     public interface IBankService
     {
-        Task<Response> AddNew(BankDTO bank);
+        Task<Response> AddNewBank(BankDTO bank);
+        Task<Response> AddNewBranch(BankBranchDTO bankBranch);
         Task<Response> GetAll(BaseRequest request);
         Task<Response> GetById(int id);
         Task<Response> Update(UpdateBankDTO update);

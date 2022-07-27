@@ -45,7 +45,7 @@ namespace Manage.Service.Service
         public async Task<Response> GetAll(BaseRequest request)
         {
             Response response = new Response();
-            List<HuAllowance> huAllwances = await _repositoryWrapper.Allowance.GetAll();
+            List<HuAllowance> huAllwances = await _repositoryWrapper.Allowance.GetAll(request);
             List<ListAllowanceDTO> listAllwance =  _mapper.Map<List<ListAllowanceDTO>>(huAllwances);
             List<ListAllowanceDTO> lists = new List<ListAllowanceDTO>();
             int firstIndex = (request.pageNum - 1) * request.pageSize;

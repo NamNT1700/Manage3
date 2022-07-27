@@ -112,7 +112,7 @@ namespace Manage.Service.Service
                 seToken = genToken.GenerateTokens(loginUser);
                 loginUser.access_token = seToken.access_token;
                 loginUser.refresh_token = seToken.refresh_token;
-                loginUser.expired_time = DateTime.UtcNow.AddMinutes(1);
+                loginUser.expired_time = DateTime.UtcNow.AddDays(7);
                 await _repositoryWrapper.User.Update(loginUser);
                 await _context.SaveChangesAsync();
                 respones.status = "200";
@@ -143,11 +143,10 @@ namespace Manage.Service.Service
             }
             reUser.password = CodingPassword.EncodingUTF8(reUser.password);
             SeUser newUser = _mapper.Map<SeUser>(reUser);
-            newUser.ActiveFlg = "A";
-            newUser.CreatedBy = newUser.LastUpdatedBy = tokenDecode.username;
-            newUser.CreatedTime = newUser.LastUpdateTime = DateTime.UtcNow; 
             await _repositoryWrapper.User.Create(newUser);
-            newUser.Code = "Ue"+$"{newUser.Id}";
+            UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+            _mapper.Map(userInfoCreate, newUser);
+            newUser.Code = CreateCode.UserCode(newUser.Id);
             await _context.SaveChangesAsync();
             response.status = "200";
             response.success = true;
