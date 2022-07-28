@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Manage.Model.Context;
 using Manage.Model.DTO.Allowance;
+using Manage.Model.DTO.Bank;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 
@@ -28,13 +29,13 @@ namespace Manage.Service.Service
         public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
             if (allowance.Name == null) return Response.DataNullResponse();
-            var huAllowance = _mapper.Map<HuAllowance>(allowance);
-            huAllowance.CreatedTime = DateTime.Now;
-            huAllowance.LastUpdateTime = DateTime.Now;
-            await _repositoryWrapper.Allowance.Create(huAllowance);
-            huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
+            var hAllowance = _mapper.Map<HuAllowance>(allowance);
+            hAllowance.CreatedTime = DateTime.Now;
+            hAllowance.LastUpdateTime = DateTime.Now;
+            await _repositoryWrapper.Allowance.Create(hAllowance);
+            hAllowance.Code = CreateCode.AllowanceCode(hAllowance.Id);
             await _context.SaveChangesAsync();
-            _mapper.Map<AllowanceDTO>(huAllowance);
+            _mapper.Map<AllowanceDTO>(hAllowance);
             return Response.SuccessResponse();
         }
 
