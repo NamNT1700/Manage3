@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Manage.Common
 {
-    public class CodingPassword
+    public static class CodingPassword
     {
         public static string EncodingUTF8(string password)
         {

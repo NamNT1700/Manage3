@@ -34,6 +34,14 @@ namespace Manage.Service.Service
             hAllowance.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Allowance.Create(hAllowance);
             hAllowance.Code = CreateCode.AllowanceCode(hAllowance.Id);
+            BaseResponse response = new BaseResponse();
+            BaseResponse responce = new BaseResponse();
+
+            HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
+            huAllowance.CreatedTime = DateTime.Now;
+            huAllowance.LastUpdateTime = DateTime.Now;
+            await _repositoryWrapper.Allowance.Create(huAllowance);
+            huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
             await _context.SaveChangesAsync();
             _mapper.Map<AllowanceDTO>(hAllowance);
             return Response.SuccessResponse();

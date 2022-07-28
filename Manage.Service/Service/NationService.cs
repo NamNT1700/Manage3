@@ -48,6 +48,12 @@ namespace Manage.Service.Service
             var listNations = _mapper.Map<List<ListNationDTO>>(huNations);
             var lists = new List<ListNationDTO>();
             var firstIndex = (request.pageNum - 1) * request.pageSize;
+            BaseResponse response = new BaseResponse();
+            List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll(request);
+            List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll();
+            List<ListNationDTO> listAllwance = _mapper.Map<List<ListNationDTO>>(huNations);
+            List<ListNationDTO> lists = new List<ListNationDTO>();
+            int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huNations.Count())
                 Response.DuplicateDataResponse("no user yet");
             else if (firstIndex + request.pageSize < huNations.Count())

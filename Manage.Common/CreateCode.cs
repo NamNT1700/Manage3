@@ -1,4 +1,6 @@
 ﻿using System;
+﻿using Manage.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -103,6 +105,11 @@ namespace Manage.Common
                     code = "PRO" + $"{id}";
                     break;
             }
+            if (id < 10)
+                code = "PRO00" + $"{id}";
+            else if (id < 100)
+                code = "PRO0" + $"{id}";
+            else code = "PRO" + $"{id}";
             return code;
         }
         public static string WardCode(int id)
@@ -136,6 +143,7 @@ namespace Manage.Common
             return code;
         }
         public static string WelfareCode(int id)
+        public static string WelfaceCode(int id)
         {
             string code;
             if (id < 10)
@@ -166,6 +174,7 @@ namespace Manage.Common
             return code;
         }
         public static string ContractWelfareCode(int id)
+        public static string ContractWelfaceCode(int id)
         {
             string code;
             if (id < 10)

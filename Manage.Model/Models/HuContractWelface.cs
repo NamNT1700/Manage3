@@ -12,7 +12,7 @@ namespace Manage.Model.Models
     [Table("hu_contractual_benefits")]
     [Index(nameof(ContractId), Name = "IX_hu_contractual_benefits_contract_id")]
     [Index(nameof(WelfaceId), Name = "IX_hu_contractual_benefits_welface_id")]
-    public partial class HuContractualBenefit : IEntityBase
+    public partial class HuContractWelface : IEntityBase
     {
         [Key]
         [Column("id")]

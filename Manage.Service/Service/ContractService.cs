@@ -49,6 +49,12 @@ namespace Manage.Service.Service
             var listContract = _mapper.Map<List<ListContractDTO>>(huContracts);
             var lists = new List<ListContractDTO>();
             var firstIndex = (request.pageNum - 1) * request.pageSize;
+            BaseResponse response = new BaseResponse();
+            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll(request);
+            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll();
+            List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
+            List<ListContractDTO> lists = new List<ListContractDTO>();
+            int firstIndex = (request.pageNum - 1) * request.pageSize;
             if (firstIndex >= huContracts.Count())
                 Response.DuplicateDataResponse("no user yet");
             else if (firstIndex + request.pageSize < huContracts.Count())

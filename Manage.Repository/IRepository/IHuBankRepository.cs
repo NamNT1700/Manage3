@@ -8,5 +8,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuBankRepository : IRepositoryBase<HuBank>
     {
+        Task<HuBank> FindByName(string name);
     }
 }

@@ -100,9 +100,5 @@ namespace Manage.Common
             };
             return response;
         }
-
-
-
-
     }
 }

@@ -53,6 +53,17 @@ namespace Manage.Service.Service
             else if (firstIndex + request.pageSize < hopHospitals.Count())
                 lists = listHospitals.GetRange(firstIndex, request.pageSize);
             else lists = listHospitals.GetRange(firstIndex, listHospitals.Count - firstIndex);
+            BaseResponse response = new BaseResponse();
+            List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll(request);
+            List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll();
+            List<ListHospitalDTO> listAllwance = _mapper.Map<List<ListHospitalDTO>>(huContracts);
+            List<ListHospitalDTO> lists = new List<ListHospitalDTO>();
+            int firstIndex = (request.pageNum - 1) * request.pageSize;
+            if (firstIndex >= huContracts.Count())
+                response = Response.DuplicateDataResponse("no user yet");
+            if (firstIndex + request.pageSize < huContracts.Count())
+                lists = listAllwance.GetRange(firstIndex, request.pageSize);
+            else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
             return Response.SuccessResponse(lists);
         }
 

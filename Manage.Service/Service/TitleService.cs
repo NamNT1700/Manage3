@@ -53,6 +53,17 @@ namespace Manage.Service.Service
             else if(firstIndex + request.pageSize < titles.Count())
                 lists = listTitles.GetRange(firstIndex, request.pageSize);
             else lists = listTitles.GetRange(firstIndex, listTitles.Count - firstIndex);
+            BaseResponse response = new BaseResponse();
+            List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll(request);
+            List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll();
+            List<ListTitleDTO> listAllwance = _mapper.Map<List<ListTitleDTO>>(huNations);
+            List<ListTitleDTO> lists = new List<ListTitleDTO>();
+            int firstIndex = (request.pageNum - 1) * request.pageSize;
+            if (firstIndex >= huNations.Count())
+                response = Response.DuplicateDataResponse("no user yet");
+            if (firstIndex + request.pageSize < huNations.Count())
+                lists = listAllwance.GetRange(firstIndex, request.pageSize);
+            else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
             return Response.SuccessResponse(lists);
         }
 
