@@ -14,7 +14,8 @@ namespace Manage.API.Controllers
     [Controller]
     public class TitleController : ControllerBase
     {
-        private ITitleService _titleService;
+        private readonly ITitleService _titleService;
+
         public TitleController(ITitleService titleService)
         {
             _titleService = titleService;
@@ -22,31 +23,31 @@ namespace Manage.API.Controllers
         [HttpPost("AddNewTitle")]
         public async Task<IActionResult> AllNew(TitleDTO titleDto)
         {
-            BaseResponse response = await _titleService.AddNew(titleDto);
+            var response = await _titleService.AddNew(titleDto);
             return Ok(response);
         }
         [HttpPost("GetAllTitle")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            BaseResponse response = await _titleService.GetAll(request);
+            var response = await _titleService.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            BaseResponse response = await _titleService.GetById(id);
+            var response = await _titleService.GetById(id);
             return Ok(response);
         }
         [HttpPut("UpdateTitle")]
         public async Task<IActionResult> Update(UpdateTitleDTO update)
         {
-            BaseResponse response = await _titleService.Update(update);
+            var response = await _titleService.Update(update);
             return Ok(response);
         }
         [HttpDelete("DeleteTitle")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            BaseResponse response = await _titleService.Delete(ids);
+            var response = await _titleService.Delete(ids);
             return Ok(response);
         }
     }

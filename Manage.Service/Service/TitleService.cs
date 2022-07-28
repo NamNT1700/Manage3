@@ -15,9 +15,9 @@ namespace Manage.Service.Service
 {
     public class TitleService : ITitleService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context;
+        private readonly IMapper _mapper;
+        private readonly DatabaseContext _context;
+        private readonly IRepositoryWrapper _repositoryWrapper;
 
 
         public TitleService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
@@ -29,15 +29,14 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> AddNew(TitleDTO title)
         {
-            BaseResponse responce = new BaseResponse();
-
-            HuTitle huTitle = _mapper.Map<HuTitle>(title);
+            if (title.Name == null) return Response.DataNullResponse();
+            var huTitle = _mapper.Map<HuTitle>(title);
             huTitle.CreatedTime = DateTime.Now;
             huTitle.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Title.Create(huTitle);
             huTitle.Code = CreateCode.AllowanceCode(huTitle.Id);
             await _context.SaveChangesAsync();
-            TitleDTO hospitalDto = _mapper.Map<TitleDTO>(huTitle);
+            _mapper.Map<TitleDTO>(huTitle);
             return Response.SuccessResponse();
         }
 
@@ -45,6 +44,15 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
+            var titles = await _repositoryWrapper.Title.GetAll(request);
+            var listTitles = _mapper.Map<List<ListTitleDTO>>(titles);
+            var lists = new List<ListTitleDTO>();
+            var firstIndex = (request.pageNum - 1) * request.pageSize;
+            if (firstIndex >= titles.Count())
+                Response.DuplicateDataResponse("no user yet");
+            else if(firstIndex + request.pageSize < titles.Count())
+                lists = listTitles.GetRange(firstIndex, request.pageSize);
+            else lists = listTitles.GetRange(firstIndex, listTitles.Count - firstIndex);
             BaseResponse response = new BaseResponse();
             List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll(request);
             List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll();
@@ -61,38 +69,41 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetById(int id)
         {
-            BaseResponse response = new BaseResponse();
-            HuTitle nation = await _repositoryWrapper.Title.FindById(id);
-            if (nation != null)
-            {
-                TitleDTO contract = _mapper.Map<TitleDTO>(nation);
-                return Response.SuccessResponse(response);
-            }
-            return Response.NotFoundResponse();
+            var response = new BaseResponse();
+            var nation = await _repositoryWrapper.Title.FindById(id);
+            if (nation == null) return Response.NotFoundResponse();
+            _mapper.Map<TitleDTO>(nation);
+            return Response.SuccessResponse(response);
         }
 
 
 
         public async Task<BaseResponse> Update(UpdateTitleDTO update)
         {
-            BaseResponse response = new BaseResponse();
-            HuTitle nation = await _repositoryWrapper.Title.FindById(update.Id);
-            if (nation != null)
-            {
-                _mapper.Map(update.updateData, nation);
-                nation.LastUpdateTime = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return Response.SuccessResponse(response);
-            }
-            return Response.DataNullResponse();
+            var response = new BaseResponse();
+            var nation = await _repositoryWrapper.Title.FindById(update.Id);
+            if (nation == null) return Response.DataNullResponse();
+            _mapper.Map(update.updateData, nation);
+            nation.LastUpdateTime = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return Response.SuccessResponse(response);
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            BaseResponse response = new BaseResponse();
-            foreach (int id in ids)
+            foreach (var id in ids)
             {
-                HuTitle title = await _repositoryWrapper.Title.FindById(id);
-                await _repositoryWrapper.Title.Delete(title);
+                var title = await _repositoryWrapper.Title.FindById(id);
+                if (title == null)
+                {
+                    return Response.NotFoundResponse();
+                }
+
+            }
+            foreach (var id in ids)
+            {
+                var title = await _repositoryWrapper.Title.FindById(id);
+                if (title != null)
+                    await _repositoryWrapper.Title.Delete(title);
             }
             return Response.SuccessResponse();
         }

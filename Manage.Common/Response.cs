@@ -10,75 +10,94 @@ namespace Manage.Common
     {
         public static BaseResponse SuccessResponse()
         {
-            BaseResponse response = new BaseResponse();
-            response.success = true;
-            response.message = "success";
-            response.status = "200";
+            var response = new BaseResponse
+            {
+                success = true,
+                message = "success",
+                status = "200"
+            };
+
             return response;
         }
         public static BaseResponse SuccessResponse(object item)
         {
-            BaseResponse response = new BaseResponse();
-            response.success = true;
-            response.message = "success";
-            response.status = "200";
-            response.item = item;
+            var response = new BaseResponse
+            {
+                success = true,
+                message = "success",
+                status = "200",
+                item = item
+            };
             return response;
         }
         public static BaseResponse DuplicateDataResponse(string message)
         {
-            BaseResponse response = new BaseResponse();
-            response.success = false;
-            response.status = "400";
-            response.message = message;
+            var response = new BaseResponse
+            {
+                success = false,
+                status = "400",
+                message = message
+            };
             return response;
         }
         public static BaseResponse TokenInvalidResponse()
         {
-            BaseResponse response = new BaseResponse();
-            response.success = false;
-            response.status = "401";
-            response.message = "invalid token";
+            var response = new BaseResponse
+            {
+                success = false,
+                status = "401",
+                message = "invalid token"
+            };
             return response;
         }
         public static BaseResponse TokenExpirationResponse()
         {
-            BaseResponse response = new BaseResponse();
-            response.success = false;
-            response.status = "402";
-            response.message = "token expiration";
+            var response = new BaseResponse
+            {
+                success = false,
+                status = "402",
+                message = "token expiration"
+            };
             return response;
         }
         public static BaseResponse ForbiddenResponse()
         {
-            BaseResponse response = new BaseResponse();
-            response.success = false;
-            response.message = "forbidden";
-            response.status = "403";
+            var response = new BaseResponse
+            {
+                success = false,
+                message = "forbidden",
+                status = "403"
+            };
             return response;
         }
         public static BaseResponse NotFoundResponse()
         {
-            BaseResponse response = new BaseResponse();
-            response.success = false;
-            response.status = "404";
-            response.message = "Not found";
+            var response = new BaseResponse
+            {
+                success = false,
+                status = "404",
+                message = "Not found"
+            };
             return response;
         }
         public static BaseResponse BadLoginResponse()
         {
-            BaseResponse response = new BaseResponse();
-            response.success = false;
-            response.status = "405";
-            response.message = "wrong username or password";
+            var response = new BaseResponse
+            {
+                success = false,
+                status = "405",
+                message = "wrong username or password"
+            };
             return response;
         }
         public static BaseResponse DataNullResponse()
         {
-            BaseResponse response = new BaseResponse();
-            response.success = false;
-            response.status = "406";
-            response.message = "please fill all empty box";
+            var response = new BaseResponse
+            {
+                success = false,
+                status = "406",
+                message = "please fill all empty box"
+            };
             return response;
         }
     }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220726114806_Project done")]
-    partial class Projectdone
+    [Migration("20220727142453_Done")]
+    partial class Done
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1216,61 +1216,6 @@ namespace Manage.API.Migrations
                     b.ToTable("hu_title");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuTypeOfContract", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Activeflg")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("activeflg");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("code");
-
-                    b.Property<int?>("ContractId")
-                        .HasColumnType("int")
-                        .HasColumnName("contract_id");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTime?>("CreatedTime")
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_time");
-
-                    b.Property<DateTime?>("LastUpdateTime")
-                        .HasColumnType("datetime")
-                        .HasColumnName("last_update_time");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("last_updated_by");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("name");
-
-                    b.Property<int?>("NumberOfMonth")
-                        .HasColumnType("int")
-                        .HasColumnName("number_of_month");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "ContractId" }, "IX_hu_type_of_contract_contract_id");
-
-                    b.ToTable("hu_type_of_contract");
-                });
-
             modelBuilder.Entity("Manage.Model.Models.HuWard", b =>
                 {
                     b.Property<int>("Id")
@@ -1689,15 +1634,6 @@ namespace Manage.API.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuTypeOfContract", b =>
-                {
-                    b.HasOne("Manage.Model.Models.HuContract", "Contract")
-                        .WithMany("HuTypeOfContracts")
-                        .HasForeignKey("ContractId");
-
-                    b.Navigation("Contract");
-                });
-
             modelBuilder.Entity("Manage.Model.Models.HuWard", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuDistrict", "Distric")
@@ -1750,8 +1686,6 @@ namespace Manage.API.Migrations
                     b.Navigation("HuEmployees");
 
                     b.Navigation("HuSalaryRecords");
-
-                    b.Navigation("HuTypeOfContracts");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuContractAllowance", b =>

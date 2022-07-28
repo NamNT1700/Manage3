@@ -15,9 +15,9 @@ namespace Manage.Service.Service
 {
     public class HospitalService : IHospitalService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context;
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly DatabaseContext _context;
 
 
         public HospitalService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
@@ -29,15 +29,14 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> AddNew(HospitalDTO hospital)
         {
-            BaseResponse responce = new BaseResponse();
-
-            HuHospital huHospital = _mapper.Map<HuHospital>(hospital);
+            if (hospital.Name == null) return Response.DataNullResponse();
+            var huHospital = _mapper.Map<HuHospital>(hospital);
             huHospital.CreatedTime = DateTime.Now;
             huHospital.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Hospital.Create(huHospital);
             huHospital.Code = CreateCode.AllowanceCode(huHospital.Id);
             await _context.SaveChangesAsync();
-            HospitalDTO hospitalDto = _mapper.Map<HospitalDTO>(huHospital);
+            _mapper.Map<HospitalDTO>(huHospital);
             return Response.SuccessResponse();
         }
 
@@ -45,6 +44,15 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
+            var hopHospitals = await _repositoryWrapper.Hospital.GetAll(request);
+            var listHospitals = _mapper.Map<List<ListHospitalDTO>>(hopHospitals);
+            var lists = new List<ListHospitalDTO>();
+            var firstIndex = (request.pageNum - 1) * request.pageSize;
+            if (firstIndex >= hopHospitals.Count())
+                Response.DuplicateDataResponse("no user yet");
+            else if (firstIndex + request.pageSize < hopHospitals.Count())
+                lists = listHospitals.GetRange(firstIndex, request.pageSize);
+            else lists = listHospitals.GetRange(firstIndex, listHospitals.Count - firstIndex);
             BaseResponse response = new BaseResponse();
             List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll(request);
             List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll();
@@ -61,40 +69,44 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetById(int id)
         {
-            BaseResponse response = new BaseResponse();
-            HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
-            if (hospital != null)
-            {
-                HospitalDTO contract = _mapper.Map<HospitalDTO>(hospital);
-                return Response.SuccessResponse(response);
-            }
-            return Response.NotFoundResponse();
+            var response = new BaseResponse();
+            var hospital = await _repositoryWrapper.Hospital.FindById(id);
+            if (hospital == null) return Response.NotFoundResponse();
+            _mapper.Map<HospitalDTO>(hospital);
+            return Response.SuccessResponse(response);
         }
 
 
 
         public async Task<BaseResponse> Update(UpdateHospitalDTO update)
         {
-            BaseResponse response = new BaseResponse();
-            HuHospital hospital = await _repositoryWrapper.Hospital.FindById(update.Id);
-            if (hospital != null)
-            {
-                _mapper.Map(update.updateData, hospital);
-                hospital.LastUpdateTime = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return Response.SuccessResponse(response);
-            }
-            return Response.DataNullResponse();
+            var response = new BaseResponse();
+            var hospital = await _repositoryWrapper.Hospital.FindById(update.Id);
+            if (hospital == null) return Response.DataNullResponse();
+            _mapper.Map(update.updateData, hospital);
+            hospital.LastUpdateTime = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return Response.SuccessResponse(response);
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            BaseResponse response = new BaseResponse();
-            foreach (int id in ids)
+            foreach (var id in ids)
             {
-                HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
-                await _repositoryWrapper.Hospital.Delete(hospital);
+                var hospital = await _repositoryWrapper.Hospital.FindById(id);
+                if (hospital == null)
+                {
+                    return Response.NotFoundResponse();
+                }
+
+            }
+            foreach (var id in ids)
+            {
+                var hospital = await _repositoryWrapper.Hospital.FindById(id);
+                if (hospital != null)
+                    await _repositoryWrapper.Hospital.Delete(hospital);
             }
             return Response.SuccessResponse();
+
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Manage.API.Migrations
 {
-    public partial class Projectdone : Migration
+    public partial class Done : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -278,33 +278,6 @@ namespace Manage.API.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_hu_Contract_allowance_hu_contract_contract_id",
-                        column: x => x.contract_id,
-                        principalTable: "hu_contract",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "hu_type_of_contract",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    contract_id = table.Column<int>(type: "int", nullable: true),
-                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    number_of_month = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_hu_type_of_contract", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_hu_type_of_contract_hu_contract_contract_id",
                         column: x => x.contract_id,
                         principalTable: "hu_contract",
                         principalColumn: "id",
@@ -831,11 +804,6 @@ namespace Manage.API.Migrations
                 column: "employee_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_hu_type_of_contract_contract_id",
-                table: "hu_type_of_contract",
-                column: "contract_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_hu_ward_distric_id",
                 table: "hu_ward",
                 column: "distric_id");
@@ -865,9 +833,6 @@ namespace Manage.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "hu_shools");
-
-            migrationBuilder.DropTable(
-                name: "hu_type_of_contract");
 
             migrationBuilder.DropTable(
                 name: "hu_ward");
