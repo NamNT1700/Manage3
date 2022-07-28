@@ -14,7 +14,8 @@ namespace Manage.API.Controllers
     [Controller]
     public class ContractController : ControllerBase
     {
-        private IContractService _contractService;
+        private readonly IContractService _contractService;
+
         public ContractController(IContractService contractService)
         {
             _contractService = contractService;
@@ -22,31 +23,31 @@ namespace Manage.API.Controllers
         [HttpPost("AddNewContract")]
         public async Task<IActionResult> AllNew( ContractDTO contractDto)
         {
-            BaseResponse response = await _contractService.AddNew(contractDto);
+            var response = await _contractService.AddNew(contractDto);
             return Ok(response);
         }
         [HttpPost("GetAllContract")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            BaseResponse response = await _contractService.GetAll(request);
+            var response = await _contractService.GetAll(request);
             return Ok(response);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            BaseResponse response = await _contractService.GetById(id);
+            var response = await _contractService.GetById(id);
             return Ok(response);
         }
         [HttpPut("UpdateContract")]
         public async Task<IActionResult> Update(UpdateContractDTO update)
         {
-            BaseResponse response = await _contractService.Update(update);
+            var response = await _contractService.Update(update);
             return Ok(response);
         }
         [HttpDelete("DeleteContract")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            BaseResponse response = await _contractService.Delete(ids);
+            var response = await _contractService.Delete(ids);
             return Ok(response);
         }
     }

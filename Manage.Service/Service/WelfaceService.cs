@@ -14,9 +14,9 @@ namespace Manage.Service.Service
 {
     public class WelfaceService: IWelfaceService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context;
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly DatabaseContext _context;
 
 
         public WelfaceService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)

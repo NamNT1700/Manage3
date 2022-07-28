@@ -12,12 +12,12 @@ using Manage.Repository.Base.IRepository;
 
 namespace Manage.Service.Service
 {
-    public class AllowanceService :IAllowanceService
+    public class AllowanceService : IAllowanceService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context ;
-        
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly DatabaseContext _context;
+
 
         public AllowanceService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
         {
@@ -27,69 +27,67 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
-            BaseResponse response = new BaseResponse();
-
-            HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
+            if (allowance.Name == null) return Response.DataNullResponse();
+            var huAllowance = _mapper.Map<HuAllowance>(allowance);
             huAllowance.CreatedTime = DateTime.Now;
             huAllowance.LastUpdateTime = DateTime.Now;
             await _repositoryWrapper.Allowance.Create(huAllowance);
             huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
             await _context.SaveChangesAsync();
-            AllowanceDTO allowanceDTO = _mapper.Map<AllowanceDTO>(huAllowance);
-            response = Response.SuccessResponse();
-            //response.item = allowance;
-            return response;
+            _mapper.Map<AllowanceDTO>(huAllowance);
+            return Response.SuccessResponse();
         }
 
-       
+
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            BaseResponse response = new BaseResponse();
-            List<HuAllowance> huAllwances = await _repositoryWrapper.Allowance.GetAll(request);
-            List<ListAllowanceDTO> listAllwance =  _mapper.Map<List<ListAllowanceDTO>>(huAllwances);
-            List<ListAllowanceDTO> lists = new List<ListAllowanceDTO>();
-            int firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= huAllwances.Count())
-                response = Response.DuplicateDataResponse("no user yet");
-            if (firstIndex + request.pageSize < huAllwances.Count())
-                lists = listAllwance.GetRange(firstIndex, request.pageSize);
-            else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            return  Response.SuccessResponse(lists); ;
+            if ( request.pageNum <1 && request.pageSize<1) return Response.DataNullResponse();
+            var huAllowances = await _repositoryWrapper.Allowance.GetAll(request);
+            var listAllowance = _mapper.Map<List<ListAllowanceDTO>>(huAllowances);
+            var lists = new List<ListAllowanceDTO>();
+            var firstIndex = (request.pageNum - 1) * request.pageSize;
+            if (firstIndex >= huAllowances.Count())
+                Response.DuplicateDataResponse("no user yet");
+            else if (firstIndex + request.pageSize < huAllowances.Count())
+                lists = listAllowance.GetRange(firstIndex, request.pageSize);
+            else lists = listAllowance.GetRange(firstIndex, listAllowance.Count - firstIndex);
+            return Response.SuccessResponse(lists);
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
-            BaseResponse response = new BaseResponse();
-            HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindById(id);
-            if (huAllowance != null)
-            {
-                AllowanceDTO allowance = _mapper.Map<AllowanceDTO>(huAllowance);
-                return Response.SuccessResponse(allowance);
-            }
-            return Response.NotFoundResponse();
+            var huAllowance = await _repositoryWrapper.Allowance.FindById(id);
+            if (huAllowance == null) return Response.NotFoundResponse();
+            var allowance = _mapper.Map<AllowanceDTO>(huAllowance);
+            return Response.SuccessResponse(allowance);
         }
 
         public async Task<BaseResponse> Update(UpdateAllowanceDTO update)
         {
-            BaseResponse response = new BaseResponse();
-            HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
-            if(allowance!=null)
-            {
-                _mapper.Map(update.updateData, allowance);
-                allowance.LastUpdateTime = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return Response.SuccessResponse(allowance);
-            }
-            return Response.DataNullResponse();
+            var allowance = await _repositoryWrapper.Allowance.FindById(update.id);
+            if (allowance == null) return Response.DataNullResponse();
+            _mapper.Map(update.updateData, allowance);
+            allowance.LastUpdateTime = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return Response.SuccessResponse(allowance);
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            BaseResponse response = new BaseResponse();
-            foreach (int id in ids)
+            foreach (var id in ids)
             {
-                HuAllowance allwance = await _repositoryWrapper.Allowance.FindById(id);
-                await _repositoryWrapper.Allowance.Delete(allwance);
+                var allowance = await _repositoryWrapper.Allowance.FindById(id);
+                if (allowance == null)
+                {
+                    return Response.NotFoundResponse();
+                }
+
+            }
+            foreach (var id in ids)
+            {
+                var allowance = await _repositoryWrapper.Allowance.FindById(id);
+                if (allowance != null)
+                    await _repositoryWrapper.Allowance.Delete(allowance);
             }
             return Response.SuccessResponse();
         }

@@ -55,13 +55,13 @@ namespace Manage.Repository.Base.Repository
             return await FindByCondition(a => a.Id.Equals(id)).FirstOrDefaultAsync();
 
         }
-       
+
         public async Task<List<T>> GetAll(BaseRequest baseRequest)
         {
             return await Task.Run(() => FindAll().OrderBy(a => a.Id)
-            .Skip((baseRequest.pageNum-1)* baseRequest.pageSize)
-            .Take(baseRequest.pageSize)
-            .ToList());
+                .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+                .Take(baseRequest.pageSize)
+                .ToList());
         }
     }
 }

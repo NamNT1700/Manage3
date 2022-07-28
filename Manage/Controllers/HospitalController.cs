@@ -14,7 +14,8 @@ namespace Manage.API.Controllers
     [Controller]
     public class HospitalController : ControllerBase
     {
-        private IHospitalService _hospitalService;
+        private readonly IHospitalService _hospitalService;
+
         public HospitalController(IHospitalService hospitalService)
         {
             _hospitalService = hospitalService;
@@ -22,31 +23,31 @@ namespace Manage.API.Controllers
         [HttpPost("AddNewHospital")]
         public async Task<IActionResult> AllNew( HospitalDTO hospital)
         {
-            BaseResponse response = await _hospitalService.AddNew(hospital);
+            var response = await _hospitalService.AddNew(hospital);
             return Ok(response);
         }
         [HttpPost("GetAllHospital")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            BaseResponse response = await _hospitalService.GetAll(request);
+            var response = await _hospitalService.GetAll(request);
             return Ok(response);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            BaseResponse response = await _hospitalService.GetById(id);
+            var response = await _hospitalService.GetById(id);
             return Ok(response);
         }
         [HttpPut("UpdateHospital")]
         public async Task<IActionResult> Update(UpdateHospitalDTO update)
         {
-            BaseResponse response = await _hospitalService.Update(update);
+            var response = await _hospitalService.Update(update);
             return Ok(response);
         }
         [HttpDelete("DeleteHospital")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            BaseResponse response = await _hospitalService.Delete(ids);
+            var response = await _hospitalService.Delete(ids);
             return Ok(response);
         }
     }
