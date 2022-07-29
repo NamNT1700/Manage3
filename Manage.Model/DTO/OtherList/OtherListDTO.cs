@@ -8,5 +8,7 @@ namespace Manage.Model.DTO.OtherList
 {
     public class OtherListDTO
     {
+        public int? TypeId { get; set; }
+
     }
 }

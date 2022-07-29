@@ -20,13 +20,13 @@ namespace Manage.API.Controllers
         {
             _hospitalService = hospitalService;
         }
-        [HttpPost("AddNewHospital")]
+        [HttpPost("hospital-insert")]
         public async Task<IActionResult> AllNew( HospitalDTO hospital)
         {
             var response = await _hospitalService.AddNew(hospital);
             return Ok(response);
         }
-        [HttpPost("GetAllHospital")]
+        [HttpPost("hospital-get-all")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
             var response = await _hospitalService.GetAll(request);
@@ -38,13 +38,13 @@ namespace Manage.API.Controllers
             var response = await _hospitalService.GetById(id);
             return Ok(response);
         }
-        [HttpPut("UpdateHospital")]
+        [HttpPut("hospital-update")]
         public async Task<IActionResult> Update(UpdateHospitalDTO update)
         {
             var response = await _hospitalService.Update(update);
             return Ok(response);
         }
-        [HttpDelete("DeleteHospital")]
+        [HttpDelete("hospital-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
             var response = await _hospitalService.Delete(ids);

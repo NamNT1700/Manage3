@@ -18,12 +18,11 @@ namespace Manage.Service.Service
 {
     public class BankBranchService : IBankBranchService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context;
-        private IConfiguration _configuration;
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly DatabaseContext _context;
+        private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
         public BankBranchService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
             IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
@@ -47,7 +46,6 @@ namespace Manage.Service.Service
             await _repositoryWrapper.BankBranch.Create(huBankBranch);
             huBankBranch.Code = CreateCode.BankBranchCode(huBankBranch.Id);
             UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
-            _mapper.Map(userInfoCreate, bankBranch);
             await _context.SaveChangesAsync();
             return Response.SuccessResponse();
         }

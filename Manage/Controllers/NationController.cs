@@ -21,13 +21,13 @@ namespace Manage.API.Controllers
         {
             _titleService = titleService;
         }
-        [HttpPost("AddNewNation")]
+        [HttpPost("nation-insert")]
         public async Task<IActionResult> AllNew( TitleDTO title)
         {
             var response = await _titleService.AddNew(title);
             return Ok(response);
         }
-        [HttpPost("GetAllNation")]
+        [HttpPost("nation-get-all")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
             var response = await _titleService.GetAll(request);
@@ -39,13 +39,13 @@ namespace Manage.API.Controllers
             var response = await _titleService.GetById(id);
             return Ok(response);
         }
-        [HttpPut("UpdateNation")]
+        [HttpPut("nation-update")]
         public async Task<IActionResult> Update(UpdateTitleDTO update)
         {
             var response = await _titleService.Update(update);
             return Ok(response);
         }
-        [HttpDelete("DeleteNation")]
+        [HttpDelete("nation-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
             var response = await _titleService.Delete(ids);

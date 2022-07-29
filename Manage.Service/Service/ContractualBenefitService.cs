@@ -16,12 +16,11 @@ namespace Manage.Service.Service
 {
     public class ContractualBenefitService : IContractualBenefitService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context;
-        private IConfiguration _configuration;
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly DatabaseContext _context;
+        private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
         public ContractualBenefitService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
             IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {

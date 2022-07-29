@@ -10,7 +10,7 @@ namespace Manage.Model.DTO.Province
     public class UpdateProvince
     {
         public string Name { get; set; }
-        public string NationName { get; set; }
+        public int? NationId { get; set; }
         public string Activeflg { get; set; }
     }
 }

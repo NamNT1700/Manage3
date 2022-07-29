@@ -8,5 +8,9 @@ namespace Manage.Model.DTO.SalaryRecord
 {
     public class ListSalaryRecordDTO
     {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public double? Money { get; set; }
+
     }
 }

@@ -95,18 +95,13 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> Login(LoginDTO user)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
             string encodePass = Tools.EncodingUTF8(user.password);
             string description = await _repositoryWrapper.User.CheckUserLogin(user.username, encodePass);
             if (description == null)
             {
                 SeToken seToken = new SeToken();
                 SeUser loginUser = await _repositoryWrapper.User.FindByUsername(user.username);
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 seToken = tokenConfiguration.GenerateTokens(loginUser);
                 loginUser.access_token = seToken.access_token;
                 loginUser.refresh_token = seToken.refresh_token;
@@ -118,6 +113,7 @@ namespace Manage.Service.Service
             return Response.BadLoginResponse();
         }
 
+        
         public async Task<BaseResponse> Register(UserDTO reUser)
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];

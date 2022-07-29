@@ -17,5 +17,7 @@ namespace Manage.Model.DTO.School
         public DateTime? CertificateFromDate { get; set; }
         public DateTime? CertificateTodate { get; set; }
         public string TrainForm { get; set; }
+        public int? EmployeeId { get; set; }
+
     }
 }

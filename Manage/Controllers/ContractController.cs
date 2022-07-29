@@ -20,13 +20,13 @@ namespace Manage.API.Controllers
         {
             _contractService = contractService;
         }
-        [HttpPost("AddNewContract")]
+        [HttpPost("contract-insert")]
         public async Task<IActionResult> AllNew( ContractDTO contractDto)
         {
             var response = await _contractService.AddNew(contractDto);
             return Ok(response);
         }
-        [HttpPost("GetAllContract")]
+        [HttpPost("contract-get-all")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
             var response = await _contractService.GetAll(request);
@@ -38,13 +38,13 @@ namespace Manage.API.Controllers
             var response = await _contractService.GetById(id);
             return Ok(response);
         }
-        [HttpPut("UpdateContract")]
+        [HttpPut("contract-update")]
         public async Task<IActionResult> Update(UpdateContractDTO update)
         {
             var response = await _contractService.Update(update);
             return Ok(response);
         }
-        [HttpDelete("DeleteContract")]
+        [HttpDelete("contract-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
             var response = await _contractService.Delete(ids);

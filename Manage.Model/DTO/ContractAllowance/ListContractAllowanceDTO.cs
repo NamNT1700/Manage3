@@ -8,5 +8,8 @@ namespace Manage.Model.DTO.ContractAllowance
 {
    public class ListContractAllowanceDTO
     {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public double? Money { get; set; }
     }
 }

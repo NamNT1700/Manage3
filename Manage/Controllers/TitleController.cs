@@ -20,13 +20,13 @@ namespace Manage.API.Controllers
         {
             _titleService = titleService;
         }
-        [HttpPost("AddNewTitle")]
+        [HttpPost("title-insert")]
         public async Task<IActionResult> AllNew(TitleDTO titleDto)
         {
             var response = await _titleService.AddNew(titleDto);
             return Ok(response);
         }
-        [HttpPost("GetAllTitle")]
+        [HttpPost("title-get-all")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
             var response = await _titleService.GetAll(request);
@@ -38,13 +38,13 @@ namespace Manage.API.Controllers
             var response = await _titleService.GetById(id);
             return Ok(response);
         }
-        [HttpPut("UpdateTitle")]
+        [HttpPut("title-update")]
         public async Task<IActionResult> Update(UpdateTitleDTO update)
         {
             var response = await _titleService.Update(update);
             return Ok(response);
         }
-        [HttpDelete("DeleteTitle")]
+        [HttpDelete("title-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
             var response = await _titleService.Delete(ids);

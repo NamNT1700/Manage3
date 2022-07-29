@@ -8,5 +8,6 @@ namespace Manage.Model.DTO.OtherListType
 {
     public class OtherListTypeDTO
     {
+        public string Name { get; set; }
     }
 }

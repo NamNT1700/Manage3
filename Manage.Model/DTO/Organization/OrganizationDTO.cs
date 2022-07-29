@@ -8,5 +8,8 @@ namespace Manage.Model.DTO.Organization
 {
     public class OrganizationDTO
     {
+        public string Name { get; set; }
+        public int? ParentId { get; set; }
+        public int? OrderNumber { get; set; }
     }
 }

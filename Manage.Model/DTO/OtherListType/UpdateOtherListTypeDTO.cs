@@ -8,5 +8,12 @@ namespace Manage.Model.DTO.OtherListType
 {
     public class UpdateOtherListTypeDTO
     {
+        public int id { get; set; }
+        public UpdateOtherListType updateData { get; set; }
+    }
+    public class UpdateOtherListType
+    {
+        public string Name { get; set; }
+       
     }
 }

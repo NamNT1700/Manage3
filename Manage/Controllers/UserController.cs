@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Manage.API.Controllers
 {
@@ -20,6 +21,7 @@ namespace Manage.API.Controllers
         {
             _userService = userService;
         }
+        
         [HttpPost("register-user")]
         public async Task<IActionResult> RegisterUser( UserDTO user)
         {
@@ -46,7 +48,7 @@ namespace Manage.API.Controllers
         }
         [HttpPut("update-status-user")]
         // [Authorize(Roles="Admin")]
-        public async Task<IActionResult> UpdateStatusUser(int id)
+        public async Task<IActionResult> UpdateStatusToInActive(int id)
         {
             BaseResponse res = await _userService.ChangeStatusUser(id);
             return Ok(res);

@@ -25,6 +25,7 @@ using Manage.Model.DTO.User;
 using Manage.Model.DTO.Ward;
 using Manage.Model.DTO.Welface;
 using Manage.Model.Models;
+using UpdateDataAllowance = Manage.Model.DTO.Allowance.UpdateDataAllowance;
 
 
 namespace Manage.API

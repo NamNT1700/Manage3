@@ -16,10 +16,10 @@ namespace Manage.Service.Service
 {
     public class EmployeeFamilyService : IEmployeeFamilyService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context;
-        private IConfiguration _configuration;
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly DatabaseContext _context;
+        private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public EmployeeFamilyService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,

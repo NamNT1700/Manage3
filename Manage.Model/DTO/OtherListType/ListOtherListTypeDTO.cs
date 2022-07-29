@@ -8,5 +8,8 @@ namespace Manage.Model.DTO.OtherListType
 {
     public class ListOtherListTypeDTO
     {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
     }
 }
