@@ -42,7 +42,7 @@ namespace Manage.API
                     });
             });
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>(); 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAllowanceService, AllowanceService>();
             services.AddScoped<IBankService, BankService>();

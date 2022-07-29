@@ -14,7 +14,7 @@ namespace Manage.Model.DTO.District
    public class UpdateDistrict
     {
        public string Name { get; set; }
-       public int? ProvinceId { get; set; }
+       public string ProvinceName { get; set; }
        public string Activeflg { get; set; }
     }
 }

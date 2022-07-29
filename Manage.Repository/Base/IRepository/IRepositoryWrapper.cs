@@ -16,5 +16,23 @@ namespace Manage.Repository.Base.IRepository
         IHuNationRepository Nation { get; }
         IHuTitleRepository Title { get; }
         IUserRepository User { get; }
+        IHuBankBranchRepository BankBranch { get; }
+        IHuContractAllowanceRepository ContractAllowance { get; }
+        IHuContractWelfaceRepository ContractWelface { get; }
+        IHuDistrictRepository District { get; }
+        IHuEmployeeCvRepository EmployeeCv { get; }
+        IHuEmployeeEducationRepository EmployeeEducation { get; }
+        IHuEmployeeFamilyRepository EmployeeFamily { get; }
+        IHuEmployeeRepository Employee { get; }
+        IHuOrganizationRepository Organization { get; }
+        IHuOrgTitleRepository OrgTitle { get; }
+        IHuProvinceRepository Province { get; }
+        IHuSalaryRecordRepository SalaryRecord { get; }
+        IHuSchoolRepository School { get; }
+        IHuWardRepository Ward { get; }
+        IHuWelfaceRepository Welface { get; }
+        IOtherListRepository OtherList { get; }
+        IOtherListTypeRepository OtherListType { get; }
+
     }
 }

@@ -24,7 +24,7 @@ namespace Manage.Model.Context
         public virtual DbSet<HuBankBranch> HuBankBranches { get; set; }
         public virtual DbSet<HuContract> HuContracts { get; set; }
         public virtual DbSet<HuContractAllowance> HuContractAllowances { get; set; }
-        public virtual DbSet<HuContractWelface> HuContractualBenefits { get; set; }
+        public virtual DbSet<HuContractWelface> HuContractWelfaces { get; set; }
         public virtual DbSet<HuDistrict> HuDistricts { get; set; }
         public virtual DbSet<HuEmployee> HuEmployees { get; set; }
         public virtual DbSet<HuEmployeeCv> HuEmployeeCvs { get; set; }

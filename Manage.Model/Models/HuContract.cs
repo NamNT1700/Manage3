@@ -15,7 +15,7 @@ namespace Manage.Model.Models
         public HuContract()
         {
             HuContractAllowances = new HashSet<HuContractAllowance>();
-            HuContractualBenefits = new HashSet<HuContractWelface>();
+            HuContractWelfaces = new HashSet<HuContractWelface>();
             HuEmployees = new HashSet<HuEmployee>();
             HuSalaryRecords = new HashSet<HuSalaryRecord>();
         }
@@ -52,7 +52,7 @@ namespace Manage.Model.Models
         [InverseProperty(nameof(HuContractAllowance.Contract))]
         public virtual ICollection<HuContractAllowance> HuContractAllowances { get; set; }
         [InverseProperty(nameof(HuContractWelface.Contract))]
-        public virtual ICollection<HuContractWelface> HuContractualBenefits { get; set; }
+        public virtual ICollection<HuContractWelface> HuContractWelfaces { get; set; }
         [InverseProperty(nameof(HuEmployee.Contract))]
         public virtual ICollection<HuEmployee> HuEmployees { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.Contrac))]

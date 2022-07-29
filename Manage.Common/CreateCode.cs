@@ -30,6 +30,16 @@ namespace Manage.Common
             else code = "BA" + $"{id}";
             return code;
         }
+        public static string BankBranchCode(int id)
+        {
+            string code;
+            if (id < 10)
+                code = "BAB00" + $"{id}";
+            else if (id < 100)
+                code = "BAB0" + $"{id}";
+            else code = "BAB" + $"{id}";
+            return code;
+        }
         public static string AllowanceCode(int id)
         {
             string code;
@@ -142,7 +152,6 @@ namespace Manage.Common
             else code = "ORG" + $"{id}";
             return code;
         }
-        public static string WelfareCode(int id)
         public static string WelfaceCode(int id)
         {
             string code;
@@ -173,7 +182,6 @@ namespace Manage.Common
             else code = "CA" + $"{id}";
             return code;
         }
-        public static string ContractWelfareCode(int id)
         public static string ContractWelfaceCode(int id)
         {
             string code;

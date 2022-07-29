@@ -13,7 +13,6 @@ namespace Manage.Repository.IRepository
     public interface IUserRepository: IRepositoryBase<SeUser>
     {
         public Task<string> CheckUserLogin(string username, string password);
-        public Task<SeUser> FindById(int id);
         //public Task<string> CheckUserInfo(string username, string email);
         public Task<bool> CheckPassword(SeUser user,string password);
         public Task<SeUser> FindByUsername(string username);

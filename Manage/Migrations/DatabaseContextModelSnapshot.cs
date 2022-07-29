@@ -281,7 +281,7 @@ namespace Manage.API.Migrations
                     b.ToTable("hu_Contract_allowance");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuContractualBenefit", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuContractWelface", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1478,14 +1478,14 @@ namespace Manage.API.Migrations
                     b.Navigation("Contract");
                 });
 
-            modelBuilder.Entity("Manage.Model.Models.HuContractualBenefit", b =>
+            modelBuilder.Entity("Manage.Model.Models.HuContractWelface", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuContract", "Contract")
-                        .WithMany("HuContractualBenefits")
+                        .WithMany("HuContractWelfaces")
                         .HasForeignKey("ContractId");
 
                     b.HasOne("Manage.Model.Models.HuWelface", "Welface")
-                        .WithMany("HuContractualBenefits")
+                        .WithMany("HuContractWelfaces")
                         .HasForeignKey("WelfaceId");
 
                     b.Navigation("Contract");
@@ -1679,7 +1679,7 @@ namespace Manage.API.Migrations
                 {
                     b.Navigation("HuContractAllowances");
 
-                    b.Navigation("HuContractualBenefits");
+                    b.Navigation("HuContractWelfaces");
 
                     b.Navigation("HuEmployees");
 
@@ -1745,7 +1745,7 @@ namespace Manage.API.Migrations
 
             modelBuilder.Entity("Manage.Model.Models.HuWelface", b =>
                 {
-                    b.Navigation("HuContractualBenefits");
+                    b.Navigation("HuContractWelfaces");
 
                     b.Navigation("HuSalaryRecords");
                 });

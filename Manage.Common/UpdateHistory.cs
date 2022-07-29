@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Manage.Common
 {
-    public class UserCreateAndUpdate
+    public static class UserCreateAndUpdate
     {
         public static UserInfoCreate GetUserInfoCreate(TokenDecode tokenDecode)
         {
@@ -18,12 +18,12 @@ namespace Manage.Common
             userInfoCreate.CreatedTime = userInfoCreate.LastUpdateTime = DateTime.UtcNow;
             return userInfoCreate;
         }
-        public static UserInfoCreate GetUserInfoUpdate(TokenDecode tokenDecode)
+        public static UserInfoUpdate GetUserInfoUpdate(TokenDecode tokenDecode)
         {
-            UserInfoCreate userInfoCreate = new UserInfoCreate();
-            userInfoCreate.LastUpdatedBy = tokenDecode.username;
-            userInfoCreate.LastUpdateTime = DateTime.UtcNow;
-            return userInfoCreate;
+            UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
+            userInfoUpdate.LastUpdatedBy = tokenDecode.username;
+            userInfoUpdate.LastUpdateTime = DateTime.UtcNow;
+            return userInfoUpdate;
         }
     }
     public class UserInfoCreate

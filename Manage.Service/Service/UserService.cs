@@ -30,145 +30,136 @@ namespace Manage.Service.Service
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<BaseResponse> ChangeStatusUser(UserDTO user)
+        public async Task<BaseResponse> ChangeStatusUser(int id)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"]; //get token
-            BaseResponse response = new BaseResponse();
-            TokenGenarate accessToken = new TokenGenarate(_configuration);
-            TokenDecode tokenDecode = accessToken.TokenInfo(token);
-            if (accessToken.CheckToken(tokenDecode) != null) return accessToken.CheckToken(tokenDecode);
-            SeUser existUser = await _repositoryWrapper.User.FindById(user.id);
-            if (existUser.ActiveFlg == "A")
-                existUser.ActiveFlg = "I";
-            if (existUser.ActiveFlg == "I")
-                existUser.ActiveFlg = "A";
-            existUser.LastUpdatedBy = tokenDecode.username;
-            existUser.LastUpdateTime = DateTime.UtcNow;
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
+            SeUser existUser = await _repositoryWrapper.User.FindById(id);
+            if (existUser == null)
+                return Response.NotFoundResponse();
+            existUser = Tools.ChangeStatus(existUser);
             await _repositoryWrapper.User.Update(existUser);
+            UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+            _mapper.Map(userInfoUpdate, existUser);
             await _context.SaveChangesAsync();
-            response.status = "200";
-            response.success = true;
-            response.message = $"Status of users is changed";
-            return response;
+            return Response.SuccessResponse();
         }
 
         public async Task<BaseResponse> DeleteUsers(List<int> ids)
         {
-            BaseResponse response = new BaseResponse();
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
             foreach (int id in ids)
             {
                 SeUser existUser = await _repositoryWrapper.User.FindById(id);
                 if (existUser != null)
                     await _repositoryWrapper.User.Delete(existUser);
             }
-            response.status = "200";
-            response.success = true;
-            response.message = "Delete success";
-            return response;
+            return Response.SuccessResponse();
         }
 
         public async Task<BaseResponse> FindUserById(int id)
         {
-            BaseResponse respones = new BaseResponse();
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
             SeUser existUser = await _repositoryWrapper.User.FindById(id);
             if (existUser == null)
-            {
-                respones.status = "400";
-                respones.success = false;
-                respones.message = "User not exist";
-                return respones;
-            }
-            respones.status = "200";
-            respones.success = true;
-            respones.item = existUser;
-            return respones;
+                return Response.NotFoundResponse();
+            return Response.SuccessResponse(existUser);
         }
 
         public async Task<BaseResponse> GetAllUsers(BaseRequest request)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"]; //get token
-            BaseResponse response = new BaseResponse();
-            TokenGenarate accessToken = new TokenGenarate(_configuration);
-            TokenDecode tokenDecode= accessToken.TokenInfo(token);
-            if (accessToken.CheckToken(tokenDecode) != null) return accessToken.CheckToken(tokenDecode);
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
             List<SeUser> allUsers = await _repositoryWrapper.User.FindAllData(request);
             List<ListUserDTO> listUser = _mapper.Map<List<ListUserDTO>>(allUsers);
-            response.status = "Success";
-            response.success = true;
-            response.item = listUser;
-            return response;
+            return Response.SuccessResponse(listUser);
         }
 
         public async Task<BaseResponse> Login(LoginDTO user)
         {
-            BaseResponse respones = new BaseResponse();
-            string encodePass = CodingPassword.EncodingUTF8(user.password);
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
+            string encodePass = Tools.EncodingUTF8(user.password);
             string description = await _repositoryWrapper.User.CheckUserLogin(user.username, encodePass);
             if (description == null)
             {
                 SeToken seToken = new SeToken();
                 SeUser loginUser = await _repositoryWrapper.User.FindByUsername(user.username);
-                TokenGenarate genToken = new TokenGenarate(_configuration);
-                seToken = genToken.GenerateTokens(loginUser);
+                seToken = tokenConfiguration.GenerateTokens(loginUser);
                 loginUser.access_token = seToken.access_token;
                 loginUser.refresh_token = seToken.refresh_token;
                 loginUser.expired_time = DateTime.UtcNow.AddDays(7);
                 await _repositoryWrapper.User.Update(loginUser);
                 await _context.SaveChangesAsync();
-                respones.status = "200";
-                respones.success = true;
-                respones.item = seToken;
-                return respones;
+                return Response.SuccessResponse(seToken);
             }
-            respones.status = "400";
-            respones.success = false;
-            respones.message = description;
-            return respones;
+            return Response.BadLoginResponse();
         }
 
         public async Task<BaseResponse> Register(UserDTO reUser)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"]; //get token
-            BaseResponse response = new BaseResponse();
-            TokenGenarate accessToken = new TokenGenarate(_configuration);
-            TokenDecode tokenDecode = accessToken.TokenInfo(token);
-            if (accessToken.CheckToken(tokenDecode) != null) return accessToken.CheckToken(tokenDecode);
-            SeUser description = await _repositoryWrapper.User.FindByUsername(reUser.username);
-            if (description != null)
-            {
-                response.status = "400";
-                response.success = false;
-                response.message = "Username already exist";
-                return response;
-            }
-            reUser.password = CodingPassword.EncodingUTF8(reUser.password);
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
+            BaseResponse checkPassword = Tools.CheckPassword(reUser.password);
+            if (checkPassword != null)
+                return checkPassword;
+            SeUser user = await _repositoryWrapper.User.FindByUsername(reUser.username);
+            if (user != null)
+                return Response.DuplicateDataResponse("username already exist");
+            reUser.password = Tools.EncodingUTF8(reUser.password);
             SeUser newUser = _mapper.Map<SeUser>(reUser);
             await _repositoryWrapper.User.Create(newUser);
-            UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+            newUser.Code = CreateCode.UserCode(newUser.Id);
+            UserInfoCreate userInfoCreate  = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
             _mapper.Map(userInfoCreate, newUser);
             newUser.Code = CreateCode.UserCode(newUser.Id);
             await _context.SaveChangesAsync();
-            response = Response.SuccessResponse();
-            response.item = newUser;
-            return response;
+            return Response.SuccessResponse();
         }
 
         public async Task<BaseResponse> RenewToken(RefreshTokenDTO refreshTokenDTO)
         {
-            BaseResponse response = new BaseResponse();
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
             bool isTrue = await _repositoryWrapper.User.CheckRefreshToken(refreshTokenDTO.username, refreshTokenDTO.refresh_token);
             if(!isTrue) return Response.TokenInvalidResponse();
             SeUser loginUser = await _repositoryWrapper.User.FindByUsername(refreshTokenDTO.username);
-            TokenGenarate accessToken = new TokenGenarate(_configuration);
-            string access_token = accessToken.GenerateAccessToken(loginUser);
-            loginUser.access_token = access_token;
+            loginUser.access_token = tokenConfiguration.GeneratetokenConfiguration(loginUser);
             await _repositoryWrapper.User.Update(loginUser);
+            UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+            _mapper.Map(userInfoUpdate, loginUser);
             await _context.SaveChangesAsync();
-            response.status = "200";
-            response.success = true;
-            response.message = "token is renew";
-            response.item = access_token;
-            return response;
+            return Response.SuccessResponse(loginUser.access_token);
         }
     }
 }

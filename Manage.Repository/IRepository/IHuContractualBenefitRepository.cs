@@ -8,7 +8,7 @@ using Manage.Repository.Base.IRepository;
 
 namespace Manage.Repository.IRepository
 {
-    public interface IHuContractualBenefitRepository : IRepositoryBase<HuContractualBenefit>
+    public interface IHuContractWelfaceRepository : IRepositoryBase<HuContractWelface>
     {
     }
 }

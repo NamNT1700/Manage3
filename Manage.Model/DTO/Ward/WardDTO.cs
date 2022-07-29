@@ -6,6 +6,5 @@ namespace Manage.Model.DTO.Ward
     {
         public string Name { get; set; }
         public string DistrictName { get; set; }
-        public string Activeflg { get; set; }
     }
 }

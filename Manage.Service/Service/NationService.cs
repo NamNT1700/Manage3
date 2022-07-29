@@ -11,21 +11,27 @@ using Manage.Model.DTO.Nation;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Manage.Service.Service
 {
     public class NationService : INationService
     {
-        private readonly IMapper _mapper;
-        private readonly IRepositoryWrapper _repositoryWrapper;
-        private readonly DatabaseContext _context;
+        private IMapper _mapper;
+        private IRepositoryWrapper _repositoryWrapper;
+        private DatabaseContext _context;
+        private IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public NationService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
+        public NationService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
+            IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _repositoryWrapper = repositoryWrapper;
             _context = context;
+            _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseResponse> AddNew(NationDTO nation)
@@ -44,22 +50,9 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            var huNations = await _repositoryWrapper.Nation.GetAll(request);
-            var listNations = _mapper.Map<List<ListNationDTO>>(huNations);
-            var lists = new List<ListNationDTO>();
-            var firstIndex = (request.pageNum - 1) * request.pageSize;
-            BaseResponse response = new BaseResponse();
             List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll(request);
-            List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll();
             List<ListNationDTO> listAllwance = _mapper.Map<List<ListNationDTO>>(huNations);
-            List<ListNationDTO> lists = new List<ListNationDTO>();
-            int firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= huNations.Count())
-                Response.DuplicateDataResponse("no user yet");
-            else if (firstIndex + request.pageSize < huNations.Count())
-                lists = listNations.GetRange(firstIndex, request.pageSize);
-            else lists = listNations.GetRange(firstIndex, listNations.Count - firstIndex);
-            return Response.SuccessResponse(lists);
+            return Response.SuccessResponse(listAllwance);
         }
 
         public async Task<BaseResponse> GetById(int id)

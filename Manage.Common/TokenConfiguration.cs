@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 
 namespace Manage.Common
 {
-    public class TokenGenarate
+    public class TokenConfiguration
     {
         public IConfiguration _configuration { get; }
-        public TokenGenarate(IConfiguration configuration)
+        public TokenConfiguration(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        public string GenerateAccessToken(SeUser user)
+        public string GeneratetokenConfiguration(SeUser user)
         {
             var userClaim = new List<Claim>
             {
@@ -38,8 +38,8 @@ namespace Manage.Common
                 Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretkeyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
-            var accessToken = jwtTokenHandle.CreateToken(tokenDescription);           
-            return jwtTokenHandle.WriteToken(accessToken);
+            var tokenConfiguration = jwtTokenHandle.CreateToken(tokenDescription);           
+            return jwtTokenHandle.WriteToken(tokenConfiguration);
         }
         public string GenerateRefreshToken()
         {
@@ -50,7 +50,7 @@ namespace Manage.Common
                 return Convert.ToBase64String(random);
             }
         }
-        public ClaimsPrincipal DecodeAccessToken(string Input)
+        public ClaimsPrincipal DecodetokenConfiguration(string Input)
         {
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
             var handler = new JwtSecurityTokenHandler();
@@ -68,7 +68,7 @@ namespace Manage.Common
         public TokenDecode TokenInfo(string token)
         {
             TokenDecode tokenDecode = new TokenDecode();
-            ClaimsPrincipal claimsPrincipal = DecodeAccessToken(token);
+            ClaimsPrincipal claimsPrincipal = DecodetokenConfiguration(token);
             tokenDecode.role = claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("Role")).Value;
             tokenDecode.username = claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("username")).Value;
             tokenDecode.exp = long.Parse(claimsPrincipal.Claims.FirstOrDefault(u => u.Type.Equals("exp")).Value);
@@ -79,19 +79,9 @@ namespace Manage.Common
             BaseResponse response = new BaseResponse();
             DateTime expTimeConverted = ConvertToDateTime(token.exp);
             if (expTimeConverted < DateTime.UtcNow)
-            {
-                response.status = "406";
-                response.success = false;
-                response.message = "token is expiration";
-                return response;
-            }
+                return Response.TokenExpirationResponse();
             if (token.role != "Admin")
-            {
-                response.status = "403";
-                response.success = false;
-                response.message = "forbidden";
-                return response;
-            }
+                return Response.ForbiddenResponse();
             return null;
         }
         private DateTime ConvertToDateTime(long expDate)
@@ -103,7 +93,7 @@ namespace Manage.Common
         public SeToken GenerateTokens (SeUser seUser)
         {
             SeToken tokens = new SeToken();
-            tokens.access_token = GenerateAccessToken(seUser);
+            tokens.access_token = GeneratetokenConfiguration(seUser);
             tokens.refresh_token = GenerateRefreshToken();
             return tokens;
         }

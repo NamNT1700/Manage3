@@ -10,9 +10,9 @@ using Manage.Repository.IRepository;
 
 namespace Manage.Repository.Repository
 {
-    public class HuContractualBenefitRepository : RepositoryBase<HuContractualBenefit>, IHuContractualBenefitRepository
+    public class HuContractWelfaceRepository : RepositoryBase<HuContractWelface>, IHuContractWelfaceRepository
     {
-        public HuContractualBenefitRepository(DatabaseContext context) : base(context)
+        public HuContractWelfaceRepository(DatabaseContext context) : base(context)
         {
         }
 

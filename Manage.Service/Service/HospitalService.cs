@@ -10,21 +10,27 @@ using Manage.Model.DTO.Hospital;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Manage.Service.Service
 {
     public class HospitalService : IHospitalService
     {
-        private readonly IMapper _mapper;
-        private readonly IRepositoryWrapper _repositoryWrapper;
-        private readonly DatabaseContext _context;
+        private IMapper _mapper;
+        private IRepositoryWrapper _repositoryWrapper;
+        private DatabaseContext _context;
+        private IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public HospitalService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
+        public HospitalService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
+            IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _repositoryWrapper = repositoryWrapper;
             _context = context;
+            _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseResponse> AddNew(HospitalDTO hospital)
@@ -44,27 +50,9 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            var hopHospitals = await _repositoryWrapper.Hospital.GetAll(request);
-            var listHospitals = _mapper.Map<List<ListHospitalDTO>>(hopHospitals);
-            var lists = new List<ListHospitalDTO>();
-            var firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= hopHospitals.Count())
-                Response.DuplicateDataResponse("no user yet");
-            else if (firstIndex + request.pageSize < hopHospitals.Count())
-                lists = listHospitals.GetRange(firstIndex, request.pageSize);
-            else lists = listHospitals.GetRange(firstIndex, listHospitals.Count - firstIndex);
-            BaseResponse response = new BaseResponse();
             List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll(request);
-            List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll();
             List<ListHospitalDTO> listAllwance = _mapper.Map<List<ListHospitalDTO>>(huContracts);
-            List<ListHospitalDTO> lists = new List<ListHospitalDTO>();
-            int firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= huContracts.Count())
-                response = Response.DuplicateDataResponse("no user yet");
-            if (firstIndex + request.pageSize < huContracts.Count())
-                lists = listAllwance.GetRange(firstIndex, request.pageSize);
-            else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            return Response.SuccessResponse(lists);
+            return Response.SuccessResponse(listAllwance);
         }
 
         public async Task<BaseResponse> GetById(int id)

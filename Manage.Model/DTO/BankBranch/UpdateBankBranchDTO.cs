@@ -10,7 +10,7 @@ namespace Manage.Model.DTO.BankBranch
     public class UpdateBankBranch
     {
         public string Address { get; set; }
-        public int? BankId { get; set; }
+        public string BankName { get; set; }
         public string Activeflg { get; set; }
       
     }

@@ -11,21 +11,27 @@ using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Repository.Base.Repository;
 using Manage.Service.IService;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Manage.Service.Service
 {
     public class ContractService : IContractService
     {
-        private readonly IMapper _mapper;
-        private readonly IRepositoryWrapper _repositoryWrapper;
-        private readonly DatabaseContext _context;
+        private IMapper _mapper;
+        private IRepositoryWrapper _repositoryWrapper;
+        private DatabaseContext _context;
+        private IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public ContractService(IMapper mapper, IRepositoryWrapper repositoryWapper, DatabaseContext context)
+        public ContractService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
+            IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
-            _repositoryWrapper = repositoryWapper;
+            _repositoryWrapper = repositoryWrapper;
             _context = context;
+            _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseResponse> AddNew(ContractDTO contract)
@@ -45,22 +51,9 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            var huContracts = await _repositoryWrapper.Contract.GetAll(request);
-            var listContract = _mapper.Map<List<ListContractDTO>>(huContracts);
-            var lists = new List<ListContractDTO>();
-            var firstIndex = (request.pageNum - 1) * request.pageSize;
-            BaseResponse response = new BaseResponse();
             List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll(request);
-            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll();
             List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
-            List<ListContractDTO> lists = new List<ListContractDTO>();
-            int firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= huContracts.Count())
-                Response.DuplicateDataResponse("no user yet");
-            else if (firstIndex + request.pageSize < huContracts.Count())
-                lists = listContract.GetRange(firstIndex, request.pageSize);
-            else lists = listContract.GetRange(firstIndex, listContract.Count - firstIndex);
-            return Response.SuccessResponse(lists);
+            return Response.SuccessResponse(listAllwance);
         }
 
         public async Task<BaseResponse> GetById(int id)

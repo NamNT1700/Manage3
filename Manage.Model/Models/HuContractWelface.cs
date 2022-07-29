@@ -40,10 +40,10 @@ namespace Manage.Model.Models
         public string Activeflg { get; set; }
 
         [ForeignKey(nameof(ContractId))]
-        [InverseProperty(nameof(HuContract.HuContractualBenefits))]
+        [InverseProperty(nameof(HuContract.HuContractWelfaces))]
         public virtual HuContract Contract { get; set; }
         [ForeignKey(nameof(WelfaceId))]
-        [InverseProperty(nameof(HuWelface.HuContractualBenefits))]
+        [InverseProperty(nameof(HuWelface.HuContractWelfaces))]
         public virtual HuWelface Welface { get; set; }
     }
 }

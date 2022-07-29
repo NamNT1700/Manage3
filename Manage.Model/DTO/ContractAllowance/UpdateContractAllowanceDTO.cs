@@ -8,5 +8,6 @@ namespace Manage.Model.DTO.ContractAllowance
 {
     public class UpdateContractAllowanceDTO
     {
+        public int Id { get; set; }
     }
 }

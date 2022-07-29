@@ -10,21 +10,27 @@ using Manage.Model.DTO.Title;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Manage.Service.Service
 {
     public class TitleService : ITitleService
     {
-        private readonly IMapper _mapper;
-        private readonly DatabaseContext _context;
-        private readonly IRepositoryWrapper _repositoryWrapper;
+        private IMapper _mapper;
+        private IRepositoryWrapper _repositoryWrapper;
+        private DatabaseContext _context;
+        private IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public TitleService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context)
+        public TitleService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
+            IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _repositoryWrapper = repositoryWrapper;
             _context = context;
+            _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseResponse> AddNew(TitleDTO title)
@@ -44,27 +50,9 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            var titles = await _repositoryWrapper.Title.GetAll(request);
-            var listTitles = _mapper.Map<List<ListTitleDTO>>(titles);
-            var lists = new List<ListTitleDTO>();
-            var firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= titles.Count())
-                Response.DuplicateDataResponse("no user yet");
-            else if(firstIndex + request.pageSize < titles.Count())
-                lists = listTitles.GetRange(firstIndex, request.pageSize);
-            else lists = listTitles.GetRange(firstIndex, listTitles.Count - firstIndex);
-            BaseResponse response = new BaseResponse();
             List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll(request);
-            List<HuTitle> huNations = await _repositoryWrapper.Title.GetAll();
             List<ListTitleDTO> listAllwance = _mapper.Map<List<ListTitleDTO>>(huNations);
-            List<ListTitleDTO> lists = new List<ListTitleDTO>();
-            int firstIndex = (request.pageNum - 1) * request.pageSize;
-            if (firstIndex >= huNations.Count())
-                response = Response.DuplicateDataResponse("no user yet");
-            if (firstIndex + request.pageSize < huNations.Count())
-                lists = listAllwance.GetRange(firstIndex, request.pageSize);
-            else lists = listAllwance.GetRange(firstIndex, listAllwance.Count - firstIndex);
-            return Response.SuccessResponse(lists);
+            return Response.SuccessResponse(listAllwance);
         }
 
         public async Task<BaseResponse> GetById(int id)

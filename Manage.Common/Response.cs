@@ -10,18 +10,17 @@ namespace Manage.Common
     {
         public static BaseResponse SuccessResponse()
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = true,
                 message = "success",
                 status = "200"
             };
-
             return response;
         }
         public static BaseResponse SuccessResponse(object item)
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = true,
                 message = "success",
@@ -32,7 +31,7 @@ namespace Manage.Common
         }
         public static BaseResponse DuplicateDataResponse(string message)
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = false,
                 status = "400",
@@ -42,7 +41,7 @@ namespace Manage.Common
         }
         public static BaseResponse TokenInvalidResponse()
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = false,
                 status = "401",
@@ -52,7 +51,7 @@ namespace Manage.Common
         }
         public static BaseResponse TokenExpirationResponse()
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = false,
                 status = "402",
@@ -62,7 +61,7 @@ namespace Manage.Common
         }
         public static BaseResponse ForbiddenResponse()
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = false,
                 message = "forbidden",
@@ -72,7 +71,7 @@ namespace Manage.Common
         }
         public static BaseResponse NotFoundResponse()
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = false,
                 status = "404",
@@ -82,7 +81,7 @@ namespace Manage.Common
         }
         public static BaseResponse BadLoginResponse()
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = false,
                 status = "405",
@@ -92,11 +91,21 @@ namespace Manage.Common
         }
         public static BaseResponse DataNullResponse()
         {
-            var response = new BaseResponse
+            BaseResponse response = new BaseResponse
             {
                 success = false,
                 status = "406",
                 message = "please fill all empty box"
+            };
+            return response;
+        }
+        public static BaseResponse InvalidPasswordResponse(string message)
+        {
+            BaseResponse response = new BaseResponse
+            {
+                success = false,
+                status = "406",
+                message = message
             };
             return response;
         }
