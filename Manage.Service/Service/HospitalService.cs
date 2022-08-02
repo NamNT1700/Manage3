@@ -7,6 +7,7 @@ using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.Hospital;
+using Manage.Model.DTO.User;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
@@ -35,65 +36,133 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> AddNew(HospitalDTO hospital)
         {
-            if (hospital.Name == null) return Response.DataNullResponse();
-            var huHospital = _mapper.Map<HuHospital>(hospital);
-            huHospital.CreatedTime = DateTime.Now;
-            huHospital.LastUpdateTime = DateTime.Now;
-            await _repositoryWrapper.Hospital.Create(huHospital);
-            huHospital.Code = CreateCode.AllowanceCode(huHospital.Id);
-            await _context.SaveChangesAsync();
-            _mapper.Map<HospitalDTO>(huHospital);
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuHospital huHospital = _mapper.Map<HuHospital>(hospital);
+                await _repositoryWrapper.Hospital.Create(huHospital);
+                huHospital.Code = CreateCode.HospitalCode(huHospital.Id);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huHospital);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
 
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll(request);
-            List<ListHospitalDTO> listAllwance = _mapper.Map<List<ListHospitalDTO>>(huContracts);
-            return Response.SuccessResponse(listAllwance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                List<HuHospital> huContracts = await _repositoryWrapper.Hospital.GetAll(request);
+                List<ListHospitalDTO> listHospitalDTOs = _mapper.Map<List<ListHospitalDTO>>(huContracts);
+                return Response.SuccessResponse(listHospitalDTOs);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
-            var response = new BaseResponse();
-            var hospital = await _repositoryWrapper.Hospital.FindById(id);
-            if (hospital == null) return Response.NotFoundResponse();
-            _mapper.Map<HospitalDTO>(hospital);
-            return Response.SuccessResponse(response);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
+                if (hospital == null) return Response.NotFoundResponse();
+                HospitalDTO hospitalDTO = _mapper.Map<HospitalDTO>(hospital);
+                return Response.SuccessResponse(hospitalDTO);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
 
 
         public async Task<BaseResponse> Update(UpdateHospitalDTO update)
         {
-            var response = new BaseResponse();
-            var hospital = await _repositoryWrapper.Hospital.FindById(update.Id);
-            if (hospital == null) return Response.DataNullResponse();
-            _mapper.Map(update.updateData, hospital);
-            hospital.LastUpdateTime = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse(response);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuHospital huHospital = await _repositoryWrapper.Hospital.FindById(update.Id);
+                if (huHospital == null) return Response.DataNullResponse();
+                _mapper.Map(update.updateData, huHospital);
+                await _repositoryWrapper.Hospital.Update(huHospital);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huHospital);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+           
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            foreach (var id in ids)
+            try
             {
-                var hospital = await _repositoryWrapper.Hospital.FindById(id);
-                if (hospital == null)
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                foreach (int id in ids)
                 {
-                    return Response.NotFoundResponse();
-                }
+                    HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
+                    if (hospital == null)
+                    {
+                        return Response.NotFoundResponse();
+                    }
 
+                }
+                foreach (int id in ids)
+                {
+                    HuHospital hospital = await _repositoryWrapper.Hospital.FindById(id);
+                    if (hospital != null)
+                        await _repositoryWrapper.Hospital.Delete(hospital);
+                }
+                return Response.SuccessResponse();
             }
-            foreach (var id in ids)
+            catch (Exception ex)
             {
-                var hospital = await _repositoryWrapper.Hospital.FindById(id);
-                if (hospital != null)
-                    await _repositoryWrapper.Hospital.Delete(hospital);
+                return Response.ExceptionResponse(ex);
             }
-            return Response.SuccessResponse();
+            
 
         }
     }

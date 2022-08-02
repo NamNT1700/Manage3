@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Manage.Model.Context;
 using Manage.Model.DTO.Bank;
+using Manage.Model.DTO.BankBranch;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
@@ -21,6 +22,15 @@ namespace Manage.Repository.Repository
         public async Task<HuBank> FindByName(string name)
         {
             return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
+        }
+        public async Task<List<ListBankBranch>> FindAllBankById(List<ListBankBranch> listBankBranches)
+        {
+            foreach (ListBankBranch listBankBranch in listBankBranches)
+            {
+                HuBank huBank= await FindById(listBankBranch.BankID);
+                listBankBranch.Bankname = huBank.Name;
+            }
+            return listBankBranches;
         }
     }
 }

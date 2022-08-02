@@ -8,5 +8,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuHospitalRepository : IRepositoryBase<HuHospital>
     {
+        
     }
 }

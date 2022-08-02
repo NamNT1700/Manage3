@@ -109,5 +109,16 @@ namespace Manage.Common
             };
             return response;
         }
+        public static BaseResponse ExceptionResponse(Exception ex)
+        {
+            BaseResponse response = new BaseResponse
+            {
+                success = false,
+                status = "500",
+                message = "something wrong",
+                item = ex
+            };
+            return response;
+        }
     }
 }

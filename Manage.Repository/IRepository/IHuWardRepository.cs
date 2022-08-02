@@ -7,5 +7,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuWardRepository : IRepositoryBase<HuWard>
     {
+        
     }
 }

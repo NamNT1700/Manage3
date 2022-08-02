@@ -16,7 +16,6 @@ namespace Manage.Model.Models
         {
             HuEmployeeCvs = new HashSet<HuEmployeeCv>();
         }
-
         [Key]
         [Column("id")]
         public int Id { get; set; }

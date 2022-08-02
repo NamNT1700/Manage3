@@ -34,93 +34,132 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(BankDTO bank)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            if (bank.Name == null) return Response.DataNullResponse();
-            var huBank = _mapper.Map<HuBank>(bank);
-            huBank.CreatedTime = DateTime.Now;
-            huBank.LastUpdateTime = DateTime.Now;
-            await _repositoryWrapper.Bank.Create(huBank);
-            huBank.Code = CreateCode.AllowanceCode(huBank.Id);
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuBank huBank = _mapper.Map<HuBank>(bank);
+                await _repositoryWrapper.Bank.Create(huBank);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                huBank.Code = CreateCode.BankCode(huBank.Id);
+                _mapper.Map(userInfoCreate, huBank);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+           
         }
 
 
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            if (request.pageNum < 1 || request.pageSize < 1)
-                return Response.NotFoundResponse();
-            if (request.pageNum > request.pageSize)
-                return Response.NotFoundResponse();
-            List<HuBank> huAllowances = await _repositoryWrapper.Bank.GetAll(request);
-            List<ListBankDTO> listAllowance = _mapper.Map<List<ListBankDTO>>(huAllowances);
-            return Response.SuccessResponse(listAllowance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                if (request.pageNum < 1 || request.pageSize < 1)
+                    return Response.NotFoundResponse();
+                if (request.pageNum > request.pageSize)
+                    return Response.NotFoundResponse();
+                List<HuBank> huAllowances = await _repositoryWrapper.Bank.GetAll(request);
+                List<ListBankDTO> listAllowance = _mapper.Map<List<ListBankDTO>>(huAllowances);
+                return Response.SuccessResponse(listAllowance);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+           
         }
         public async Task<BaseResponse> GetById(int id)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            var huBank = await _repositoryWrapper.Bank.FindById(id);
-            if (huBank == null) return Response.NotFoundResponse();
-            var bank = _mapper.Map<BankDTO>(huBank);
-            return Response.SuccessResponse(bank);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuBank huBank = await _repositoryWrapper.Bank.FindById(id);
+                if (huBank == null) return Response.NotFoundResponse();
+                BankDTO bank = _mapper.Map<BankDTO>(huBank);
+                return Response.SuccessResponse(bank);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
         public async Task<BaseResponse> Update(UpdateBankDTO update)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            HuBank bank = await _repositoryWrapper.Bank.FindById(update.Id);
-            if (bank == null) return Response.NotFoundResponse();
-            _mapper.Map(update.updateData, bank);
-            UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
-            _mapper.Map(userInfoUpdate, bank);
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse(bank);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuBank bank = await _repositoryWrapper.Bank.FindById(update.Id);
+                if (bank == null) return Response.NotFoundResponse();
+                _mapper.Map(update.updateData, bank);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, bank);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse(bank);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+           
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            foreach (var id in ids)
+            try
             {
-                var bank = await _repositoryWrapper.Bank.FindById(id);
-                if (bank == null)
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                foreach (int id in ids)
                 {
-                    return Response.NotFoundResponse();
-                }
+                    HuBank bank = await _repositoryWrapper.Bank.FindById(id);
+                    if (bank == null)
+                    {
+                        return Response.NotFoundResponse();
+                    }
 
+                }
+                foreach (int id in ids)
+                {
+                    HuBank bank = await _repositoryWrapper.Bank.FindById(id);
+                    if (bank != null)
+                        await _repositoryWrapper.Bank.Delete(bank);
+                }
+                return Response.SuccessResponse();
             }
-            foreach (var id in ids)
+            catch (Exception ex)
             {
-                var bank = await _repositoryWrapper.Bank.FindById(id);
-                if (bank != null)
-                    await _repositoryWrapper.Bank.Delete(bank);
+                return Response.ExceptionResponse(ex);
             }
-            return Response.SuccessResponse();
+            
         }
     }
 }

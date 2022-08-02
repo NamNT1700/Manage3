@@ -7,6 +7,7 @@ using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.Contract;
+using Manage.Model.DTO.User;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Repository.Base.Repository;
@@ -35,66 +36,138 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> AddNew(ContractDTO contract)
         {
-            if (contract.Name == null) return Response.DataNullResponse();
-            var huContract = _mapper.Map<HuContract>(contract);
-            huContract.CreatedTime = DateTime.Now;
-            huContract.LastUpdateTime = DateTime.Now;
-            await _repositoryWrapper.Contract.Create(huContract);
-            huContract.Code = CreateCode.AllowanceCode(huContract.Id);
-            await _context.SaveChangesAsync();
-            _mapper.Map<ContractDTO>(huContract);
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuContract huContract = _mapper.Map<HuContract>(contract);
+                await _repositoryWrapper.Contract.Create(huContract);
+                huContract.Code = CreateCode.ContractCode(huContract.Id);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huContract);
+                await _context.SaveChangesAsync();
+                
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
 
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll(request);
-            List<ListContractDTO> listAllwance = _mapper.Map<List<ListContractDTO>>(huContracts);
-            return Response.SuccessResponse(listAllwance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                if (request.pageNum < 1 || request.pageSize < 1)
+                    return Response.NotFoundResponse();
+                if (request.pageNum > request.pageSize)
+                    return Response.NotFoundResponse();
+                List<HuContract> huContracts = await _repositoryWrapper.Contract.GetAll(request);
+                List<ListContractDTO> listContractDTOs = _mapper.Map<List<ListContractDTO>>(huContracts);
+                return Response.SuccessResponse(listContractDTOs);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
-            var response = new BaseResponse();
-            var huContract = await _repositoryWrapper.Contract.FindById(id);
-            if (huContract == null) return Response.NotFoundResponse();
-            _mapper.Map<ContractDTO>(huContract);
-            return Response.SuccessResponse(response);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuContract huContract = await _repositoryWrapper.Contract.FindById(id);
+                if (huContract == null) return Response.NotFoundResponse();
+                ContractDTO contractDTO = _mapper.Map<ContractDTO>(huContract);
+                return Response.SuccessResponse(contractDTO);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
 
 
         public async Task<BaseResponse> Update(UpdateContractDTO update)
         {
-            var response = new BaseResponse();
-            var contract = await _repositoryWrapper.Contract.FindById(update.Id);
-            if (contract == null) return Response.DataNullResponse();
-            _mapper.Map(update.updateData, contract);
-            contract.LastUpdateTime = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse(response);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuContract contract = await _repositoryWrapper.Contract.FindById(update.Id);
+                if (contract == null) return Response.DataNullResponse();
+                _mapper.Map(update.updateData, contract);
+                await _repositoryWrapper.Contract.Update(contract);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, contract);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-
-            foreach (var id in ids)
+            try
             {
-                var contract = await _repositoryWrapper.Contract.FindById(id);
-                if (contract == null)
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                foreach (int id in ids)
                 {
-                    return Response.NotFoundResponse();
-                }
+                    HuContract contract = await _repositoryWrapper.Contract.FindById(id);
+                    if (contract == null)
+                    {
+                        return Response.NotFoundResponse();
+                    }
 
+                }
+                foreach (int id in ids)
+                {
+                    HuContract contract = await _repositoryWrapper.Contract.FindById(id);
+                    if (contract != null)
+                        await _repositoryWrapper.Contract.Delete(contract);
+                }
+                return Response.SuccessResponse();
             }
-            foreach (var id in ids)
+            catch (Exception ex)
             {
-                var contract = await _repositoryWrapper.Contract.FindById(id);
-                if (contract != null)
-                    await _repositoryWrapper.Contract.Delete(contract);
+                return Response.ExceptionResponse(ex);
             }
-            return Response.SuccessResponse();
+            
         }
     }
 }

@@ -16,7 +16,7 @@ using Manage.Model.DTO.User;
 
 namespace Manage.Service.Service
 {
-    public class AllowanceService : IAllowanceService
+    public  class AllowanceService : IAllowanceService
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -34,95 +34,134 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            if (allowance.Name == null)
-                return Response.DataNullResponse();
-            HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
-            await _repositoryWrapper.Allowance.Create(huAllowance);
-            huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
-            UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse();
+           
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
+                await _repositoryWrapper.Allowance.Create(huAllowance);
+                huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huAllowance);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch(Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
         } 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            if (request.pageNum <1 || request.pageSize<1)
-                return Response.NotFoundResponse();
-            if(request.pageNum > request.pageSize)
-                return Response.NotFoundResponse();
-            List<HuAllowance> huAllowances = await _repositoryWrapper.Allowance.GetAll(request);
-            List<ListAllowanceDTO> listAllowance = _mapper.Map<List<ListAllowanceDTO>>(huAllowances);
-            return Response.SuccessResponse(listAllowance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                if (request.pageNum < 1 || request.pageSize < 1)
+                    return Response.NotFoundResponse();
+                if (request.pageNum > request.pageSize)
+                    return Response.NotFoundResponse();
+                List<HuAllowance> huAllowances = await _repositoryWrapper.Allowance.GetAll(request);
+                List<ListAllowanceDTO> listAllowance = _mapper.Map<List<ListAllowanceDTO>>(huAllowances);
+                return Response.SuccessResponse(listAllowance);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+           
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindById(id);
-            if (huAllowance == null)
-                return Response.NotFoundResponse();
-            AllowanceDTO allowance = _mapper.Map<AllowanceDTO>(huAllowance);
-            return Response.SuccessResponse(allowance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindById(id);
+                if (huAllowance == null)
+                    return Response.NotFoundResponse();
+                AllowanceDTO allowance = _mapper.Map<AllowanceDTO>(huAllowance);
+                return Response.SuccessResponse(allowance);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> Update(UpdateAllowanceDTO update)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
-            if (allowance == null)
-                return Response.NotFoundResponse();
-            _mapper.Map(update.updateData, allowance);
-            await _repositoryWrapper.Allowance.Update(allowance);
-            UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
-            _mapper.Map(userInfoUpdate, allowance);
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
+                if (allowance == null)
+                    return Response.NotFoundResponse();
+                allowance = _mapper.Map<HuAllowance>(update.updateData);
+                await _repositoryWrapper.Allowance.Update(allowance);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, allowance);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            foreach (int id in ids)
+            try
             {
-                HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(id);
-                if (allowance == null)
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                foreach (int id in ids)
                 {
-                    return Response.NotFoundResponse();
-                }
+                    HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(id);
+                    if (allowance == null)
+                    {
+                        return Response.NotFoundResponse();
+                    }
 
+                }
+                foreach (int id in ids)
+                {
+                    HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(id);
+                    if (allowance != null)
+                        await _repositoryWrapper.Allowance.Delete(allowance);
+                }
+                return Response.SuccessResponse();
             }
-            foreach (int id in ids)
+            catch (Exception ex)
             {
-                HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(id);
-                if (allowance != null)
-                    await _repositoryWrapper.Allowance.Delete(allowance);
+                return Response.ExceptionResponse(ex);
             }
-            return Response.SuccessResponse();
+            
         }
     }
 }

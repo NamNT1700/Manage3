@@ -8,6 +8,7 @@ using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.Hospital;
 using Manage.Model.DTO.Nation;
+using Manage.Model.DTO.User;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
@@ -36,64 +37,125 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> AddNew(NationDTO nation)
         {
-            var huNation = _mapper.Map<HuNation>(nation);
-            huNation.CreatedTime = DateTime.Now;
-            huNation.LastUpdateTime = DateTime.Now;
-            await _repositoryWrapper.Nation.Create(huNation);
-            huNation.Code = CreateCode.AllowanceCode(huNation.Id);
-            await _context.SaveChangesAsync();
-            _mapper.Map<NationDTO>(huNation);
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuNation huNation = _mapper.Map<HuNation>(nation);
+                await _repositoryWrapper.Nation.Create(huNation);
+                huNation.Code = CreateCode.NationCode(huNation.Id);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huNation);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
 
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll(request);
-            List<ListNationDTO> listAllwance = _mapper.Map<List<ListNationDTO>>(huNations);
-            return Response.SuccessResponse(listAllwance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                List<HuNation> huNations = await _repositoryWrapper.Nation.GetAll(request);
+                List<ListNationDTO> listNationDTOs = _mapper.Map<List<ListNationDTO>>(huNations);
+                return Response.SuccessResponse(listNationDTOs);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
-            var response = new BaseResponse();
-            var nation = await _repositoryWrapper.Nation.FindById(id);
-            if (nation == null) return Response.NotFoundResponse();
-            _mapper.Map<HospitalDTO>(nation);
-            return Response.SuccessResponse(response);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuNation nation = await _repositoryWrapper.Nation.FindById(id);
+                if (nation == null) return Response.NotFoundResponse();
+                NationDTO nationDTO = _mapper.Map<NationDTO>(nation);
+                return Response.SuccessResponse(nationDTO);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
 
 
         public async Task<BaseResponse> Update(UpdateNationDTO update)
         {
-            var response = new BaseResponse();
-            var nation = await _repositoryWrapper.Nation.FindById(update.Id);
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+            if (tokenResponse != null)
+                return tokenResponse;
+            HuNation nation = await _repositoryWrapper.Nation.FindById(update.Id);
             if (nation == null) return Response.DataNullResponse();
             _mapper.Map(update.updateData, nation);
-            nation.LastUpdateTime = DateTime.Now;
+            await _repositoryWrapper.Nation.Update(nation);
+            UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+            _mapper.Map(userInfoCreate, nation);
             await _context.SaveChangesAsync();
-            return Response.SuccessResponse(response);
+            return Response.SuccessResponse();
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            foreach (var id in ids)
+            try
             {
-                var nation = await _repositoryWrapper.Nation.FindById(id);
-                if (nation == null)
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                foreach (int id in ids)
                 {
-                    return Response.NotFoundResponse();
-                }
+                    HuNation nation = await _repositoryWrapper.Nation.FindById(id);
+                    if (nation == null)
+                    {
+                        return Response.NotFoundResponse();
+                    }
 
+                }
+                foreach (int id in ids)
+                {
+                    HuNation nation = await _repositoryWrapper.Nation.FindById(id);
+                    if (nation != null)
+                        await _repositoryWrapper.Nation.Delete(nation);
+                }
+                return Response.SuccessResponse();
             }
-            foreach (var id in ids)
+            catch (Exception ex)
             {
-                var nation = await _repositoryWrapper.Nation.FindById(id);
-                if (nation != null)
-                    await _repositoryWrapper.Nation.Delete(nation);
+                return Response.ExceptionResponse(ex);
             }
-            return Response.SuccessResponse();
+            
 
         }
     }

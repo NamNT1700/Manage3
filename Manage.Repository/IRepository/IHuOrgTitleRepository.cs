@@ -10,5 +10,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuOrgTitleRepository : IRepositoryBase<HuOrgTitle>
     {
+        
     }
 }

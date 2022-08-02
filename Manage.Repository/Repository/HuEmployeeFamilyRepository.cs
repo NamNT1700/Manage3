@@ -7,6 +7,7 @@ using Manage.Model.Context;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manage.Repository.Repository
 {
@@ -15,6 +16,6 @@ namespace Manage.Repository.Repository
         public HuEmployeeFamilyRepository(DatabaseContext context) : base(context)
         {
         }
-
+        
     }
 }

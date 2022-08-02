@@ -7,6 +7,8 @@ using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.ContractualBenefit;
+using Manage.Model.DTO.User;
+using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +34,14 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(ContractualBenefitDTO contractualBenefitDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
         }
 
         public async Task<BaseResponse> GetAll(BaseRequest request)

@@ -8,5 +8,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuTitleRepository : IRepositoryBase<HuTitle>
     {
+        
     }
 }

@@ -50,7 +50,7 @@ namespace Manage.Repository.Base.Repository
             return await FindByCondition(a => a.Code.Equals(code)).FirstOrDefaultAsync();
         }
 
-        public async Task<T> FindById(int id)
+        public async Task<T> FindById(int? id)
         {
             return await FindByCondition(a => a.Id.Equals(id)).FirstOrDefaultAsync();
 

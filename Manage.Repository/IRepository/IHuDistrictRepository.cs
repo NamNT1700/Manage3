@@ -7,5 +7,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuDistrictRepository : IRepositoryBase<HuDistrict>
     {
+        Task<HuDistrict> FindByName(string name);
     }
 }

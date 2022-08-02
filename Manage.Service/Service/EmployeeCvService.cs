@@ -7,6 +7,8 @@ using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.EmployeeCv;
+using Manage.Model.DTO.User;
+using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
 using Microsoft.AspNetCore.Http;
@@ -32,27 +34,110 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(EmployeeCvDTO employeeCvDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuEmployeeCv huEmployeeCv = _mapper.Map<HuEmployeeCv>(employeeCvDto);
+                await _repositoryWrapper.EmployeeCv.Create(huEmployeeCv);
+                huEmployeeCv.Code = CreateCode.EmployeeCode(huEmployeeCv.Id);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huEmployeeCv);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
-
-        public async Task<BaseResponse> GetAll(BaseRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<BaseResponse> GetById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuEmployeeCv huEmployeeCv = await _repositoryWrapper.EmployeeCv.FindById(id);
+                if (huEmployeeCv == null)
+                    return Response.NotFoundResponse();
+                EmployeeCvDTO employeeCvDTO = _mapper.Map<EmployeeCvDTO>(huEmployeeCv);
+                return Response.SuccessResponse(employeeCvDTO);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> Update(UpdateEmployeeCvDTO update)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuEmployeeCv huEmployeeCv = await _repositoryWrapper.EmployeeCv.FindById(update.id);
+                if (huEmployeeCv == null)
+                    return Response.NotFoundResponse();
+                huEmployeeCv = _mapper.Map<HuEmployeeCv>(update.updateData);
+                await _repositoryWrapper.EmployeeCv.Update(huEmployeeCv);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huEmployeeCv);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                foreach (int id in ids)
+                {
+                    HuEmployeeCv huEmployeeCv = await _repositoryWrapper.EmployeeCv.FindById(id);
+                    if (huEmployeeCv == null)
+                    {
+                        return Response.NotFoundResponse();
+                    }
+
+                }
+                foreach (int id in ids)
+                {
+                    HuEmployeeCv huEmployeeCv = await _repositoryWrapper.EmployeeCv.FindById(id);
+                    if (huEmployeeCv != null)
+                        await _repositoryWrapper.EmployeeCv.Delete(huEmployeeCv);
+                }
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
     }
 }

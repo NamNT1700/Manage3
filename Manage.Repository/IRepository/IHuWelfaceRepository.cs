@@ -7,5 +7,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuWelfaceRepository : IRepositoryBase<HuWelface>
     {
+        
     }
 }

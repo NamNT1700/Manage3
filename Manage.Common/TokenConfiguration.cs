@@ -35,7 +35,7 @@ namespace Manage.Common
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretkeyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
             var tokenConfiguration = jwtTokenHandle.CreateToken(tokenDescription);           

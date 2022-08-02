@@ -8,6 +8,7 @@ using Manage.Model.DTO.Title;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manage.Repository.Repository
 {
@@ -15,6 +16,10 @@ namespace Manage.Repository.Repository
     {
         public HuTitleRepository(DatabaseContext context) : base(context)
         {
+        }
+        public async Task<HuTitle> FindById(int? id)
+        {
+            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
         }
     }
 }

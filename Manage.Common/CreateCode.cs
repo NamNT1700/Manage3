@@ -202,6 +202,16 @@ namespace Manage.Common
             else code = "SCH" + $"{id}";
             return code;
         }
+        public static string OrgTitleCode(int id)
+        {
+            string code;
+            if (id < 10)
+                code = "ORT00" + $"{id}";
+            else if (id < 100)
+                code = "ORT0" + $"{id}";
+            else code = "ORT" + $"{id}";
+            return code;
+        }
         public static string OtherCode(int id)
         {
             string code;

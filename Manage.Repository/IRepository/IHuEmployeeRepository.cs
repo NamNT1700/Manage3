@@ -10,5 +10,7 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuEmployeeRepository : IRepositoryBase<HuEmployee>
     {
+        Task<HuEmployee> FindByName(string name);
+        
     }
 }

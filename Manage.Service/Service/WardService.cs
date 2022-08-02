@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
+using Manage.Model.DTO.User;
 using Manage.Model.DTO.Ward;
+using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +18,10 @@ namespace Manage.Service.Service
 {
     public class WardService : IWardService
     {
-        private IMapper _mapper;
-        private IRepositoryWrapper _repositoryWrapper;
-        private DatabaseContext _context;
-        private IConfiguration _configuration;
+        private readonly IMapper _mapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly DatabaseContext _context;
+        private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public WardService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
@@ -33,27 +35,139 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(WardDTO wardDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(wardDto.Name);
+                if (huDistrict == null) return Response.NotFoundResponse();
+                HuWard huWard = _mapper.Map<HuWard>(wardDto);
+                huWard.DistricId = huDistrict.Id;
+                await _repositoryWrapper.Ward.Create(huWard);
+                huWard.Code = CreateCode.WardCode(huWard.Id);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huWard);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                if (request.pageNum < 1 || request.pageSize < 1)
+                    return Response.NotFoundResponse();
+                if (request.pageNum > request.pageSize)
+                    return Response.NotFoundResponse();
+                List<HuWard> huWards = await _repositoryWrapper.Ward.GetAll(request);
+                List<ListWardDTO> listWardDtos = _mapper.Map<List<ListWardDTO>>(huWards);
+                return Response.SuccessResponse(listWardDtos);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuWard huWard = await _repositoryWrapper.Ward.FindById(id);
+                if (huWard == null)
+                    return Response.NotFoundResponse();
+                WardDTO ward = _mapper.Map<WardDTO>(huWard);
+                return Response.SuccessResponse(ward);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> Update(UpdateWardDTO update)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuWard huWard = await _repositoryWrapper.Ward.FindById(update.Id);
+                if (huWard == null)
+                    return Response.NotFoundResponse();
+                _mapper.Map(update.updateData, huWard);
+                await _repositoryWrapper.Ward.Update(huWard);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huWard);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> Delete(List<int> ids)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                foreach (int id in ids)
+                {
+                    HuWard ward = await _repositoryWrapper.Ward.FindById(id);
+                    if (ward == null)
+                    {
+                        return Response.NotFoundResponse();
+                    }
+
+                }
+                foreach (int id in ids)
+                {
+                    HuWard ward = await _repositoryWrapper.Ward.FindById(id);
+                    if (ward != null)
+                        await _repositoryWrapper.Ward.Delete(ward);
+                }
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
     }
 }

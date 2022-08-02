@@ -1,8 +1,10 @@
+using AutoMapper;
 using Manage.Model.Context;
 using Manage.Repository.Base.IRepository;
 using Manage.Repository.Base.Repository;
 using Manage.Service.IService;
 using Manage.Service.Service;
+using Manage.Service.ServiceBase;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
+
 
 namespace Manage.API
 {
@@ -42,16 +45,9 @@ namespace Manage.API
                     });
             });
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>(); 
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IAllowanceService, AllowanceService>();
-            services.AddScoped<IBankService, BankService>();
-            services.AddScoped<IContractService, ContractService>();
-            services.AddScoped<IHospitalService, HospitalService>();
-            services.AddScoped<INationService, NationService>();
-            services.AddScoped<ITitleService, TitleService>();
-            services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<IServiceWrapper, ServiceWrapper>();
             services.AddDbContext<DatabaseContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("database"),b=>b.MigrationsAssembly("Manage.API")));
             services.AddControllers();

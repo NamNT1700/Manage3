@@ -25,6 +25,8 @@ using Manage.Model.DTO.User;
 using Manage.Model.DTO.Ward;
 using Manage.Model.DTO.Welface;
 using Manage.Model.Models;
+using System;
+using System.Collections.Generic;
 using UpdateDataAllowance = Manage.Model.DTO.Allowance.UpdateDataAllowance;
 
 
@@ -51,7 +53,8 @@ namespace Manage.API
 
             CreateMap<BankBranchDTO, HuBankBranch>();
             CreateMap<HuBankBranch, BankBranchDTO>();
-            CreateMap<HuBankBranch, ListBankBranchDTO>();
+            CreateMap<HuBankBranch, ListBankBranch>();
+            CreateMap<ListBankBranch, ListBankBranchDTO>();
             CreateMap<UpdateBankBranch, HuBankBranch>();
             CreateMap<UserInfoCreate, HuBankBranch>();
             CreateMap<UserInfoUpdate, HuBankBranch>();
@@ -72,10 +75,13 @@ namespace Manage.API
 
             CreateMap<DistrictDTO, HuDistrict>();
             CreateMap<HuDistrict, DistrictDTO>();
-            CreateMap<HuDistrict, ListDistrictDTO>();
+            CreateMap<HuDistrict, ListDistrict>();
+            CreateMap<ListDistrict, ListDistrictDTO>();
             CreateMap<UpdateDistrictDTO, HuDistrict>();
             CreateMap<UserInfoCreate, HuDistrict>();
             CreateMap<UserInfoUpdate, HuDistrict>();
+
+
 
             CreateMap<EmployeeDTO, HuEmployee>();
             CreateMap<HuEmployee, EmployeeDTO>();
@@ -217,6 +223,11 @@ namespace Manage.API
             CreateMap<UpdateWelfaceDTO, HuWelface>();
             CreateMap<UserInfoCreate, HuWelface>();
             CreateMap<UserInfoUpdate, HuWelface>();
+        }
+
+        private void AssertConfigurationIsValid()
+        {
+            throw new NotImplementedException();
         }
     }
 }

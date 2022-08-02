@@ -8,6 +8,7 @@ using Manage.Model.DTO.Hospital;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manage.Repository.Repository
 {
@@ -16,6 +17,9 @@ namespace Manage.Repository.Repository
         public HuHospitalRepository(DatabaseContext context) : base(context)
         {
         }
-       
+        public async Task<HuHospital> FindById(int? id)
+        {
+            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
+        }
     }
 }

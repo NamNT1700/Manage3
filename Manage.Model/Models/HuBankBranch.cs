@@ -25,7 +25,7 @@ namespace Manage.Model.Models
         [StringLength(255)]
         public string Address { get; set; }
         [Column("bank_id")]
-        public int? BankId { get; set; }
+        public int BankId { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
         [Column("code")]
