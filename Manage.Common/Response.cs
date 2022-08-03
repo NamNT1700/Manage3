@@ -126,7 +126,7 @@ namespace Manage.Common
                 success = false,
                 status = "500",
                 message = "something wrong",
-                item = ex
+                item = ex.Message,
             };
             return response;
         }

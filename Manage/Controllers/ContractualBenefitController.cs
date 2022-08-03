@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class ContractualBenefitController : ControllerBase
     {
-        private readonly IContractualBenefitService _contractualBenefitService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public ContractualBenefitController(IContractualBenefitService contractualBenefitService)
+        public ContractualBenefitController(IServiceWrapper serviceWrapper)
         {
-            _contractualBenefitService = contractualBenefitService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("contractualBenefit-insert")]
         public async Task<IActionResult> AllNew(ContractualBenefitDTO contractualBenefitDto)
         {
-            var response = await _contractualBenefitService.AddNew(contractualBenefitDto);
+            var response = await _serviceWrapper.ContractualBenefit.AddNew(contractualBenefitDto);
             return Ok(response);
         }
         [HttpPost("contractualBenefit-get-all")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            var response = await _contractualBenefitService.GetAll(request);
+            var response = await _serviceWrapper.ContractualBenefit.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _contractualBenefitService.GetById(id);
+            var response = await _serviceWrapper.ContractualBenefit.GetById(id);
             return Ok(response);
         }
         [HttpPut("contractualBenefit-update")]
         public async Task<BaseResponse> Update(UpdateContractualBenefitDTO update)
         {
-            var response = await _contractualBenefitService.Update(update);
+            var response = await _serviceWrapper.ContractualBenefit.Update(update);
             return response;
         }
         [HttpDelete("contractualBenefit-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _contractualBenefitService.Delete(ids);
+            var response = await _serviceWrapper.ContractualBenefit.Delete(ids);
             return Ok(response);
         }
     }

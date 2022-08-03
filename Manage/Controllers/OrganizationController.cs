@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class OrganizationController : ControllerBase
     {
-        private readonly IOrganizationService _organizationService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public OrganizationController(IOrganizationService organizationService)
+        public OrganizationController(IServiceWrapper serviceWrapper)
         {
-            _organizationService = organizationService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("organization-insert")]
         public async Task<IActionResult> AllNew(OrganizationDTO organizationDto)
         {
-            var response = await _organizationService.AddNew(organizationDto);
+            var response = await _serviceWrapper.Organization.AddNew(organizationDto);
             return Ok(response);
         }
         [HttpPost("organization-get-all")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            var response = await _organizationService.GetAll(request);
+            var response = await _serviceWrapper.Organization.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _organizationService.GetById(id);
+            var response = await _serviceWrapper.Organization.GetById(id);
             return Ok(response);
         }
         [HttpPut("organization-update")]
         public async Task<BaseResponse> Update(UpdateOrganizationDTO update)
         {
-            var response = await _organizationService.Update(update);
+            var response = await _serviceWrapper.Organization.Update(update);
             return response;
         }
         [HttpDelete("organization-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _organizationService.Delete(ids);
+            var response = await _serviceWrapper.Organization.Delete(ids);
             return Ok(response);
         }
     }

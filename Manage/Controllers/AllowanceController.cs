@@ -11,40 +11,40 @@ namespace Manage.API.Controllers
     [Controller]
     public class AllowanceController : ControllerBase
     {
-        private readonly IAllowanceService _allowanceService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public AllowanceController(IAllowanceService allowanceService)
+        public AllowanceController(IServiceWrapper serviceWrapper)
         {
-            _allowanceService = allowanceService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("allowance-insert")]
         public async Task<IActionResult> AllNew( AllowanceDTO allowanceDto)
         {
-            var response = await _allowanceService.AddNew(allowanceDto);
+            var response = await _serviceWrapper.Allowance.AddNew(allowanceDto);
             return Ok(response);
         }
         [HttpPost("allowance-get-all")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            var response = await _allowanceService.GetAll(request);
+            var response = await _serviceWrapper.Allowance.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _allowanceService.GetById(id);
+            var response = await _serviceWrapper.Allowance.GetById(id);
             return Ok(response);
         }
         [HttpPut("allowance-update")]
         public async Task<BaseResponse> Update( UpdateAllowanceDTO update)
         {
-            var response = await _allowanceService.Update(update);
+            var response = await _serviceWrapper.Allowance.Update(update);
             return response;
         }
         [HttpDelete("allowance-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _allowanceService.Delete(ids);
+            var response = await _serviceWrapper.Allowance.Delete(ids);
             return Ok(response);
         }
     }

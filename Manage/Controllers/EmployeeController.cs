@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployeeService _employeeService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public EmployeeController(IEmployeeService employeeService)
+        public EmployeeController(IServiceWrapper serviceWrapper)
         {
-            _employeeService = employeeService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("employee-insert")]
         public async Task<IActionResult> AllNew(EmployeeDTO employeeDto)
         {
-            var response = await _employeeService.AddNew(employeeDto);
+            var response = await _serviceWrapper.Employee.AddNew(employeeDto);
             return Ok(response);
         }
         [HttpPost("employee-get-all")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            var response = await _employeeService.GetAll(request);
+            var response = await _serviceWrapper.Employee.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _employeeService.GetById(id);
+            var response = await _serviceWrapper.Employee.GetById(id);
             return Ok(response);
         }
         [HttpPut("employee-update")]
         public async Task<BaseResponse> Update(UpdateEmployeeDTO update)
         {
-            var response = await _employeeService.Update(update);
+            var response = await _serviceWrapper.Employee.Update(update);
             return response;
         }
         [HttpDelete("employee-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _employeeService.Delete(ids);
+            var response = await _serviceWrapper.Employee.Delete(ids);
             return Ok(response);
         }
     }

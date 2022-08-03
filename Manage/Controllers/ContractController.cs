@@ -14,40 +14,40 @@ namespace Manage.API.Controllers
     [Controller]
     public class ContractController : ControllerBase
     {
-        private readonly IContractService _contractService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public ContractController(IContractService contractService)
+        public ContractController(IServiceWrapper serviceWrapper)
         {
-            _contractService = contractService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("contract-insert")]
         public async Task<IActionResult> AllNew( ContractDTO contractDto)
         {
-            var response = await _contractService.AddNew(contractDto);
+            var response = await _serviceWrapper.Contract.AddNew(contractDto);
             return Ok(response);
         }
         [HttpPost("contract-get-all")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            var response = await _contractService.GetAll(request);
+            var response = await _serviceWrapper.Contract.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _contractService.GetById(id);
+            var response = await _serviceWrapper.Contract.GetById(id);
             return Ok(response);
         }
         [HttpPut("contract-update")]
         public async Task<IActionResult> Update(UpdateContractDTO update)
         {
-            var response = await _contractService.Update(update);
+            var response = await _serviceWrapper.Contract.Update(update);
             return Ok(response);
         }
         [HttpDelete("contract-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _contractService.Delete(ids);
+            var response = await _serviceWrapper.Contract.Delete(ids);
             return Ok(response);
         }
     }

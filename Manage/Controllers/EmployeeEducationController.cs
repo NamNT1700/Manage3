@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class EmployeeEducationController : ControllerBase
     {
-        private readonly IEmployeeEducationService _employeeEducationService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public EmployeeEducationController(IEmployeeEducationService employeeEducationService)
+        public EmployeeEducationController(IServiceWrapper serviceWrapper)
         {
-            _employeeEducationService = employeeEducationService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("employeeEducation-insert")]
         public async Task<IActionResult> AllNew(EmployeeEducationDTO employeeEducationDto)
         {
-            var response = await _employeeEducationService.AddNew(employeeEducationDto);
+            var response = await _serviceWrapper.EmployeeEducation.AddNew(employeeEducationDto);
             return Ok(response);
         }
-        [HttpPost("employeeEducation-get-all")]
-        public async Task<IActionResult> GetAll(BaseRequest request)
-        {
-            var response = await _employeeEducationService.GetAll(request);
-            return Ok(response);
-        }
+        //[HttpPost("employeeEducation-get-all")]
+        //public async Task<IActionResult> GetAll(BaseRequest request)
+        //{
+        //    var response = await _employeeEducationService.GetAll(request);
+        //    return Ok(response);
+        //}
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _employeeEducationService.GetById(id);
+            var response = await _serviceWrapper.EmployeeEducation.GetById(id);
             return Ok(response);
         }
         [HttpPut("employeeEducation-update")]
         public async Task<BaseResponse> Update(UpdateEmployeeEducationDTO update)
         {
-            var response = await _employeeEducationService.Update(update);
+            var response = await _serviceWrapper.EmployeeEducation.Update(update);
             return response;
         }
         [HttpDelete("employeeEducation-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _employeeEducationService.Delete(ids);
+            var response = await _serviceWrapper.EmployeeEducation.Delete(ids);
             return Ok(response);
         }
     }

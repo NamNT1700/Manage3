@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class WardController : ControllerBase
     {
-        private readonly IWardService _wardService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public WardController(IWardService wardService)
+        public WardController(IServiceWrapper serviceWrapper)
         {
-            _wardService = wardService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("ward-insert")]
         public async Task<IActionResult> AllNew(WardDTO wardDto)
         {
-            var response = await _wardService.AddNew(wardDto);
+            var response = await _serviceWrapper.Ward.AddNew(wardDto);
             return Ok(response);
         }
         [HttpPost("ward-get-all")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            var response = await _wardService.GetAll(request);
+            var response = await _serviceWrapper.Ward.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _wardService.GetById(id);
+            var response = await _serviceWrapper.Ward.GetById(id);
             return Ok(response);
         }
         [HttpPut("ward-update")]
         public async Task<BaseResponse> Update(UpdateWardDTO update)
         {
-            var response = await _wardService.Update(update);
+            var response = await _serviceWrapper.Ward.Update(update);
             return response;
         }
         [HttpDelete("ward-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _wardService.Delete(ids);
+            var response = await _serviceWrapper.Ward.Delete(ids);
             return Ok(response);
         }
     }

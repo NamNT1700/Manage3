@@ -14,40 +14,40 @@ namespace Manage.API.Controllers
     [Controller]
     public class HospitalController : ControllerBase
     {
-        private readonly IHospitalService _hospitalService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public HospitalController(IHospitalService hospitalService)
+        public HospitalController(IServiceWrapper serviceWrapper)
         {
-            _hospitalService = hospitalService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("hospital-insert")]
         public async Task<IActionResult> AllNew( HospitalDTO hospital)
         {
-            var response = await _hospitalService.AddNew(hospital);
+            var response = await _serviceWrapper.Hospital.AddNew(hospital);
             return Ok(response);
         }
         [HttpPost("hospital-get-all")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            var response = await _hospitalService.GetAll(request);
+            var response = await _serviceWrapper.Hospital.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _hospitalService.GetById(id);
+            var response = await _serviceWrapper.Hospital.GetById(id);
             return Ok(response);
         }
         [HttpPut("hospital-update")]
         public async Task<IActionResult> Update(UpdateHospitalDTO update)
         {
-            var response = await _hospitalService.Update(update);
+            var response = await _serviceWrapper.Hospital.Update(update);
             return Ok(response);
         }
         [HttpDelete("hospital-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _hospitalService.Delete(ids);
+            var response = await _serviceWrapper.Hospital.Delete(ids);
             return Ok(response);
         }
     }

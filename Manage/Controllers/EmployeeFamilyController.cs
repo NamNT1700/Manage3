@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class EmployeeFamilyController : ControllerBase
     {
-        private readonly IEmployeeFamilyService _employeeFamilyService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public EmployeeFamilyController(IEmployeeFamilyService employeeFamilyService)
+        public EmployeeFamilyController(IServiceWrapper serviceWrapper)
         {
-            _employeeFamilyService = employeeFamilyService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("employeeFamily-insert")]
         public async Task<IActionResult> AllNew(EmployeeFamilyDTO employeeFamilyDto)
         {
-            var response = await _employeeFamilyService.AddNew(employeeFamilyDto);
+            var response = await _serviceWrapper.EmployeeFamily.AddNew(employeeFamilyDto);
             return Ok(response);
         }
-        [HttpPost("employeeFamily-get-all")]
-        public async Task<IActionResult> GetAll(BaseRequest request)
-        {
-            var response = await _employeeFamilyService.GetAll(request);
-            return Ok(response);
-        }
+        //[HttpPost("employeeFamily-get-all")]
+        //public async Task<IActionResult> GetAll(BaseRequest request)
+        //{
+        //    var response = await _employeeFamilyService.GetAll(request);
+        //    return Ok(response);
+        //}
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _employeeFamilyService.GetById(id);
+            var response = await _serviceWrapper.EmployeeFamily.GetById(id);
             return Ok(response);
         }
         [HttpPut("employeeFamily-update")]
         public async Task<BaseResponse> Update(UpdateEmployeeFamilyDTO update)
         {
-            var response = await _employeeFamilyService.Update(update);
+            var response = await _serviceWrapper.EmployeeFamily.Update(update);
             return response;
         }
         [HttpDelete("employeeFamily-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _employeeFamilyService.Delete(ids);
+            var response = await _serviceWrapper.EmployeeFamily.Delete(ids);
             return Ok(response);
         }
     }

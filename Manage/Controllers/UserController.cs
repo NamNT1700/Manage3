@@ -15,49 +15,49 @@ namespace Manage.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public UserController(IUserService userService)
+        public UserController(IServiceWrapper serviceWrapper)
         {
-            _userService = userService;
+            _serviceWrapper = serviceWrapper;
         }
-        
+
         [HttpPost("register-user")]
         public async Task<IActionResult> RegisterUser( UserDTO user)
         {
-            BaseResponse res = await _userService.Register(user);
+            BaseResponse res = await _serviceWrapper.User.Register(user);
             return Ok(res);
         }
         [HttpPost("get-all-users")]
         public async Task<IActionResult> GetAllUsers(BaseRequest baseRequest)
         {
-            BaseResponse res = await _userService.GetAllUsers(baseRequest);
+            BaseResponse res = await _serviceWrapper.User.GetAllUsers(baseRequest);
             return Ok(res);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO user)
         {
-            BaseResponse res = await _userService.Login(user);
+            BaseResponse res = await _serviceWrapper.User.Login(user);
             return Ok(res);
         }
         [HttpDelete("delete-user")]
         public async Task<IActionResult> Delete(List<int> id)
         {
-            BaseResponse res = await _userService.DeleteUsers(id);
+            BaseResponse res = await _serviceWrapper.User.DeleteUsers(id);
             return Ok(res);
         }
         [HttpPut("update-status-user")]
         // [Authorize(Roles="Admin")]
         public async Task<IActionResult> UpdateStatusToInActive(int id)
         {
-            BaseResponse res = await _userService.ChangeStatusUser(id);
+            BaseResponse res = await _serviceWrapper.User.ChangeStatusUser(id);
             return Ok(res);
         }
 
         [HttpPost("renew-token")]
         public async Task<IActionResult> RenewToken(RefreshTokenDTO refreshTokenDTO)
         {
-            BaseResponse res = await _userService.RenewToken(refreshTokenDTO);
+            BaseResponse res = await _serviceWrapper.User.RenewToken(refreshTokenDTO);
             return Ok(res);
         }
     }

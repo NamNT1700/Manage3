@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class ProvinceController : ControllerBase
     {
-        private readonly IProvinceService _provinceService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public ProvinceController(IProvinceService provinceService)
+        public ProvinceController(IServiceWrapper serviceWrapper)
         {
-            _provinceService = provinceService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("province-insert")]
         public async Task<IActionResult> AllNew(ProvinceDTO provinceDto)
         {
-            var response = await _provinceService.AddNew(provinceDto);
+            var response = await _serviceWrapper.Province.AddNew(provinceDto);
             return Ok(response);
         }
         [HttpPost("province-get-all")]
         public async Task<IActionResult> GetAll(BaseRequest request)
         {
-            var response = await _provinceService.GetAll(request);
+            var response = await _serviceWrapper.Province.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _provinceService.GetById(id);
+            var response = await _serviceWrapper.Province.GetById(id);
             return Ok(response);
         }
         [HttpPut("province-update")]
         public async Task<BaseResponse> Update(UpdateProvinceDTO update)
         {
-            var response = await _provinceService.Update(update);
+            var response = await _serviceWrapper.Province.Update(update);
             return response;
         }
         [HttpDelete("province-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _provinceService.Delete(ids);
+            var response = await _serviceWrapper.Province.Delete(ids);
             return Ok(response);
         }
     }

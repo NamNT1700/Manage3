@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [ApiController]
     public class EmployeeCvController : ControllerBase
     {
-        private readonly IEmployeeCvService _employeeCvService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public EmployeeCvController(IEmployeeCvService employeeCvService)
+        public EmployeeCvController(IServiceWrapper serviceWrapper)
         {
-            _employeeCvService = employeeCvService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("employeeCv-insert")]
         public async Task<IActionResult> AllNew(EmployeeCvDTO employeeCvDto)
         {
-            var response = await _employeeCvService.AddNew(employeeCvDto);
+            var response = await _serviceWrapper.EmployeeCv.AddNew(employeeCvDto);
             return Ok(response);
         }
-        [HttpPost("employeeCv-get-all")]
-        public async Task<IActionResult> GetAll(BaseRequest request)
-        {
-            var response = await _employeeCvService.GetAll(request);
-            return Ok(response);
-        }
+        //[HttpPost("employeeCv-get-all")]
+        //public async Task<IActionResult> GetAll(BaseRequest request)
+        //{
+        //    var response = await _employeeCvService.GetAll(request);
+        //    return Ok(response);
+        //}
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _employeeCvService.GetById(id);
+            var response = await _serviceWrapper.EmployeeCv.GetById(id);
             return Ok(response);
         }
         [HttpPut("employeeCv-update")]
         public async Task<BaseResponse> Update(UpdateEmployeeCvDTO update)
         {
-            var response = await _employeeCvService.Update(update);
+            var response = await _serviceWrapper.EmployeeCv.Update(update);
             return response;
         }
         [HttpDelete("employeeCv-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _employeeCvService.Delete(ids);
+            var response = await _serviceWrapper.EmployeeCv.Delete(ids);
             return Ok(response);
         }
     }

@@ -15,40 +15,40 @@ namespace Manage.API.Controllers
     [Controller]
     public class NationController : ControllerBase
     {
-        private readonly ITitleService _titleService;
+        private readonly IServiceWrapper _serviceWrapper;
 
-        public NationController(ITitleService titleService)
+        public NationController(IServiceWrapper serviceWrapper)
         {
-            _titleService = titleService;
+            _serviceWrapper = serviceWrapper;
         }
         [HttpPost("nation-insert")]
-        public async Task<IActionResult> AllNew( TitleDTO title)
+        public async Task<IActionResult> AllNew( NationDTO nation)
         {
-            var response = await _titleService.AddNew(title);
+            var response = await _serviceWrapper.Nation.AddNew(nation);
             return Ok(response);
         }
         [HttpPost("nation-get-all")]
         public async Task<IActionResult> GetAll( BaseRequest request)
         {
-            var response = await _titleService.GetAll(request);
+            var response = await _serviceWrapper.Nation.GetAll(request);
             return Ok(response);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAll(int id)
         {
-            var response = await _titleService.GetById(id);
+            var response = await _serviceWrapper.Nation.GetById(id);
             return Ok(response);
         }
         [HttpPut("nation-update")]
-        public async Task<IActionResult> Update(UpdateTitleDTO update)
+        public async Task<IActionResult> Update(UpdateNationDTO update)
         {
-            var response = await _titleService.Update(update);
+            var response = await _serviceWrapper.Nation.Update(update);
             return Ok(response);
         }
         [HttpDelete("nation-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {
-            var response = await _titleService.Delete(ids);
+            var response = await _serviceWrapper.Nation.Delete(ids);
             return Ok(response);
         }
     }
