@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Manage.Model.Context;
+using Manage.Model.DTO.Ward;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
@@ -16,13 +17,20 @@ namespace Manage.Repository.Repository
         public HuDistrictRepository(DatabaseContext context) : base(context)
         {
         }
+
+        public async Task<List<ListWard>> FindAllDistrictById(List<ListWard> listWards)
+        {
+            foreach (ListWard listWard in listWards)
+            {
+                HuDistrict huDistrict = await FindById(listWard.DistrictId);
+                listWard.District = huDistrict.Name;
+            }
+            return listWards;
+        }
+
         public async Task<HuDistrict> FindByName(string name)
         {
             return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
-        }
-        public async Task<HuDistrict> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
         }
     }
 }

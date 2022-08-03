@@ -8,6 +8,6 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuAllowanceRepository: IRepositoryBase<HuAllowance> 
     {
-        
+        Task<HuAllowance> FindByName(string name);
     }
 }

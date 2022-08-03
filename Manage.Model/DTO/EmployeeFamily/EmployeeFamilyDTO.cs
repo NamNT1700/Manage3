@@ -16,7 +16,7 @@ namespace Manage.Model.DTO.EmployeeFamily
         [Required]
         public int? EmployeeId { get; set; }
         [Required]
-        public int? RelationId { get; set; }
+        public string Relation { get; set; }
         [Required]
         public int? IdNo { get; set; }
         [Required]

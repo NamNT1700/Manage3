@@ -16,9 +16,5 @@ namespace Manage.Repository.Repository
         public HuContractAllowanceRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuContractAllowance> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
-        }
     }
 }

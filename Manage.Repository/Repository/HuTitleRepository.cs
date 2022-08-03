@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Manage.Model.Context;
+using Manage.Model.DTO.OrgTitle;
 using Manage.Model.DTO.Title;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
@@ -17,9 +18,20 @@ namespace Manage.Repository.Repository
         public HuTitleRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuTitle> FindById(int? id)
+
+        public async Task<List<ListOrgTitle>> FindAllOrgAndTitleById(List<ListOrgTitle> listOrgTitles)
         {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
+            foreach (ListOrgTitle listOrgTitle in listOrgTitles)
+            {
+                HuTitle huTitle = await FindById(listOrgTitle.TitleId);
+                listOrgTitle.Title = huTitle.Name;
+            }
+            return listOrgTitles;
+        }
+
+        public async Task<HuTitle> FindByName(string name)
+        {
+            return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

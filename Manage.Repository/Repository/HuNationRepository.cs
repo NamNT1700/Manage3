@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Manage.Model.Context;
 using Manage.Model.DTO.Nation;
+using Manage.Model.DTO.Province;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
@@ -17,9 +18,20 @@ namespace Manage.Repository.Repository
         public HuNationRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuNation> FindById(int? id)
+
+        public async Task<List<ListProvince>> FindAllNationById(List<ListProvince> listProvinces)
         {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
+            foreach (ListProvince listProvince in listProvinces)
+            {
+                HuNation huNation = await FindById(listProvince.NationId);
+                listProvince.Nation = huNation.Name;
+            }
+            return listProvinces;
+        }
+
+        public async  Task<HuNation> FindByName(string name)
+        {
+            return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

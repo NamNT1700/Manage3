@@ -34,8 +34,8 @@ namespace Manage.Model.Models
         public string Address { get; set; }
         [Column("employee_id")]
         public int? EmployeeId { get; set; }
-        [Column("relation_id")]
-        public int? RelationId { get; set; }
+        [Column("relation")]
+        public string Relation { get; set; }
         [Column("id_no")]
         public int? IdNo { get; set; }
         [Column("is_deduct")]

@@ -16,9 +16,10 @@ namespace Manage.Repository.Repository
         public HuWardRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuWard> FindById(int? id)
+
+        public async Task<HuWard> FindByName(string name)
         {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
+            return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

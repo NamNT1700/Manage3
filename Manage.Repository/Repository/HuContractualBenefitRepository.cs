@@ -16,9 +16,5 @@ namespace Manage.Repository.Repository
         public HuContractWelfaceRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuContractWelface> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
-        }
     }
 }

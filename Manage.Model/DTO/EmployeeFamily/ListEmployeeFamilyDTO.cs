@@ -12,7 +12,7 @@ namespace Manage.Model.DTO.EmployeeFamily
         public string Code { get; set; }
         public string FullName { get; set; }
         public string Address { get; set; }
-        public int? RelationId { get; set; }
+        public string Relation { get; set; }
         public int? IdNo { get; set; }
         public string IsDeduct { get; set; }
         public DateTime? DeductFrom { get; set; }

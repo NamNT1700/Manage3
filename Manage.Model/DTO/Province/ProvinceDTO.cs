@@ -8,7 +8,7 @@ namespace Manage.Model.DTO.Province
         [Required]
         public string Name { get; set; }
         [Required]
-        public int? NationId { get; set; }
+        public string NationName { get; set; }
 
     }
 }

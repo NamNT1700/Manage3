@@ -43,7 +43,7 @@ namespace Manage.Service.Service
                 if (tokenResponse != null)
                     return tokenResponse;
                 HuBank huBank = await _repositoryWrapper.Bank.FindByName(bankBranch.BankName);
-                if (huBank == null) return Response.NotFoundResponse();
+                if (huBank == null) return Response.NotFoundResponse("bank not exsit");
                 HuBankBranch huBankBranch = _mapper.Map<HuBankBranch>(bankBranch);
                 huBankBranch.BankId = huBank.Id;
                 await _repositoryWrapper.BankBranch.Create(huBankBranch);
@@ -98,9 +98,11 @@ namespace Manage.Service.Service
                 if (tokenResponse != null)
                     return tokenResponse;
                 HuBankBranch huBankBranch = await _repositoryWrapper.BankBranch.FindById(id);
+                HuBank huBank = await _repositoryWrapper.Bank.FindById(huBankBranch.BankId);
                 if (huBankBranch == null)
                     return Response.NotFoundResponse();
                 BankBranchDTO bankBranch = _mapper.Map<BankBranchDTO>(huBankBranch);
+                bankBranch.BankName = huBank.Name;
                 return Response.SuccessResponse(bankBranch);
             }
             catch (Exception ex)
@@ -123,7 +125,10 @@ namespace Manage.Service.Service
                 HuBankBranch huBankBranch = await _repositoryWrapper.BankBranch.FindById(update.Id);
                 if (huBankBranch == null)
                     return Response.NotFoundResponse();
+                HuBank huBank = await _repositoryWrapper.Bank.FindByName(update.updateData.BankName);
+                if (huBank == null) return Response.NotFoundResponse("bank not exist");
                 _mapper.Map(update.updateData, huBankBranch);
+                huBankBranch.BankId = huBank.Id;
                 await _repositoryWrapper.BankBranch.Update(huBankBranch);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huBankBranch);
@@ -152,7 +157,7 @@ namespace Manage.Service.Service
                     HuBankBranch huBankBranch = await _repositoryWrapper.BankBranch.FindById(id);
                     if (huBankBranch == null)
                     {
-                        return Response.NotFoundResponse();
+                        return Response.NotFoundResponse($"bankbranch with id {id} not exist");
                     }
 
                 }

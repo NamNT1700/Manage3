@@ -143,7 +143,7 @@ namespace Manage.Service.Service
                     HuBank bank = await _repositoryWrapper.Bank.FindById(id);
                     if (bank == null)
                     {
-                        return Response.NotFoundResponse();
+                        return Response.NotFoundResponse($"bank with id {id} not exist");
                     }
 
                 }

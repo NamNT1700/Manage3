@@ -10,9 +10,9 @@ namespace Manage.Model.DTO.OrgTitle
     public class OrgTitleDTO
     {
         [Required]
-        public int? OrgId { get; set; }
+        public string Org { get; set; }
         [Required]
-        public int? TitleId { get; set; }
+        public string Title { get; set; }
 
     }
 }

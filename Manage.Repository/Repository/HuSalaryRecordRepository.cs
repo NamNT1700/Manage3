@@ -16,9 +16,5 @@ namespace Manage.Repository.Repository
         public HuSalaryRecordRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuSalaryRecord> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
-        }
     }
 }

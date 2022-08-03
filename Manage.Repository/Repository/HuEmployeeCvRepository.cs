@@ -16,9 +16,5 @@ namespace Manage.Repository.Repository
         public HuEmployeeCvRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuEmployeeCv> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
-        }
     }
 }

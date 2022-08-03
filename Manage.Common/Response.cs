@@ -79,6 +79,16 @@ namespace Manage.Common
             };
             return response;
         }
+        public static BaseResponse NotFoundResponse(string mesage)
+        {
+            BaseResponse response = new BaseResponse
+            {
+                success = false,
+                status = "404",
+                message = mesage
+            };
+            return response;
+        }
         public static BaseResponse BadLoginResponse()
         {
             BaseResponse response = new BaseResponse

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Manage.Model.Context;
+using Manage.Model.DTO.OrgTitle;
 using Manage.Model.Models;
 using Manage.Repository.Base.Repository;
 using Manage.Repository.IRepository;
@@ -16,9 +17,7 @@ namespace Manage.Repository.Repository
         public HuOrgTitleRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuOrgTitle> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
-        }
+
+        
     }
 }

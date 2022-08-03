@@ -99,7 +99,9 @@ namespace Manage.Service.Service
                 HuDistrict huDistrict = await _repositoryWrapper.District.FindById(id);
                 if (huDistrict == null)
                     return Response.NotFoundResponse();
+                HuProvince huProvince = await _repositoryWrapper.Province.FindById(huDistrict.ProvinceId);
                 DistrictDTO districtDTO = _mapper.Map<DistrictDTO>(huDistrict);
+                districtDTO.ProvinceName = huProvince.Name;
                 return Response.SuccessResponse(districtDTO);
             }
             catch (Exception ex)
@@ -123,6 +125,8 @@ namespace Manage.Service.Service
                 if (huDistrict == null)
                     return Response.NotFoundResponse();
                 _mapper.Map(update.updateData, huDistrict);
+                HuProvince huProvince = await _repositoryWrapper.Province.FindByName(update.updateData.Province);
+                huDistrict.ProvinceId = huProvince.Id;
                 await _repositoryWrapper.District.Update(huDistrict);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huDistrict);

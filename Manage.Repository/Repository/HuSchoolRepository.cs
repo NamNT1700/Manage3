@@ -16,9 +16,5 @@ namespace Manage.Repository.Repository
         public HuSchoolRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuSchool> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
-        }
     }
 }

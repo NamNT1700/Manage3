@@ -20,10 +20,5 @@ namespace Manage.Repository.Repository
         {
             return await FindByCondition(n => n.FullName.Equals(name)).FirstOrDefaultAsync();
         }
-
-        public async Task<HuEmployee> FindById(int? id)
-        {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
-        }
     }
 }

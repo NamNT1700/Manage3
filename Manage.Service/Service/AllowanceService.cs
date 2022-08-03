@@ -145,7 +145,7 @@ namespace Manage.Service.Service
                     HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(id);
                     if (allowance == null)
                     {
-                        return Response.NotFoundResponse();
+                        return Response.NotFoundResponse($"allwance with id {id} not exist");
                     }
 
                 }

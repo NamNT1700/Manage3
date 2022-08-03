@@ -135,7 +135,8 @@ namespace Manage.API
 
             CreateMap<OrgTitleDTO, HuOrgTitle>();
             CreateMap<HuOrgTitle, OrgTitleDTO>();
-            CreateMap<HuOrgTitle, ListOrgTitleDTO>();
+            CreateMap<HuOrgTitle, ListOrgTitle>();
+            CreateMap<ListOrgTitle, ListOrgTitleDTO>();
             CreateMap<UpdateOrgTitleDTO, HuOrgTitle>();
             CreateMap<UserInfoCreate, HuOrgTitle>();
             CreateMap<UserInfoUpdate, HuOrgTitle>();
@@ -157,7 +158,8 @@ namespace Manage.API
             CreateMap<ProvinceDTO, HuProvince>();
             CreateMap<HuProvince, ProvinceDTO>();
             CreateMap<UpdateProvince, HuProvince>();
-            CreateMap<HuProvince, ListProvinceDTO>();
+            CreateMap<HuProvince, ListProvince>();
+            CreateMap<ListProvince, ListProvinceDTO>();
             CreateMap<UserInfoCreate, HuProvince>();
             CreateMap<UserInfoUpdate, HuProvince>();
 
@@ -212,7 +214,8 @@ namespace Manage.API
 
             CreateMap<WardDTO, HuWard>();
             CreateMap<HuWard, WardDTO>();
-            CreateMap<HuWard, ListWardDTO>();
+            CreateMap<HuWard, ListWard>();
+            CreateMap<ListWard, ListWardDTO>();
             CreateMap<UpdateWardDTO, HuWard>();
             CreateMap<UserInfoCreate, HuWard>();
             CreateMap<UserInfoUpdate, HuWard>();
@@ -223,11 +226,6 @@ namespace Manage.API
             CreateMap<UpdateWelfaceDTO, HuWelface>();
             CreateMap<UserInfoCreate, HuWelface>();
             CreateMap<UserInfoUpdate, HuWelface>();
-        }
-
-        private void AssertConfigurationIsValid()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -10,10 +10,10 @@ namespace Manage.Model.DTO.ContractAllowance
     public class ContractAllowanceDTO
     {
         [Required]
-        public int? AllwanceId { get; set; }
+        public string Allwance { get; set; }
         [Required]
         public double? Money { get; set; }
         [Required]
-        public int? ContractId { get; set; }
+        public string Contract { get; set; }
     }
 }

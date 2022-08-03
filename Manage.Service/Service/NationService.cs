@@ -45,6 +45,8 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
+                if (await _repositoryWrapper.Nation.FindByName(nation.Name) != null)
+                    return Response.DuplicateDataResponse("nation already exist");
                 HuNation huNation = _mapper.Map<HuNation>(nation);
                 await _repositoryWrapper.Nation.Create(huNation);
                 huNation.Code = CreateCode.NationCode(huNation.Id);

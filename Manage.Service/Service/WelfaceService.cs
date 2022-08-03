@@ -37,70 +37,101 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> AddNew(WelfaceDTO welfaceDto)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            HuWelface huWelface = _mapper.Map<HuWelface>(welfaceDto);
-            await _repositoryWrapper.Welface.Create(huWelface);
-            huWelface.Code = CreateCode.AllowanceCode(huWelface.Id);
-            UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuWelface huWelface = _mapper.Map<HuWelface>(welfaceDto);
+                await _repositoryWrapper.Welface.Create(huWelface);
+                huWelface.Code = CreateCode.AllowanceCode(huWelface.Id);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            if (request.pageNum < 1 || request.pageSize < 1)
-                return Response.NotFoundResponse();
-            if (request.pageNum > request.pageSize)
-                return Response.NotFoundResponse();
-
-            List<HuWelface> huWelfaces = await _repositoryWrapper.Welface.GetAll(request);
-            List<ListWelfaceDTO> listAllowance = _mapper.Map<List<ListWelfaceDTO>>(huWelfaces);
-            return Response.SuccessResponse(listAllowance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                if (request.pageNum < 1 || request.pageSize < 1)
+                    return Response.NotFoundResponse();
+                if (request.pageNum > request.pageSize)
+                    return Response.NotFoundResponse();
+                List<HuWelface> huWelfaces = await _repositoryWrapper.Welface.GetAll(request);
+                List<ListWelfaceDTO> listWelfaceDTOs = _mapper.Map<List<ListWelfaceDTO>>(huWelfaces);
+                return Response.SuccessResponse(listWelfaceDTOs);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            HuWelface huWelface = await _repositoryWrapper.Welface.FindById(id);
-            if (huWelface == null)
-                return Response.NotFoundResponse();
-            WelfaceDTO allowance = _mapper.Map<WelfaceDTO>(huWelface);
-            return Response.SuccessResponse(allowance);
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuWelface huWelface = await _repositoryWrapper.Welface.FindById(id);
+                if (huWelface == null)
+                    return Response.NotFoundResponse();
+                WelfaceDTO welfaceDTO = _mapper.Map<WelfaceDTO>(huWelface);
+                return Response.SuccessResponse(welfaceDTO);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+           
         }
 
         public async Task<BaseResponse> Update(UpdateWelfaceDTO update)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            HuWelface welface = await _repositoryWrapper.Welface.FindById(update.Id);
-            if (welface == null)
-                return Response.NotFoundResponse();
-            _mapper.Map(update.updateData, welface);
-            await _repositoryWrapper.Welface.Update(welface);
-            UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
-            _mapper.Map(userInfoUpdate, welface);
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuWelface welface = await _repositoryWrapper.Welface.FindById(update.Id);
+                if (welface == null)
+                    return Response.NotFoundResponse();
+                _mapper.Map(update.updateData, welface);
+                await _repositoryWrapper.Welface.Update(welface);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, welface);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
 
         public async Task<BaseResponse> Delete(List<int> ids)
@@ -122,9 +153,9 @@ namespace Manage.Service.Service
             }
             foreach (int id in ids)
             {
-                HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(id);
-                if (allowance != null)
-                    await _repositoryWrapper.Allowance.Delete(allowance);
+                HuWelface welface = await _repositoryWrapper.Welface.FindById(id);
+                if (welface != null)
+                    await _repositoryWrapper.Welface.Delete(welface);
             }
             return Response.SuccessResponse();
         }

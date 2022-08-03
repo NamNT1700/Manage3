@@ -15,9 +15,10 @@ namespace Manage.Repository.Repository
         public HuAllowanceRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuAllowance> FindById(int? id)
+
+        public async Task<HuAllowance> FindByName(string name)
         {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
+            return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 

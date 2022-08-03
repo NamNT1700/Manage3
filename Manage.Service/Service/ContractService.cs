@@ -151,7 +151,7 @@ namespace Manage.Service.Service
                     HuContract contract = await _repositoryWrapper.Contract.FindById(id);
                     if (contract == null)
                     {
-                        return Response.NotFoundResponse();
+                        return Response.NotFoundResponse($"contract with id {id} not exist");
                     }
 
                 }

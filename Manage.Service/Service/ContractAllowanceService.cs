@@ -43,7 +43,16 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuContractAllowance huContractAllowance = _mapper.Map<HuContractAllowance>(contractAllowanceDto);
+                HuContract huContract = await _repositoryWrapper.Contract.FindByName(contractAllowanceDto.Contract);
+                if (huContract == null) return Response.NotFoundResponse("contract not exist");
+                HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindByName(contractAllowanceDto.Allwance);
+                if (huAllowance == null) return Response.NotFoundResponse("allowance not exist");
+                HuContractAllowance huContractAllowance = new HuContractAllowance
+                {
+                    AllwanceId = huAllowance.Id,
+                    ContractId = huContract.Id,
+                    Money = contractAllowanceDto.Money,
+                };
                 await _repositoryWrapper.ContractAllowance.Create(huContractAllowance);
                 huContractAllowance.Code = CreateCode.ContractAllowanceCode(huContractAllowance.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
@@ -72,8 +81,8 @@ namespace Manage.Service.Service
                     return Response.NotFoundResponse();
                 if (request.pageNum > request.pageSize)
                     return Response.NotFoundResponse();
-                List<HuContractAllowance> huAllowances = await _repositoryWrapper.ContractAllowance.GetAll(request);
-                List<ListContractAllowanceDTO> listContractAllowances = _mapper.Map<List<ListContractAllowanceDTO>>(huAllowances);
+                List<HuContractAllowance> huContractAllowances = await _repositoryWrapper.ContractAllowance.GetAll(request);
+                List<ListContractAllowanceDTO> listContractAllowances = _mapper.Map<List<ListContractAllowanceDTO>>(huContractAllowances);
                 return Response.SuccessResponse(listContractAllowances);
             }
             catch (Exception ex)
@@ -148,7 +157,7 @@ namespace Manage.Service.Service
                     HuContractAllowance huContractAllowance = await _repositoryWrapper.ContractAllowance.FindById(id);
                     if (huContractAllowance == null)
                     {
-                        return Response.NotFoundResponse();
+                        return Response.NotFoundResponse($"contractallwance with id {id} not exist");
                     }
 
                 }

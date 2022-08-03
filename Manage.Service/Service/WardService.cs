@@ -76,8 +76,10 @@ namespace Manage.Service.Service
                 if (request.pageNum > request.pageSize)
                     return Response.NotFoundResponse();
                 List<HuWard> huWards = await _repositoryWrapper.Ward.GetAll(request);
-                List<ListWardDTO> listWardDtos = _mapper.Map<List<ListWardDTO>>(huWards);
-                return Response.SuccessResponse(listWardDtos);
+                List<ListWard> listWards = _mapper.Map<List<ListWard>>(huWards);
+                listWards = await _repositoryWrapper.District.FindAllDistrictById(listWards);
+                List<ListWardDTO> listProvinceDtos = _mapper.Map<List<ListWardDTO>>(listWards);
+                return Response.SuccessResponse(listProvinceDtos);
             }
             catch (Exception ex)
             {
@@ -99,7 +101,9 @@ namespace Manage.Service.Service
                 HuWard huWard = await _repositoryWrapper.Ward.FindById(id);
                 if (huWard == null)
                     return Response.NotFoundResponse();
+                HuDistrict huDistrict = await _repositoryWrapper.District.FindById(huWard.DistricId);
                 WardDTO ward = _mapper.Map<WardDTO>(huWard);
+                ward.DistrictName = huDistrict.Name;
                 return Response.SuccessResponse(ward);
             }
             catch (Exception ex)
@@ -122,7 +126,9 @@ namespace Manage.Service.Service
                 HuWard huWard = await _repositoryWrapper.Ward.FindById(update.Id);
                 if (huWard == null)
                     return Response.NotFoundResponse();
+                HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(update.updateData.Districname);
                 _mapper.Map(update.updateData, huWard);
+                huWard.DistricId = huDistrict.Id;
                 await _repositoryWrapper.Ward.Update(huWard);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huWard);

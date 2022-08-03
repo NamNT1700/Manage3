@@ -11,6 +11,7 @@ namespace Manage.Model.DTO.Ward
     {
         public string Name { get; set; }
         public string Districname { get; set; }
-        
+        public string Activeflg { get; set; }
+
     }
 }

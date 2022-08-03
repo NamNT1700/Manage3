@@ -16,9 +16,9 @@ namespace Manage.Repository.Repository
         public HuWelfaceRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<HuWelface> FindById(int? id)
+        public async Task<HuWelface> FindByName(string name)
         {
-            return await FindByCondition(n => n.Id.Equals(id)).FirstOrDefaultAsync();
+            return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

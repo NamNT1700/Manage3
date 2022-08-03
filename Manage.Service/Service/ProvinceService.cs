@@ -44,8 +44,8 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuNation huNation = await _repositoryWrapper.Nation.FindById(provinceDto.NationId);
-                if (huNation == null) return Response.NotFoundResponse();
+                HuNation huNation = await _repositoryWrapper.Nation.FindByName(provinceDto.NationName);
+                if (huNation == null) return Response.NotFoundResponse("nation not exist");
                 HuProvince huProvince = _mapper.Map<HuProvince>(provinceDto);
                 huProvince.NationId = huNation.Id;
                 await _repositoryWrapper.Province.Create(huProvince);
@@ -59,7 +59,6 @@ namespace Manage.Service.Service
             {
                 return Response.ExceptionResponse(ex);
             }
-            
         }
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
@@ -77,7 +76,9 @@ namespace Manage.Service.Service
                 if (request.pageNum > request.pageSize)
                     return Response.NotFoundResponse();
                 List<HuProvince> huProvinces = await _repositoryWrapper.Province.GetAll(request);
-                List<ListProvinceDTO> listProvinceDtos = _mapper.Map<List<ListProvinceDTO>>(huProvinces);
+                List<ListProvince> listProvinces = _mapper.Map<List<ListProvince>>(huProvinces);
+                listProvinces = await _repositoryWrapper.Nation.FindAllNationById(listProvinces);
+                List<ListProvinceDTO> listProvinceDtos = _mapper.Map<List<ListProvinceDTO>>(listProvinces);
                 return Response.SuccessResponse(listProvinceDtos);
             }
             catch (Exception ex)
@@ -98,7 +99,9 @@ namespace Manage.Service.Service
             HuProvince huProvince = await _repositoryWrapper.Province.FindById(id);
             if (huProvince == null)
                 return Response.NotFoundResponse();
+            HuNation huNation = await _repositoryWrapper.Nation.FindById(huProvince.NationId);
             ProvinceDTO province = _mapper.Map<ProvinceDTO>(huProvince);
+            province.NationName = huNation.Name;
             return Response.SuccessResponse(province);
         }
 
@@ -115,7 +118,9 @@ namespace Manage.Service.Service
                 HuProvince huProvince = await _repositoryWrapper.Province.FindById(update.Id);
                 if (huProvince == null)
                     return Response.NotFoundResponse();
+                HuNation huNation = await _repositoryWrapper.Nation.FindByName(update.updateData.Nation);
                 _mapper.Map(update.updateData, huProvince);
+                huProvince.NationId = huNation.Id;
                 await _repositoryWrapper.Province.Update(huProvince);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huProvince);

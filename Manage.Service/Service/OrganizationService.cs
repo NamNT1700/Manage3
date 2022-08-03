@@ -44,9 +44,12 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
+                if (await _repositoryWrapper.Organization.FindByName(organizationDto.Name) != null)
+                    return Response.DuplicateDataResponse("organization already exist");
                 HuOrganization HuOrganization = _mapper.Map<HuOrganization>(organizationDto);
                 await _repositoryWrapper.Organization.Create(HuOrganization);
                 HuOrganization.Code = CreateCode.OrgCode(HuOrganization.Id);
+                HuOrganization.OrderNumber = HuOrganization.Id;
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
                 _mapper.Map(userInfoCreate, HuOrganization);
                 await _context.SaveChangesAsync();
@@ -74,7 +77,9 @@ namespace Manage.Service.Service
                 if (request.pageNum > request.pageSize)
                     return Response.NotFoundResponse();
                 List<HuOrganization> HuOrganizations = await _repositoryWrapper.Organization.GetAll(request);
-                List<ListOrganizationDTO> listOrganizationDTOs = _mapper.Map<List<ListOrganizationDTO>>(HuOrganizations);
+                List<ListOrganization> listOrganizations = _mapper.Map<List<ListOrganization>>(HuOrganizations);
+                listOrganizations = await _repositoryWrapper.Organization.FindAllOrganizationById(listOrganizations);
+                List<ListOrganizationDTO> listOrganizationDTOs = _mapper.Map<List<ListOrganizationDTO>>(listOrganizations);
                 return Response.SuccessResponse(listOrganizationDTOs);
             }
             catch (Exception ex)
@@ -97,7 +102,9 @@ namespace Manage.Service.Service
                 HuOrganization HuOrganization = await _repositoryWrapper.Organization.FindById(id);
                 if (HuOrganization == null)
                     return Response.NotFoundResponse();
+                HuOrganization HuOrganizationParent = await _repositoryWrapper.Organization.FindById(HuOrganization.ParentId);
                 OrganizationDTO organizationDTO = _mapper.Map<OrganizationDTO>(HuOrganization);
+                organizationDTO.Parent = HuOrganizationParent.Name;
                 return Response.SuccessResponse(organizationDTO);
             }
             catch (Exception ex)
@@ -120,8 +127,10 @@ namespace Manage.Service.Service
                 HuOrganization huOrganization = await _repositoryWrapper.Organization.FindById(update.id);
                 if (huOrganization == null)
                     return Response.NotFoundResponse();
+                HuOrganization huOrganizationParent = await _repositoryWrapper.Organization.FindByName(update.updateData.Parent);
                 _mapper.Map(update.updateData, huOrganization);
                 await _repositoryWrapper.Organization.Update(huOrganization);
+                huOrganization.ParentId = huOrganizationParent.Id;
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huOrganization);
                 await _context.SaveChangesAsync();
@@ -149,7 +158,7 @@ namespace Manage.Service.Service
                     HuOrganization huOrganization = await _repositoryWrapper.Organization.FindById(id);
                     if (huOrganization == null)
                     {
-                        return Response.NotFoundResponse();
+                        return Response.NotFoundResponse($"organization with id {id} not exist");
                     }
 
                 }

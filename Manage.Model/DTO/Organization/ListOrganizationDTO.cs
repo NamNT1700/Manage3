@@ -6,13 +6,22 @@ using System.Threading.Tasks;
 
 namespace Manage.Model.DTO.Organization
 {
-    public class ListOrganizationDTO
+    public class ListOrganization
     {
         public string Name { get; set; }
         public int? ParentId { get; set; }
+        public string Parent { get; set; }
         public int? OrderNumber { get; set; }
         public string Code { get; set; }
         public int Id { get; set; }
 
+    }
+    public class ListOrganizationDTO
+    {       
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Parent { get; set; }
+        public int? OrderNumber { get; set; }
     }
 }

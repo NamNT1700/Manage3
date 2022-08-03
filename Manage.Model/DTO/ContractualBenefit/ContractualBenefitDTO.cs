@@ -10,10 +10,10 @@ namespace Manage.Model.DTO.ContractualBenefit
     public class ContractualBenefitDTO
     {
         [Required]
-        public string WelfaceName { get; set; }
+        public string Welface { get; set; }
         [Required]
         public double? Money { get; set; }
         [Required]
-        public string ContractName { get; set; }
+        public string Contract { get; set; }
     }
 }
