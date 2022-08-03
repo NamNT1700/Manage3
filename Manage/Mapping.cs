@@ -43,7 +43,6 @@ namespace Manage.API
             CreateMap<UserInfoCreate, HuAllowance>();
             CreateMap<UserInfoUpdate, HuAllowance>();
 
-
             CreateMap<BankDTO, HuBank>();
             CreateMap<HuBank, BankDTO>();
             CreateMap<HuBank, ListBankDTO>();
@@ -65,6 +64,13 @@ namespace Manage.API
             CreateMap<UpdateContractAllowanceDTO, HuContractAllowance>();
             CreateMap<UserInfoCreate, HuContractAllowance>();
             CreateMap<UserInfoUpdate, HuContractAllowance>();
+
+            CreateMap<ContractDTO, HuContract>();
+            CreateMap<HuContract, ContractDTO>();
+            CreateMap<HuContract, ListContractDTO>();
+            CreateMap<UpdateContract, HuContract>();
+            CreateMap<UserInfoCreate, HuContract>();
+            CreateMap<UserInfoUpdate, HuContract>();
 
             CreateMap<ContractualBenefitDTO, HuContractWelface>();
             CreateMap<HuContractWelface, ContractualBenefitDTO>();

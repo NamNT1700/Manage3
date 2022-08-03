@@ -19,7 +19,7 @@ namespace Manage.Logger
 
         public async Task Invoke(HttpContext context)
         {
-            string logFilePath = @"C:\Users\Tuan Nam\Desktop\Base\Base\Log\logmiddleware\Log-" + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "txt";
+            string logFilePath = @"C:\Users\Tuan Nam\Desktop\log-" + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "txt";
             FileInfo logFileInfo = new FileInfo(logFilePath);
             DirectoryInfo logDirInfo = new DirectoryInfo(logFileInfo.DirectoryName);
             if (!logDirInfo.Exists) logDirInfo.Create();

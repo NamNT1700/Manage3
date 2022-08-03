@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Manage.Logger\Manage.Logger.csproj" />
     <ProjectReference Include="..\Manage.Model\Manage.Model.csproj" />
     <ProjectReference Include="..\Manage.Repository\Manage.Repository.csproj" />
     <ProjectReference Include="..\Manage.Service\Manage.Service.csproj" />
