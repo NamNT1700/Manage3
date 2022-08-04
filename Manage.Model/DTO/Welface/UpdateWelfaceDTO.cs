@@ -10,6 +10,5 @@ namespace Manage.Model.DTO.Welface
     public class UpdateWelface
     {
         public string Name { get; set; }
-        public string Activeflg { get; set; }
     }
 }

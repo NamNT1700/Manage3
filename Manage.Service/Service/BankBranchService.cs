@@ -175,5 +175,31 @@ namespace Manage.Service.Service
             }
             
         }
+        public async Task<BaseResponse> ChangeStatus(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuBankBranch huBankBranch = await _repositoryWrapper.BankBranch.FindById(id);
+                if (huBankBranch == null)
+                    return Response.NotFoundResponse();
+                huBankBranch.Activeflg = Tools.ChangeStatus(huBankBranch.Activeflg);
+                await _repositoryWrapper.BankBranch.Update(huBankBranch);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huBankBranch);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+
+        }
     }
 }

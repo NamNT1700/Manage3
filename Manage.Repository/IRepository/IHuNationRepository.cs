@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Manage.Common;
 using Manage.Model.DTO.Nation;
 using Manage.Model.DTO.Province;
 using Manage.Model.Models;
@@ -11,5 +12,6 @@ namespace Manage.Repository.IRepository
     {
         Task<HuNation> FindByName(string name);
         Task<List<ListProvince>> FindAllNationById(List<ListProvince> listProvinces);
+        Task<List<HuNation>> GetAll(BaseRequest baseRequest);
     }
 }

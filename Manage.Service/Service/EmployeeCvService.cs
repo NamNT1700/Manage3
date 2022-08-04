@@ -92,7 +92,7 @@ namespace Manage.Service.Service
                 HuEmployeeCv huEmployeeCv = await _repositoryWrapper.EmployeeCv.FindById(update.id);
                 if (huEmployeeCv == null)
                     return Response.NotFoundResponse();
-                huEmployeeCv = _mapper.Map<HuEmployeeCv>(update.updateData);
+                 _mapper.Map(update.updateData, huEmployeeCv);
                 await _repositoryWrapper.EmployeeCv.Update(huEmployeeCv);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huEmployeeCv);

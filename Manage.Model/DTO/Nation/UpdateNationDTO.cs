@@ -10,6 +10,5 @@ namespace Manage.Model.DTO.Nation
     public class UpdateNation
     {
         public string Name { get; set; }
-        public string Activeflg { get; set; }
     }
 }

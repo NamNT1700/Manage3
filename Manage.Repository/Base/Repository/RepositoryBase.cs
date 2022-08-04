@@ -31,19 +31,16 @@ namespace Manage.Repository.Base.Repository
         public async Task Create(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
         }
 
         public async Task Update(T entity)
         {
             await Task.Run(() => _context.Set<T>().Update(entity));
-            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(T entity)
         {
             await Task.Run(() => _context.Set<T>().Remove(entity));
-            await _context.SaveChangesAsync();
         }
         public async Task<T> FindByCode(string code)
         {
@@ -56,12 +53,12 @@ namespace Manage.Repository.Base.Repository
 
         }
 
-        public async Task<List<T>> GetAll(BaseRequest baseRequest)
-        {
-            return await Task.Run(() => FindAll().OrderBy(a => a.Id)
-                .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
-                .Take(baseRequest.pageSize)
-                .ToList());
-        }
+        //public async Task<List<T>> GetAll(BaseRequest baseRequest)
+        //{
+        //    return await Task.Run(() => FindAll().OrderBy(a => a.Id)
+        //        .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+        //        .Take(baseRequest.pageSize)
+        //        .ToList());
+        //}
     }
 }

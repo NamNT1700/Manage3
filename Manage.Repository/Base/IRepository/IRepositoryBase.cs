@@ -17,6 +17,6 @@ namespace Manage.Repository.Base.IRepository
         Task Delete(T entity);
         Task<T> FindByCode(string code);
         Task<T> FindById(int? id);
-        Task<List<T>> GetAll(BaseRequest baseRequest);
+        //Task<List<T>> GetAll(BaseRequest baseRequest);
     }
 }

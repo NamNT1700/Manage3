@@ -12,5 +12,6 @@ namespace Manage.Service.IService
         Task<BaseResponse> GetById(int id);
         Task<BaseResponse> Update(UpdateAllowanceDTO update);
         Task<BaseResponse> Delete(List<int> ids);
+        Task<BaseResponse> ChangeStatus(int id);
     }
 }

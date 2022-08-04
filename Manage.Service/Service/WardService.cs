@@ -175,5 +175,32 @@ namespace Manage.Service.Service
             }
             
         }
+        public async Task<BaseResponse> ChangeStatus(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuWard huWard = await _repositoryWrapper.Ward.FindById(id);
+                if (huWard == null)
+                    return Response.NotFoundResponse();
+                huWard.Activeflg = Tools.ChangeStatus(huWard.Activeflg);
+                await _repositoryWrapper.Ward.Update(huWard);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huWard);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+
+        }
+
     }
 }

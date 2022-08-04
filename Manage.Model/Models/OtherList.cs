@@ -19,6 +19,11 @@ namespace Manage.Model.Models
         [Column("code")]
         [StringLength(255)]
         public string Code { get; set; }
+        [Column("type_id")]
+        public int? TypeId { get; set; }
+        [Column("name")]
+        [StringLength(255)]
+        public string Name { get; set; }    
         [Column("created_by")]
         [StringLength(50)]
         public string CreatedBy { get; set; }
@@ -29,12 +34,11 @@ namespace Manage.Model.Models
         public string LastUpdatedBy { get; set; }
         [Column("last_update_time", TypeName = "datetime")]
         public DateTime? LastUpdateTime { get; set; }
-        [Column("type_id")]
-        public int? TypeId { get; set; }
+        
         [Column("activeflg")]
         public string Activeflg { get; set; }
 
-        [ForeignKey(nameof(Id))]
+        [ForeignKey(nameof(TypeId))]
         [InverseProperty(nameof(OtherListType.OtherList))]
         public virtual OtherListType IdNavigation { get; set; }
         [ForeignKey(nameof(TypeId))]

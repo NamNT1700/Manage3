@@ -169,5 +169,30 @@ namespace Manage.Service.Service
             }
             
         }
+        public async Task<BaseResponse> ChangeStatus(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuContract huContract = await _repositoryWrapper.Contract.FindById(id);
+                if (huContract == null)
+                    return Response.NotFoundResponse();
+                huContract.Activeflg = Tools.ChangeStatus(huContract.Activeflg);
+                await _repositoryWrapper.Contract.Update(huContract);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huContract);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+        }
     }
 }

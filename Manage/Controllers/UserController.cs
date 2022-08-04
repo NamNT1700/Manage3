@@ -48,9 +48,9 @@ namespace Manage.API.Controllers
         }
         [HttpPut("update-status-user")]
         // [Authorize(Roles="Admin")]
-        public async Task<IActionResult> UpdateStatusToInActive(int id)
+        public async Task<IActionResult> UpdateStatus(int id)
         {
-            BaseResponse res = await _serviceWrapper.User.ChangeStatusUser(id);
+            BaseResponse res = await _serviceWrapper.User.ChangeStatus(id);
             return Ok(res);
         }
 

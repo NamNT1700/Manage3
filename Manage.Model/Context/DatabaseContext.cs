@@ -1,24 +1,27 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Manage.Model.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 #nullable disable
 
 namespace Manage.Model.Context
 {
+   
     public partial class DatabaseContext : DbContext
     {
-        public DatabaseContext()
-        {
-        }
-
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
         }
-
+        public string EncodingUTF8(string password)
+        {
+            Byte[] passBytes = Encoding.UTF8.GetBytes(password);
+            string passE = "";
+            foreach (byte b in passBytes)
+                passE += b;
+            return passE;
+        }
         public virtual DbSet<HuAllowance> HuAllowances { get; set; }
         public virtual DbSet<HuBank> HuBanks { get; set; }
         public virtual DbSet<HuBankBranch> HuBankBranches { get; set; }
@@ -95,8 +98,7 @@ namespace Manage.Model.Context
                     .HasConstraintName("FK_hu_employee_cv_hu_bank");
 
                 entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.HuEmployeeCvs)
-                    .HasForeignKey(d => d.EmployeeId)
+                    .WithOne(p => p.HuEmployeeCvs)
                     .HasConstraintName("FK_hu_employee_cv_hu_employee");
 
                 entity.HasOne(d => d.Hospital)
@@ -131,8 +133,7 @@ namespace Manage.Model.Context
                 entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
 
                 entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.HuShools)
-                    .HasForeignKey(d => d.EmployeeId)
+                    .WithOne(p => p.HuShools)
                     .HasConstraintName("FK_hu_shools_hu_employee");
             });
 
@@ -143,11 +144,28 @@ namespace Manage.Model.Context
 
             modelBuilder.Entity<OtherList>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);//ValueGeneratedNever();
+            });
+            modelBuilder.Entity<OtherListType>(entity =>
+            {
+                entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
             });
             modelBuilder.Entity<SeUser>(entity =>
             {
                 entity.Property(e => e.Id).UseIdentityColumn(seed: 1, increment: 1);
+                entity.HasData(new SeUser
+                {
+                    Id = -1,
+                    Code = "UE00-1",
+                    Activeflg = "SuperActive",
+                    CreatedTime = DateTime.UtcNow,
+                    CreatedBy = "SuperAdmin",
+                    LastUpdatedBy = "SuperAdmin",
+                    LastUpdateTime = DateTime.UtcNow,
+                    Password = EncodingUTF8("SuperAdmin"),
+                    Username = "SuperAdmin",
+                    Role = "SuperAdmin",
+                }) ;
             });
             OnModelCreatingPartial(modelBuilder);
         }

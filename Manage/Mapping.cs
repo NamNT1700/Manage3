@@ -156,8 +156,8 @@ namespace Manage.API
 
             CreateMap<OtherListTypeDTO, OtherListType>();
             CreateMap<OtherListType, OtherListTypeDTO>();
-            CreateMap<OtherListType, OtherListTypeDTO>();
-            CreateMap<UpdateOtherListTypeDTO, OtherList>();
+            CreateMap<OtherListType, ListOtherListTypeDTO>();
+            CreateMap<UpdateOtherListTypeDTO, OtherListType>();
             CreateMap<UserInfoCreate, OtherListType>();
             CreateMap<UserInfoUpdate, OtherListType>();
 

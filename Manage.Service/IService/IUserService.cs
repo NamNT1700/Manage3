@@ -10,12 +10,12 @@ namespace Manage.Service.IService
 {
     public interface IUserService
     {
-        public Task<BaseResponse> Register(UserDTO reUser);
-        public Task<BaseResponse> GetAllUsers(BaseRequest request);
-        public Task<BaseResponse> Login(LoginDTO user);
-        public Task<BaseResponse> DeleteUsers(List<int> ids);
-        public Task<BaseResponse> FindUserById(int id);
-        public Task<BaseResponse> ChangeStatusUser(int id);
-        public Task<BaseResponse> RenewToken(RefreshTokenDTO refreshTokenDTO);
+        Task<BaseResponse> Register(UserDTO reUser);
+        Task<BaseResponse> GetAllUsers(BaseRequest request);
+        Task<BaseResponse> Login(LoginDTO user);
+        Task<BaseResponse> DeleteUsers(List<int> ids);
+        Task<BaseResponse> FindUserById(int id);
+        Task<BaseResponse> ChangeStatus(int id);
+        Task<BaseResponse> RenewToken(RefreshTokenDTO refreshTokenDTO);
     }
 }

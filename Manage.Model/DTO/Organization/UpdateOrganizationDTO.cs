@@ -15,6 +15,5 @@ namespace Manage.Model.DTO.Organization
     {
         public string Name { get; set; }
         public string Parent { get; set; }
-        public string Activeflg { get; set; }
     }
 }

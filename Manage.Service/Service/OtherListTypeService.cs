@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Manage.Common;
 using Manage.Model.Context;
-using Manage.Model.DTO.School;
+using Manage.Model.DTO.OtherListType;
 using Manage.Model.DTO.User;
 using Manage.Model.Models;
 using Manage.Repository.Base.IRepository;
 using Manage.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Manage.Service.Service
 {
-    public class SchoolService : ISchoolService
+    class OtherListTypeService: IOtherListTypeService
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -24,7 +24,7 @@ namespace Manage.Service.Service
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SchoolService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
+        public OtherListTypeService(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
             IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
@@ -33,7 +33,8 @@ namespace Manage.Service.Service
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<BaseResponse> AddNew(SchoolDTO schoolDto)
+
+        public async Task<BaseResponse> AddNew(OtherListTypeDTO otherListTypeDTO)
         {
             try
             {
@@ -43,14 +44,13 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuEmployee huEmployee = await _repositoryWrapper.Employee.FindByName(schoolDto.EmployeeName);
-                if (huEmployee == null) return Response.NotFoundResponse();
-                HuSchool huSchool = _mapper.Map<HuSchool>(schoolDto);
-                huSchool.Id = huEmployee.Id;
-                await _repositoryWrapper.School.Create(huSchool);
-                huSchool.Code = CreateCode.SchoolCode(huSchool.Id);
+                OtherListType otherListType = await _repositoryWrapper.OtherListType.FindByName(otherListTypeDTO.Name);
+                if (otherListType != null) return Response.DuplicateDataResponse("list already exist");
+                otherListType = _mapper.Map<OtherListType>(otherListTypeDTO);
+                await _repositoryWrapper.OtherListType.Create(otherListType);
+                otherListType.Code = CreateCode.OtherListTypeCode(otherListType.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
-                _mapper.Map(userInfoCreate, huSchool);
+                _mapper.Map(userInfoCreate, otherListType);
                 await _context.SaveChangesAsync();
                 return Response.SuccessResponse();
             }
@@ -58,83 +58,6 @@ namespace Manage.Service.Service
             {
                 return Response.ExceptionResponse(ex);
             }
-            
-           
-        }
-
-        public async Task<BaseResponse> GetAll(BaseRequest request)
-        {
-            try
-            {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-                if (tokenResponse != null)
-                    return tokenResponse;
-                if (request.pageNum < 1 || request.pageSize < 1)
-                    return Response.NotFoundResponse();
-                if (request.pageNum > request.pageSize)
-                    return Response.NotFoundResponse();
-                List<HuSchool> huSchools = await _repositoryWrapper.School.GetAll(request);
-                List<ListSchoolDTO> listSchoolDtos = _mapper.Map<List<ListSchoolDTO>>(huSchools);
-                return Response.SuccessResponse(listSchoolDtos);
-            }
-            catch (Exception ex)
-            {
-                return Response.ExceptionResponse(ex);
-            }
-           
-        }
-
-        public async Task<BaseResponse> GetById(int id)
-        {
-            try
-            {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-                if (tokenResponse != null)
-                    return tokenResponse;
-                HuSchool huSchool = await _repositoryWrapper.School.FindById(id);
-                if (huSchool == null)
-                    return Response.NotFoundResponse();
-                SchoolDTO schoolDTO = _mapper.Map<SchoolDTO>(huSchool);
-                return Response.SuccessResponse(schoolDTO);
-            }
-            catch (Exception ex)
-            {
-                return Response.ExceptionResponse(ex);
-            }
-           
-        }
-
-        public async Task<BaseResponse> Update(UpdateSchoolDTO update)
-        {
-            try
-            {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-                if (tokenResponse != null)
-                    return tokenResponse;
-                HuSchool huSchool = await _repositoryWrapper.School.FindById(update.id);
-                if (huSchool == null)
-                    return Response.NotFoundResponse();
-                _mapper.Map(update.updateData, huSchool);
-                await _repositoryWrapper.School.Update(huSchool);
-                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
-                _mapper.Map(userInfoUpdate, huSchool);
-                await _context.SaveChangesAsync();
-                return Response.SuccessResponse();
-            }
-            catch (Exception ex)
-            {
-                return Response.ExceptionResponse(ex);
-            }
-           
         }
 
         public async Task<BaseResponse> Delete(List<int> ids)
@@ -149,18 +72,18 @@ namespace Manage.Service.Service
                     return tokenResponse;
                 foreach (int id in ids)
                 {
-                    HuSchool school = await _repositoryWrapper.School.FindById(id);
-                    if (school == null)
+                    OtherListType otherListType = await _repositoryWrapper.OtherListType.FindById(id);
+                    if (otherListType == null)
                     {
-                        return Response.NotFoundResponse();
+                        return Response.NotFoundResponse($"list type with id {id} not exist");
                     }
 
                 }
                 foreach (int id in ids)
                 {
-                    HuSchool school = await _repositoryWrapper.School.FindById(id);
-                    if (school != null)
-                        await _repositoryWrapper.School.Delete(school);
+                    OtherListType otherListType = await _repositoryWrapper.OtherListType.FindById(id);
+                    if (otherListType != null)
+                        await _repositoryWrapper.OtherListType.Delete(otherListType);
                 }
                 return Response.SuccessResponse();
             }
@@ -168,8 +91,72 @@ namespace Manage.Service.Service
             {
                 return Response.ExceptionResponse(ex);
             }
-            
         }
-       
+
+        public async Task<BaseResponse> GetAll(BaseRequest request)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                List<OtherListType> otherListTypes = await _repositoryWrapper.OtherListType.GetAll(request);
+                List<ListOtherListTypeDTO> listOtherListTypeDTOs = _mapper.Map<List<ListOtherListTypeDTO>>(otherListTypes);
+                return Response.SuccessResponse(listOtherListTypeDTOs);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+        }
+
+        public async Task<BaseResponse> GetById(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                OtherListType otherListType = await _repositoryWrapper.OtherListType.FindById(id);
+                if (otherListType == null) return Response.NotFoundResponse();
+                OtherListTypeDTO otherListTypeDTO = _mapper.Map<OtherListTypeDTO>(otherListType);
+                return Response.SuccessResponse(otherListTypeDTO);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+        }
+
+        public async Task<BaseResponse> Update(UpdateOtherListTypeDTO update)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                OtherListType otherListType = await _repositoryWrapper.OtherListType.FindById(update.Id);
+                if (otherListType == null) return Response.DataNullResponse();
+                _mapper.Map(update.updateData, otherListType);
+                await _repositoryWrapper.OtherListType.Update(otherListType);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, otherListType);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+        }
     }
 }

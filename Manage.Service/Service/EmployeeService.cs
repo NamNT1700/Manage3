@@ -116,7 +116,7 @@ namespace Manage.Service.Service
                 HuEmployee huEmployee = await _repositoryWrapper.Employee.FindById(update.id);
                 if (huEmployee == null)
                     return Response.NotFoundResponse();
-                huEmployee = _mapper.Map<HuEmployee>(update.updateData);
+                  _mapper.Map(update.updateData, huEmployee);
                 await _repositoryWrapper.Employee.Update(huEmployee);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huEmployee);
@@ -154,6 +154,34 @@ namespace Manage.Service.Service
                         await _repositoryWrapper.Employee.Delete(huEmployee);
                 }
                 return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+        }
+
+        public async Task<BaseResponse> GetAllDataById(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuEmployee huEmployee = await _repositoryWrapper.Employee.FindById(id);
+                if (huEmployee == null)
+                    return Response.NotFoundResponse();
+                EmployeeInfoDTO employeeDTO = _mapper.Map<EmployeeInfoDTO>(huEmployee);
+                _mapper.Map(huEmployee.Contract, employeeDTO.Contract);
+                _mapper.Map(huEmployee.OrgNavigation, employeeDTO.OrgNavigation);
+                _mapper.Map(huEmployee.HuEmployeeCvs, employeeDTO.HuEmployeeCvs);
+                _mapper.Map(huEmployee.HuEmployeeEducations, employeeDTO.HuEmployeeEducations);
+                _mapper.Map(huEmployee.HuFamilies, employeeDTO.HuFamilies);
+                _mapper.Map(huEmployee.HuShools, employeeDTO.HuShools);
+                return Response.SuccessResponse(employeeDTO);
             }
             catch (Exception ex)
             {

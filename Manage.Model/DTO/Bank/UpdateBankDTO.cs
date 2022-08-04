@@ -10,6 +10,5 @@ namespace Manage.Model.DTO.Bank
     public class UpdateBank
     {
         public string Name { get; set; }
-        public string Activeflg { get; set; }
     }
 }

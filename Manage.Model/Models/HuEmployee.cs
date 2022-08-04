@@ -15,14 +15,6 @@ namespace Manage.Model.Models
     [Index(nameof(TitleId), Name = "IX_hu_employee_title_id")]
     public partial class HuEmployee : IEntityBase
     {
-        public HuEmployee()
-        {
-            HuEmployeeCvs = new HashSet<HuEmployeeCv>();
-            HuEmployeeEducations = new HashSet<HuEmployeeEducation>();
-            HuFamilies = new HashSet<HuEmployeeFamily>();
-            HuSalaryRecords = new HashSet<HuSalaryRecord>();
-            HuShools = new HashSet<HuSchool>();
-        }
 
         [Key]
         [Column("id")]
@@ -86,14 +78,14 @@ namespace Manage.Model.Models
         [InverseProperty(nameof(HuTitle.HuEmployees))]
         public virtual HuTitle Title { get; set; }
         [InverseProperty(nameof(HuEmployeeCv.Employee))]
-        public virtual ICollection<HuEmployeeCv> HuEmployeeCvs { get; set; }
+        public virtual HuEmployeeCv HuEmployeeCvs { get; set; }
         [InverseProperty(nameof(HuEmployeeEducation.Employee))]
-        public virtual ICollection<HuEmployeeEducation> HuEmployeeEducations { get; set; }
+        public virtual HuEmployeeEducation HuEmployeeEducations { get; set; }
         [InverseProperty(nameof(HuEmployeeFamily.Employee))]
-        public virtual ICollection<HuEmployeeFamily> HuFamilies { get; set; }
+        public virtual HuEmployeeFamily HuFamilies { get; set; }
         [InverseProperty(nameof(HuSalaryRecord.Employee))]
-        public virtual ICollection<HuSalaryRecord> HuSalaryRecords { get; set; }
+        public virtual HuSalaryRecord HuSalaryRecords { get; set; }
         [InverseProperty(nameof(HuSchool.Employee))]
-        public virtual ICollection<HuSchool> HuShools { get; set; }
+        public virtual HuSchool HuShools { get; set; }
     }
 }

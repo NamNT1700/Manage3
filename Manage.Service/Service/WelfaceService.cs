@@ -159,5 +159,32 @@ namespace Manage.Service.Service
             }
             return Response.SuccessResponse();
         }
+        public async Task<BaseResponse> ChangeStatus(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuWelface huWelface = await _repositoryWrapper.Welface.FindById(id);
+                if (huWelface == null)
+                    return Response.NotFoundResponse();
+                huWelface.Activeflg = Tools.ChangeStatus(huWelface.Activeflg);
+                await _repositoryWrapper.Welface.Update(huWelface);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huWelface);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+
+        }
+
     }
 }

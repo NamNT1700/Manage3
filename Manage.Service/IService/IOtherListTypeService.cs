@@ -1,20 +1,19 @@
-﻿using System;
+﻿using Manage.Common;
+using Manage.Model.DTO.OtherListType;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Manage.Common;
-using Manage.Model.DTO.District;
 
 namespace Manage.Service.IService
 {
-    public interface IDistrictService
+    interface IOtherListTypeService
     {
-        Task<BaseResponse> AddNew(DistrictDTO districtDto);
+        Task<BaseResponse> AddNew(OtherListTypeDTO otherListTypeDTO);
         Task<BaseResponse> GetAll(BaseRequest request);
         Task<BaseResponse> GetById(int id);
-        Task<BaseResponse> Update(UpdateDistrictDTO update);
+        Task<BaseResponse> Update(UpdateOtherListTypeDTO update);
         Task<BaseResponse> Delete(List<int> ids);
-        Task<BaseResponse> ChangeStatus(int id);
     }
 }

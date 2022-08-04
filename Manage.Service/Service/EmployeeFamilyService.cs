@@ -92,7 +92,7 @@ namespace Manage.Service.Service
                 HuEmployeeFamily huEmployeeFamily = await _repositoryWrapper.EmployeeFamily.FindById(update.id);
                 if (huEmployeeFamily == null)
                     return Response.NotFoundResponse();
-                huEmployeeFamily = _mapper.Map<HuEmployeeFamily>(update.updateData);
+                 _mapper.Map(update.updateData, huEmployeeFamily);
                 await _repositoryWrapper.EmployeeFamily.Update(huEmployeeFamily);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huEmployeeFamily);

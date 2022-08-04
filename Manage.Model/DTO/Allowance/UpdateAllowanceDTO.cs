@@ -14,6 +14,5 @@ namespace Manage.Model.DTO.Allowance
     public class UpdateDataAllowance
     {
         public string Name { get; set; }
-        public string Activeflg { get; set; }
     }
 }

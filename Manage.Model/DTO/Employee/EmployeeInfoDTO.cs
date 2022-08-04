@@ -1,44 +1,60 @@
-﻿using Manage.Model.Models;
+﻿using Manage.Model.DTO.Contract;
+using Manage.Model.DTO.EmployeeCv;
+using Manage.Model.DTO.EmployeeEducation;
+using Manage.Model.DTO.EmployeeFamily;
+using Manage.Model.DTO.Organization;
+using Manage.Model.DTO.School;
+using Manage.Model.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Manage.Model.DTO.Employee
 {
-    public class EmployeeDTO
+    public class EmployeeInfoDTO
     {
-        [Required]
+
         public string FullName { get; set; }
-        [Required]
+ 
         public string FirstName { get; set; }
-        [Required]
+     
         public string LastName { get; set; }
-        [Required]
+     
         public int? OrgId { get; set; }
-        [Required]
+  
         public DateTime? JoinDate { get; set; }
-        [Required]
+     
         public bool? WorkStatus { get; set; }
-        [Required]
+     
         public int? ContractId { get; set; }
-        [Required]
+        
         public int? TitleId { get; set; }
-        [Required]
+        
         public int? WorkingId { get; set; }
-        [Required]
+        
         public string DirectManager { get; set; }
-        [Required]
+       
         public int? ItimeId { get; set; }
-        [Required]
+        
         public int? LastWorkingId { get; set; }
-        [Required]
+        
         public DateTime? LastWorkingDay { get; set; }
 
-        
+
+        public virtual ContractDTO Contract { get; set; }
+
+        public virtual OrganizationDTO OrgNavigation { get; set; }
 
 
+        public virtual EmployeeCvDTO HuEmployeeCvs { get; set; }
+
+        public virtual EmployeeEducationDTO HuEmployeeEducations { get; set; }
+
+        public virtual EmployeeFamilyDTO HuFamilies { get; set; }
+
+
+        public virtual SchoolDTO HuShools { get; set; }
     }
 }

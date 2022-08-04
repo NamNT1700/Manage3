@@ -14,6 +14,5 @@ namespace Manage.Model.DTO.ContractAllowance
     public class UpdateDataAllowance
     {
         public double? Money { get; set; }
-        public string Activeflg { get; set; }
     }
 }

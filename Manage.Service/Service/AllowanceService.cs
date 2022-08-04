@@ -117,7 +117,7 @@ namespace Manage.Service.Service
                 HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
                 if (allowance == null)
                     return Response.NotFoundResponse();
-                allowance = _mapper.Map<HuAllowance>(update.updateData);
+                _mapper.Map(update.updateData,allowance);
                 await _repositoryWrapper.Allowance.Update(allowance);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, allowance);
@@ -162,6 +162,32 @@ namespace Manage.Service.Service
                 return Response.ExceptionResponse(ex);
             }
             
+        }
+        public async Task<BaseResponse> ChangeStatus(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(id);
+                if (allowance == null)
+                    return Response.NotFoundResponse();
+                allowance.Activeflg = Tools.ChangeStatus(allowance.Activeflg);
+                await _repositoryWrapper.Allowance.Update(allowance);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, allowance);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+
         }
     }
 }

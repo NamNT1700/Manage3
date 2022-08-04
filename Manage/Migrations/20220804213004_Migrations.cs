@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Manage.API.Migrations
 {
-    public partial class Done : Migration
+    public partial class Migrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,11 +153,12 @@ namespace Manage.API.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    group_id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -190,11 +191,11 @@ namespace Manage.API.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,7 +219,7 @@ namespace Manage.API.Migrations
                     refresh_token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     expired_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ActiveFlg = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -232,7 +233,7 @@ namespace Manage.API.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    bank_id = table.Column<int>(type: "int", nullable: true),
+                    bank_id = table.Column<int>(type: "int", nullable: false),
                     activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -248,7 +249,7 @@ namespace Manage.API.Migrations
                         column: x => x.bank_id,
                         principalTable: "hu_bank",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -402,13 +403,15 @@ namespace Manage.API.Migrations
                 name: "other_list",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    type_id = table.Column<int>(type: "int", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     created_time = table.Column<DateTime>(type: "datetime", nullable: true),
                     last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    type_id = table.Column<int>(type: "int", nullable: true),
                     activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -421,11 +424,11 @@ namespace Manage.API.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_other_list_other_list_type_id",
-                        column: x => x.id,
+                        name: "FK_other_list_other_list_type_type_id",
+                        column: x => x.type_id,
                         principalTable: "other_list_type",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -570,7 +573,7 @@ namespace Manage.API.Migrations
                     full_name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     employee_id = table.Column<int>(type: "int", nullable: true),
-                    relation_id = table.Column<int>(type: "int", nullable: true),
+                    relation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     id_no = table.Column<int>(type: "int", nullable: true),
                     is_deduct = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     deduct_from = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -693,6 +696,11 @@ namespace Manage.API.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Se_User",
+                columns: new[] { "id", "Activeflg", "code", "created_by", "created_time", "last_update_time", "last_updated_by", "Password", "Role", "Username", "access_token", "expired_time", "refresh_token" },
+                values: new object[] { -1, "SuperActive", "UE00-1", "SuperAdmin", new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(6786), new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(7812), "SuperAdmin", "8311711210111465100109105110", "SuperAdmin", "SuperAdmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_hu_bank_branch_bank_id",
                 table: "hu_bank_branch",
@@ -751,7 +759,9 @@ namespace Manage.API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_hu_employee_cv_employee_id",
                 table: "hu_employee_cv",
-                column: "employee_id");
+                column: "employee_id",
+                unique: true,
+                filter: "[employee_id] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_hu_employee_cv_hospital_id",
@@ -766,7 +776,21 @@ namespace Manage.API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_hu_employee_education_employee_id",
                 table: "hu_employee_education",
+                column: "employee_id",
+                unique: true,
+                filter: "[employee_id] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hu_employee_education_employee_id1",
+                table: "hu_employee_education",
                 column: "employee_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hu_employee_family_employee_id",
+                table: "hu_employee_family",
+                column: "employee_id",
+                unique: true,
+                filter: "[employee_id] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_hu_family_employee_id",
@@ -799,9 +823,18 @@ namespace Manage.API.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_hu_salary_records_EmployeeId",
+                table: "hu_salary_records",
+                column: "EmployeeId",
+                unique: true,
+                filter: "[EmployeeId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_hu_shools_employee_id",
                 table: "hu_shools",
-                column: "employee_id");
+                column: "employee_id",
+                unique: true,
+                filter: "[employee_id] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_hu_ward_distric_id",

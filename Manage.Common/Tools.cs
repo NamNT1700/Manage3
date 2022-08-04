@@ -17,13 +17,13 @@ namespace Manage.Common
                 passE += b;
             return passE;
         }
-        public static SeUser ChangeStatus(SeUser user)
+        public static string ChangeStatus(string isActive)
         {
-            if (user.ActiveFlg == "A")
-                user.ActiveFlg = "I";
-            if (user.ActiveFlg == "I")
-                user.ActiveFlg = "A";
-            return user;
+            if (isActive == "A")
+                isActive = "I";
+            if (isActive == "I")
+                isActive = "A";
+            return isActive;
         }
         public static BaseResponse CheckPassword(string password)
         {

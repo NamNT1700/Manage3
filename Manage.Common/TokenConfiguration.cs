@@ -76,11 +76,10 @@ namespace Manage.Common
         }
         public BaseResponse CheckToken(TokenDecode token)
         {
-            BaseResponse response = new BaseResponse();
             DateTime expTimeConverted = ConvertToDateTime(token.exp);
             if (expTimeConverted < DateTime.UtcNow)
                 return Response.TokenExpirationResponse();
-            if (token.role != "Admin")
+            if (token.role != "SuperAdmin")
                 return Response.ForbiddenResponse();
             return null;
         }

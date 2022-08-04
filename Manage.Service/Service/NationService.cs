@@ -111,20 +111,28 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> Update(UpdateNationDTO update)
         {
-            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-            TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-            BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-            if (tokenResponse != null)
-                return tokenResponse;
-            HuNation nation = await _repositoryWrapper.Nation.FindById(update.Id);
-            if (nation == null) return Response.DataNullResponse();
-            _mapper.Map(update.updateData, nation);
-            await _repositoryWrapper.Nation.Update(nation);
-            UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
-            _mapper.Map(userInfoCreate, nation);
-            await _context.SaveChangesAsync();
-            return Response.SuccessResponse();
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuNation nation = await _repositoryWrapper.Nation.FindById(update.Id);
+                if (nation == null) return Response.DataNullResponse();
+                _mapper.Map(update.updateData, nation);
+                await _repositoryWrapper.Nation.Update(nation);
+                UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, nation);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+            
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
@@ -159,6 +167,31 @@ namespace Manage.Service.Service
             }
             
 
+        }
+        public async Task<BaseResponse> ChangeStatus(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuNation huNation = await _repositoryWrapper.Nation.FindById(id);
+                if (huNation == null)
+                    return Response.NotFoundResponse();
+                huNation.Activeflg = Tools.ChangeStatus(huNation.Activeflg);
+                await _repositoryWrapper.Nation.Update(huNation);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huNation);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
         }
     }
 }

@@ -131,7 +131,7 @@ namespace Manage.API.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("address");
 
-                    b.Property<int?>("BankId")
+                    b.Property<int>("BankId")
                         .HasColumnType("int")
                         .HasColumnName("bank_id");
 
@@ -641,7 +641,9 @@ namespace Manage.API.Migrations
 
                     b.HasIndex("BankId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique()
+                        .HasFilter("[employee_id] IS NOT NULL");
 
                     b.HasIndex("HospitalId");
 
@@ -709,7 +711,12 @@ namespace Manage.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "EmployeeId" }, "IX_hu_employee_education_employee_id");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique()
+                        .HasFilter("[employee_id] IS NOT NULL");
+
+                    b.HasIndex(new[] { "EmployeeId" }, "IX_hu_employee_education_employee_id")
+                        .HasDatabaseName("IX_hu_employee_education_employee_id1");
 
                     b.ToTable("hu_employee_education");
                 });
@@ -773,15 +780,19 @@ namespace Manage.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
-                    b.Property<int?>("RelationId")
-                        .HasColumnType("int")
-                        .HasColumnName("relation_id");
+                    b.Property<string>("Relation")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("relation");
 
                     b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("remark");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique()
+                        .HasFilter("[employee_id] IS NOT NULL");
 
                     b.HasIndex(new[] { "EmployeeId" }, "IX_hu_family_employee_id");
 
@@ -1088,6 +1099,10 @@ namespace Manage.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId")
+                        .IsUnique()
+                        .HasFilter("[EmployeeId] IS NOT NULL");
+
                     b.HasIndex(new[] { "ContracId" }, "IX_hu_salary_records_contrac_id");
 
                     b.HasIndex(new[] { "ContractAllwanceId" }, "IX_hu_salary_records_contract_allwance_id");
@@ -1166,7 +1181,9 @@ namespace Manage.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique()
+                        .HasFilter("[employee_id] IS NOT NULL");
 
                     b.ToTable("hu_shools");
                 });
@@ -1194,6 +1211,11 @@ namespace Manage.API.Migrations
                     b.Property<DateTime?>("CreatedTime")
                         .HasColumnType("datetime")
                         .HasColumnName("created_time");
+
+                    b.Property<string>("GroupId")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("group_id");
 
                     b.Property<DateTime?>("LastUpdateTime")
                         .HasColumnType("datetime")
@@ -1313,8 +1335,12 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.OtherList", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)")
@@ -1343,6 +1369,11 @@ namespace Manage.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_updated_by");
 
+                    b.Property<string>("Name")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("name");
+
                     b.Property<int?>("TypeId")
                         .HasColumnType("int")
                         .HasColumnName("type_id");
@@ -1360,6 +1391,8 @@ namespace Manage.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -1405,7 +1438,7 @@ namespace Manage.API.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ActiveFlg")
+                    b.Property<string>("Activeflg")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Code")
@@ -1452,13 +1485,31 @@ namespace Manage.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Se_User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Activeflg = "SuperActive",
+                            Code = "UE00-1",
+                            CreatedBy = "SuperAdmin",
+                            CreatedTime = new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(6786),
+                            LastUpdateTime = new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(7812),
+                            LastUpdatedBy = "SuperAdmin",
+                            Password = "8311711210111465100109105110",
+                            Role = "SuperAdmin",
+                            Username = "SuperAdmin",
+                            expired_time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuBankBranch", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuBank", "Bank")
                         .WithMany("HuBankBranches")
-                        .HasForeignKey("BankId");
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Bank");
                 });
@@ -1543,8 +1594,8 @@ namespace Manage.API.Migrations
                         .HasConstraintName("FK_hu_employee_cv_hu_bank");
 
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
-                        .WithMany("HuEmployeeCvs")
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("HuEmployeeCvs")
+                        .HasForeignKey("Manage.Model.Models.HuEmployeeCv", "EmployeeId")
                         .HasConstraintName("FK_hu_employee_cv_hu_employee");
 
                     b.HasOne("Manage.Model.Models.HuHospital", "Hospital")
@@ -1571,8 +1622,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuEmployeeEducation", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
-                        .WithMany("HuEmployeeEducations")
-                        .HasForeignKey("EmployeeId");
+                        .WithOne("HuEmployeeEducations")
+                        .HasForeignKey("Manage.Model.Models.HuEmployeeEducation", "EmployeeId");
 
                     b.Navigation("Employee");
                 });
@@ -1580,8 +1631,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuEmployeeFamily", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
-                        .WithMany("HuFamilies")
-                        .HasForeignKey("EmployeeId");
+                        .WithOne("HuFamilies")
+                        .HasForeignKey("Manage.Model.Models.HuEmployeeFamily", "EmployeeId");
 
                     b.Navigation("Employee");
                 });
@@ -1610,8 +1661,8 @@ namespace Manage.API.Migrations
                         .HasForeignKey("ContractWelfaceId");
 
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
-                        .WithMany("HuSalaryRecords")
-                        .HasForeignKey("EmployeeId");
+                        .WithOne("HuSalaryRecords")
+                        .HasForeignKey("Manage.Model.Models.HuSalaryRecord", "EmployeeId");
 
                     b.Navigation("Contrac");
 
@@ -1625,8 +1676,8 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuSchool", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuEmployee", "Employee")
-                        .WithMany("HuShools")
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("HuShools")
+                        .HasForeignKey("Manage.Model.Models.HuSchool", "EmployeeId")
                         .HasConstraintName("FK_hu_shools_hu_employee");
 
                     b.Navigation("Employee");
@@ -1643,14 +1694,12 @@ namespace Manage.API.Migrations
 
             modelBuilder.Entity("Manage.Model.Models.OtherList", b =>
                 {
-                    b.HasOne("Manage.Model.Models.OtherListType", "IdNavigation")
-                        .WithOne("OtherList")
-                        .HasForeignKey("Manage.Model.Models.OtherList", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Manage.Model.Models.HuTitle", "Type")
                         .WithMany("OtherLists")
+                        .HasForeignKey("TypeId");
+
+                    b.HasOne("Manage.Model.Models.OtherListType", "IdNavigation")
+                        .WithMany("OtherList")
                         .HasForeignKey("TypeId");
 
                     b.Navigation("IdNavigation");

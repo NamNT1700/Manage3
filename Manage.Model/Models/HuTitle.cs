@@ -24,6 +24,12 @@ namespace Manage.Model.Models
         [Column("code")]
         [StringLength(255)]
         public string Code { get; set; }
+        [Column("name")]
+        [StringLength(255)]
+        public string Name { get; set; }
+        [Column("group_id")]
+        [StringLength(255)]
+        public string GroupId { get; set; }
         [Column("created_by")]
         [StringLength(50)]
         public string CreatedBy { get; set; }
@@ -34,13 +40,12 @@ namespace Manage.Model.Models
         public string LastUpdatedBy { get; set; }
         [Column("last_update_time", TypeName = "datetime")]
         public DateTime? LastUpdateTime { get; set; }
-        [Column("name")]
-        [StringLength(255)]
-        public string Name { get; set; }
+        
 
         [InverseProperty(nameof(HuEmployee.Title))]
         public virtual ICollection<HuEmployee> HuEmployees { get; set; }
         [InverseProperty(nameof(OtherList.Type))]
         public virtual ICollection<OtherList> OtherLists { get; set; }
+        
     }
 }

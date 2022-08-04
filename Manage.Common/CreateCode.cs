@@ -212,14 +212,24 @@ namespace Manage.Common
             else code = "ORT" + $"{id}";
             return code;
         }
-        public static string OtherCode(int id)
+        public static string OtherListTypeCode(int id)
         {
             string code;
             if (id < 10)
-                code = "OT00" + $"{id}";
+                code = "OLT00" + $"{id}";
             else if (id < 100)
-                code = "OT0" + $"{id}";
-            else code = "OT" + $"{id}";
+                code = "OLT0" + $"{id}";
+            else code = "OLT" + $"{id}";
+            return code;
+        }
+        public static string OtherListCode(int id)
+        {
+            string code;
+            if (id < 10)
+                code = "OL00" + $"{id}";
+            else if (id < 100)
+                code = "OL0" + $"{id}";
+            else code = "OL" + $"{id}";
             return code;
         }
     }

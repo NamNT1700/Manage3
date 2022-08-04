@@ -92,7 +92,7 @@ namespace Manage.Service.Service
                 HuEmployeeEducation huEmployeeEducation = await _repositoryWrapper.EmployeeEducation.FindById(update.id);
                 if (huEmployeeEducation == null)
                     return Response.NotFoundResponse();
-                huEmployeeEducation = _mapper.Map<HuEmployeeEducation>(update.updateData);
+                  _mapper.Map(update.updateData, huEmployeeEducation);
                 await _repositoryWrapper.EmployeeEducation.Update(huEmployeeEducation);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huEmployeeEducation);
@@ -137,5 +137,32 @@ namespace Manage.Service.Service
                 return Response.ExceptionResponse(ex);
             }
         }
+        public async Task<BaseResponse> ChangeStatus(int id)
+        {
+            try
+            {
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                HuEmployeeEducation huEmployeeEducation = await _repositoryWrapper.EmployeeEducation.FindById(id);
+                if (huEmployeeEducation == null)
+                    return Response.NotFoundResponse();
+                huEmployeeEducation.Activeflg = Tools.ChangeStatus(huEmployeeEducation.Activeflg);
+                await _repositoryWrapper.EmployeeEducation.Update(huEmployeeEducation);
+                UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
+                _mapper.Map(userInfoUpdate, huEmployeeEducation);
+                await _context.SaveChangesAsync();
+                return Response.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
+
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Manage.Common;
 using Manage.Model.Context;
 using Manage.Model.DTO.Bank;
 using Manage.Model.DTO.BankBranch;
@@ -31,6 +32,16 @@ namespace Manage.Repository.Repository
                 listBankBranch.Bankname = huBank.Name;
             }
             return listBankBranches;
+        }
+
+        public async Task<List<HuBank>> GetAll(BaseRequest baseRequest)
+        {
+            return await Task.Run(() => FindAll()
+           .Where(n => n.Name.Equals(baseRequest.keyworks) && n.Activeflg.Equals("A"))
+           .OrderBy(a => a.Id)
+           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+           .Take(baseRequest.pageSize)
+           .ToList());
         }
     }
 }

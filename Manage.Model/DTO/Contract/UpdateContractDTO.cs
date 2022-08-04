@@ -14,6 +14,5 @@ namespace Manage.Model.DTO.Contract
        public string Note { get; set; }
        public int? NumberOfMonth { get; set; }
        public double? Money { get; set; }
-       public string Activeflg { get; set; }
     }
 }

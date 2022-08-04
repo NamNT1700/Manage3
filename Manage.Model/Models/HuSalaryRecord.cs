@@ -54,5 +54,6 @@ namespace Manage.Model.Models
         [ForeignKey(nameof(EmployeeId))]
         [InverseProperty(nameof(HuEmployee.HuSalaryRecords))]
         public virtual HuEmployee Employee { get; set; }
+        
     }
 }

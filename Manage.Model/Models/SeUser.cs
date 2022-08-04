@@ -34,6 +34,6 @@ namespace Manage.Model.Models
         public string refresh_token { get; set; }
         public DateTime expired_time { get; set; }
         public string Role { get; set; }
-        public string ActiveFlg { get; set; }
+        public string Activeflg { get; set; }
     }
 }

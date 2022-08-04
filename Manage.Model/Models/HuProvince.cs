@@ -43,7 +43,7 @@ namespace Manage.Model.Models
         public string Activeflg { get; set; }
 
         [ForeignKey(nameof(NationId))]
-        [InverseProperty(nameof(HuNation.HuProvinces))]
+        [InverseProperty(nameof(HuNation.HuProvinces))]//HuProvinces
         public virtual HuNation Nation { get; set; }
         [InverseProperty(nameof(HuDistrict.Province))]
         public virtual ICollection<HuDistrict> HuDistricts { get; set; }

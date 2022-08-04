@@ -14,6 +14,5 @@ namespace Manage.Model.DTO.ContractualBenefit
     public class UpdateContractualBenefit
     {
         public double? Money { get; set; }
-        public string Activeflg { get; set; }
     }
 }

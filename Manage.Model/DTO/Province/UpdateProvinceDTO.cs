@@ -11,6 +11,5 @@ namespace Manage.Model.DTO.Province
     {
         public string Name { get; set; }
         public string Nation { get; set; }
-        public string Activeflg { get; set; }
     }
 }

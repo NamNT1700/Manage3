@@ -53,11 +53,14 @@ namespace Manage.Repository.Repository
             return null;
         }
 
-        public async Task<List<SeUser>> FindAllData(BaseRequest request)
+        public async Task<List<SeUser>> FindAllData(BaseRequest baseRequest)
         {
-            List<SeUser> datas = new List<SeUser>();
-            datas = await GetAll(request);
-            return datas;
+            return await Task.Run(() => FindAll()
+            .Where(n=>n.Username.Equals(baseRequest.keyworks) && n.Activeflg.Equals("A") && n.Id >0)
+            .OrderBy(a => a.Id)
+            .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+            .Take(baseRequest.pageSize)
+            .ToList());
         }
         public async Task<SeUser> FindByUsername(string username)
         {
