@@ -114,7 +114,7 @@ namespace Manage.Common
             BaseResponse response = new BaseResponse
             {
                 success = false,
-                status = "406",
+                status = "407",
                 message = message
             };
             return response;

@@ -198,7 +198,7 @@ namespace Manage.Service.Service
                 if (tokenResponse != null)
                     return tokenResponse;
                 bool isTrue = await _repositoryWrapper.User.CheckRefreshToken(refreshTokenDTO.username, refreshTokenDTO.refresh_token);
-                if (!isTrue) return Response.TokenInvalidResponse();
+                if (isTrue == false) return Response.TokenInvalidResponse();
                 SeUser loginUser = await _repositoryWrapper.User.FindByUsername(refreshTokenDTO.username);
                 loginUser.access_token = tokenConfiguration.GeneratetokenConfiguration(loginUser);
                 await _repositoryWrapper.User.Update(loginUser);

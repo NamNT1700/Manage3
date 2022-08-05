@@ -28,16 +28,14 @@ namespace Manage.Repository.Repository
 
         public async Task<bool> CheckRefreshToken(string username, string refreshToken)
         {
-
             SeUser seUser = await FindByUsername(username);
-
             if (seUser.refresh_token == refreshToken)
             {
-                long refresh_exp_long = long.Parse(seUser.refresh_token);
+                long refresh_exp_long = long.Parse(ConvertToUnixTimestamp(seUser.expired_time).ToString());
                 DateTime refresh_exp_datetime = ConvertToDateTime(refresh_exp_long);
                 if (refresh_exp_datetime < DateTime.UtcNow)
-                    return true;
-                return false;
+                    return false;
+                return true;
             }
             return false;
         }
@@ -81,6 +79,12 @@ namespace Manage.Repository.Repository
             DateTime dateTimeInterval = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTimeInterval = dateTimeInterval.AddSeconds(expDate).ToUniversalTime();
             return dateTimeInterval;
+        }
+        public double ConvertToUnixTimestamp(DateTime date)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.ToUniversalTime() - origin;
+            return Math.Floor(diff.TotalSeconds);
         }
     }
 }
