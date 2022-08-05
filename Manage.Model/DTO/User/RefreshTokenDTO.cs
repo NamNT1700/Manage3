@@ -10,6 +10,6 @@ namespace Manage.Model.DTO.User
     {
         public string username { get; set; }
         public string refresh_token { get; set; }
-        public long exp { get; set; }
+        //public long exp { get; set; }
     }
 }
