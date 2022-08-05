@@ -45,6 +45,12 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.District.Update(update);
             return response;
         }
+        [HttpPut("district-update-status")]
+        public async Task<BaseResponse> UpdateStatus(int id)
+        {
+            var response = await _serviceWrapper.District.ChangeStatus(id);
+            return response;
+        }
         [HttpDelete("district-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {

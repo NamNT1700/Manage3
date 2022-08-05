@@ -46,7 +46,7 @@ namespace Manage.API.Controllers
             BaseResponse res = await _serviceWrapper.User.DeleteUsers(id);
             return Ok(res);
         }
-        [HttpPut("update-status-user")]
+        [HttpPut("user-update-status")]
         // [Authorize(Roles="Admin")]
         public async Task<IActionResult> UpdateStatus(int id)
         {

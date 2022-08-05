@@ -30,6 +30,9 @@ namespace Manage.Service.IService
         IUserService User { get; }
         IWardService Ward { get; }
         IWelfaceService Welface { get; }
+        IOtherListService OtherList { get; }
+        IOtherListTypeService OtherListType { get; }
+
 
 
     }

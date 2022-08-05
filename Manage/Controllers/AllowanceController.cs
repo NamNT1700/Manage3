@@ -41,6 +41,12 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.Allowance.Update(update);
             return response;
         }
+        [HttpPut("allowance-update")]
+        public async Task<BaseResponse> UpdateStatus(int id)
+        {
+            var response = await _serviceWrapper.Allowance.ChangeStatus(id);
+            return response;
+        }
         [HttpDelete("allowance-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {

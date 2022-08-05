@@ -45,6 +45,12 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.Ward.Update(update);
             return response;
         }
+        [HttpPut("ward-update-status")]
+        public async Task<BaseResponse> UpdateStatus(int id)
+        {
+            var response = await _serviceWrapper.Ward.ChangeStatus(id);
+            return response;
+        }
         [HttpDelete("ward-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {

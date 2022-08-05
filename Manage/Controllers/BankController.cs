@@ -44,6 +44,12 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.Bank.Update(update);
             return Ok(response);
         }
+        [HttpPut("bank-update-status")]
+        public async Task<BaseResponse> UpdateStatus(int id)
+        {
+            var response = await _serviceWrapper.Bank.ChangeStatus(id);
+            return response;
+        }
         [HttpDelete("bank-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {

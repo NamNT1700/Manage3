@@ -51,5 +51,11 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.Nation.Delete(ids);
             return Ok(response);
         }
+        [HttpPut("nation-update-status")]
+        public async Task<BaseResponse> UpdateStatus(int id)
+        {
+            var response = await _serviceWrapper.Nation.ChangeStatus(id);
+            return response;
+        }
     }
 }

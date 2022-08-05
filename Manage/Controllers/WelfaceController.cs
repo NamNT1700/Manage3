@@ -45,6 +45,12 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.Welface.Update(update);
             return response;
         }
+        [HttpPut("welface-update-status")]
+        public async Task<BaseResponse> UpdateStatus(int id)
+        {
+            var response = await _serviceWrapper.Welface.ChangeStatus(id);
+            return response;
+        }
         [HttpDelete("welfare-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {

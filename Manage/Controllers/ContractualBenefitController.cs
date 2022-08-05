@@ -45,6 +45,12 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.ContractualBenefit.Update(update);
             return response;
         }
+        [HttpPut("contractBenefit-update-status")]
+        public async Task<BaseResponse> UpdateStatus(int id)
+        {
+            var response = await _serviceWrapper.ContractualBenefit.ChangeStatus(id);
+            return response;
+        }
         [HttpDelete("contractualBenefit-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {

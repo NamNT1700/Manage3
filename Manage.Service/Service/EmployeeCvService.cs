@@ -42,6 +42,10 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
+                OtherList otherList = await _repositoryWrapper.OtherList.FindByName(employeeCvDto.Gender);
+                if (otherList == null) return Response.NotFoundResponse("invalid gender");
+                otherList = await _repositoryWrapper.OtherList.FindByName(employeeCvDto.Religion);
+                if (otherList == null) return Response.NotFoundResponse("invalid religion");
                 HuEmployeeCv huEmployeeCv = _mapper.Map<HuEmployeeCv>(employeeCvDto);
                 await _repositoryWrapper.EmployeeCv.Create(huEmployeeCv);
                 huEmployeeCv.Code = CreateCode.EmployeeCode(huEmployeeCv.Id);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Manage.Service.IService
 {
-    interface IOtherListService
+    public interface IOtherListService
     {
         Task<BaseResponse> AddNew(OtherListDTO otherListDTO);
         Task<BaseResponse> GetAll(BaseRequest request);

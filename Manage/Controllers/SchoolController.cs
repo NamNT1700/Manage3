@@ -45,6 +45,7 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.School.Update(update);
             return response;
         }
+
         [HttpDelete("school-delete")]
         public async Task<IActionResult> Delete(List<int> ids)
         {

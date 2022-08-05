@@ -38,6 +38,8 @@ namespace Manage.Service.ServiceBase
         public IUserService _user;
         public IWardService _ward;
         public IWelfaceService _welface;
+        public IOtherListService _otherList;
+        public IOtherListTypeService _otherListType;
 
         public IAllowanceService Allowance
         {
@@ -279,6 +281,29 @@ namespace Manage.Service.ServiceBase
                 return _contract;
             }
         }
+
+        public IOtherListService OtherList
+        {
+            get
+            {
+                if (_otherList == null)
+                    _otherList = new OtherListService(_mapper, _repositoryWrapper,
+                       _context, _configuration, _httpContextAccessor);
+                return _otherList;
+            }
+        }
+
+        public IOtherListTypeService OtherListType
+        {
+            get
+            {
+                if (_otherListType == null)
+                    _otherListType = new OtherListTypeService(_mapper, _repositoryWrapper,
+                       _context, _configuration, _httpContextAccessor);
+                return _otherListType;
+            }
+        }
+
         public ServiceWrapper(IMapper mapper, IRepositoryWrapper repositoryWrapper, DatabaseContext context,
             IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
