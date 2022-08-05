@@ -49,6 +49,7 @@ namespace Manage.Service.Service
                 OtherListType otherListType = await _repositoryWrapper.OtherListType.FindByName(otherListDTO.Type);
                 if (otherListType != null) return Response.DuplicateDataResponse("type not exist");
                 otherList = _mapper.Map<OtherList>(otherListDTO);
+                otherList.TypeId = otherListType.Id;
                 await _repositoryWrapper.OtherList.Create(otherList);
                 otherList.Code = CreateCode.OtherListCode(otherList.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);

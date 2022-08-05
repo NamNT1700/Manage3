@@ -29,7 +29,7 @@ namespace Manage.Model.Models
         public string Name { get; set; }
         [Column("group_id")]
         [StringLength(255)]
-        public string GroupId { get; set; }
+        public int? GroupId { get; set; }
         [Column("created_by")]
         [StringLength(50)]
         public string CreatedBy { get; set; }

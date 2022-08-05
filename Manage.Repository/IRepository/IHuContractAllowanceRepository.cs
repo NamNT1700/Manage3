@@ -12,5 +12,6 @@ namespace Manage.Repository.IRepository
     public interface IHuContractAllowanceRepository : IRepositoryBase<HuContractAllowance>
     {
         Task<List<HuContractAllowance>> GetAll(BaseRequest baseRequest);
+        Task<HuContractAllowance> FindData(int contractId,int allwanceId);
     }
 }

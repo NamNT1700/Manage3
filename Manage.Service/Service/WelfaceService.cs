@@ -45,9 +45,11 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuWelface huWelface = _mapper.Map<HuWelface>(welfaceDto);
+                HuWelface huWelface = await _repositoryWrapper.Welface.FindByName(welfaceDto.Name);
+                if (huWelface != null) return Response.DuplicateDataResponse("welface already exist");
+                huWelface = _mapper.Map<HuWelface>(welfaceDto);
                 await _repositoryWrapper.Welface.Create(huWelface);
-                huWelface.Code = CreateCode.AllowanceCode(huWelface.Id);
+                huWelface.Code = CreateCode.WelfaceCode(huWelface.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
                 await _context.SaveChangesAsync();
                 return Response.SuccessResponse();

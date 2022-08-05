@@ -20,12 +20,21 @@ namespace Manage.Repository.Repository
 
         public async Task<List<HuSchool>> GetAll(BaseRequest baseRequest)
         {
-            return await Task.Run(() => FindAll()
-            .Where(n => n.Schools.Equals(baseRequest.keyworks))
-            .OrderBy(a => a.Id)
-            .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
-            .Take(baseRequest.pageSize)
-            .ToList());
+            if (baseRequest.keyworks != null)
+            {
+                return await FindAll()
+           .Where(n => n.Schools.Equals(baseRequest.keyworks) )
+           .OrderBy(a => a.Id)
+           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+           .Take(baseRequest.pageSize)
+           .ToListAsync();
+            }
+
+            return await FindAll()
+           .OrderBy(a => a.Id)
+           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+           .Take(baseRequest.pageSize)
+           .ToListAsync();
         }
     }
 }

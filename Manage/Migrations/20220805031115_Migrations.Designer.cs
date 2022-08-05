@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220804213004_Migrations")]
+    [Migration("20220805031115_Migrations")]
     partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1495,10 +1495,10 @@ namespace Manage.API.Migrations
                             Activeflg = "SuperActive",
                             Code = "UE00-1",
                             CreatedBy = "SuperAdmin",
-                            CreatedTime = new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(6786),
-                            LastUpdateTime = new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(7812),
+                            CreatedTime = new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(2331),
+                            LastUpdateTime = new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(3466),
                             LastUpdatedBy = "SuperAdmin",
-                            Password = "8311711210111465100109105110",
+                            Password = "831171121011146510010910511064495051",
                             Role = "SuperAdmin",
                             Username = "SuperAdmin",
                             expired_time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)

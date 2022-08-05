@@ -55,12 +55,22 @@ namespace Manage.Repository.Repository
 
         public async Task<List<SeUser>> FindAllData(BaseRequest baseRequest)
         {
-            return await Task.Run(() => FindAll()
-            .Where(n=>n.Username.Equals(baseRequest.keyworks) && n.Activeflg.Equals("A") && n.Id >0)
-            .OrderBy(a => a.Id)
-            .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
-            .Take(baseRequest.pageSize)
-            .ToList());
+            if (baseRequest.keyworks != null)
+            {
+                return await FindAll()
+           .Where(n => n.Role.Equals(baseRequest.keyworks) && n.Activeflg.Equals("A") && n.Id >0)
+           .OrderBy(a => a.Id)
+           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+           .Take(baseRequest.pageSize)
+           .ToListAsync();
+            }
+
+            return await FindAll()
+           .Where(n => n.Activeflg.Equals("A")&& n.Id >0)
+           .OrderBy(a => a.Id)
+           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+           .Take(baseRequest.pageSize)
+           .ToListAsync();
         }
         public async Task<SeUser> FindByUsername(string username)
         {

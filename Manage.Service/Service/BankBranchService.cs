@@ -44,7 +44,9 @@ namespace Manage.Service.Service
                     return tokenResponse;
                 HuBank huBank = await _repositoryWrapper.Bank.FindByName(bankBranch.BankName);
                 if (huBank == null) return Response.NotFoundResponse("bank not exsit");
-                HuBankBranch huBankBranch = _mapper.Map<HuBankBranch>(bankBranch);
+                HuBankBranch huBankBranch = await _repositoryWrapper.BankBranch.FindAddress(bankBranch.Address);
+                if (huBankBranch != null) return Response.DuplicateDataResponse("address already exist");
+                huBankBranch = _mapper.Map<HuBankBranch>(bankBranch);
                 huBankBranch.BankId = huBank.Id;
                 await _repositoryWrapper.BankBranch.Create(huBankBranch);
                 huBankBranch.Code = CreateCode.BankBranchCode(huBankBranch.Id);

@@ -12,5 +12,6 @@ namespace Manage.Repository.IRepository
     public interface IHuContractWelfaceRepository : IRepositoryBase<HuContractWelface>
     {
         Task<List<HuContractWelface>> GetAll(BaseRequest baseRequest);
+        Task<HuContractWelface> FindData(int contractId, int welfaceId);
     }
 }

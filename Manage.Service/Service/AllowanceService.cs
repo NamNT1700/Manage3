@@ -43,7 +43,9 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuAllowance huAllowance = _mapper.Map<HuAllowance>(allowance);
+                HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindByName(allowance.Name);
+                if (huAllowance != null) return Response.DuplicateDataResponse("allwance already exist");
+                huAllowance = _mapper.Map<HuAllowance>(allowance);
                 await _repositoryWrapper.Allowance.Create(huAllowance);
                 huAllowance.Code = CreateCode.AllowanceCode(huAllowance.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);

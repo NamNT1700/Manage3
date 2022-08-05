@@ -18,14 +18,20 @@ namespace Manage.Repository.Repository
         {
         }
 
+        public async Task<HuContractAllowance> FindData(int contractId, int allwanceId)
+        {
+            return await FindByCondition(a => a.ContractId.Equals(contractId) && a.AllwanceId.Equals(allwanceId))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<List<HuContractAllowance>> GetAll(BaseRequest baseRequest)
         {
-            return await Task.Run(() => FindAll()
+            return await  FindAll()
            .Where(n =>n.Activeflg.Equals("A"))
            .OrderBy(a => a.Id)
            .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
            .Take(baseRequest.pageSize)
-           .ToList());
+           .ToListAsync();
         }
     }
 }

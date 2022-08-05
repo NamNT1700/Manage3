@@ -43,9 +43,11 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(wardDto.Name);
-                if (huDistrict == null) return Response.NotFoundResponse();
-                HuWard huWard = _mapper.Map<HuWard>(wardDto);
+                HuWard huWard = await _repositoryWrapper.Ward.FindByName(wardDto.Name);
+                if (huWard != null) return Response.DuplicateDataResponse("ward already exist");
+                HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(wardDto.DistrictName);
+                if (huDistrict == null) return Response.NotFoundResponse("district not exist");
+                 huWard = _mapper.Map<HuWard>(wardDto);
                 huWard.DistricId = huDistrict.Id;
                 await _repositoryWrapper.Ward.Create(huWard);
                 huWard.Code = CreateCode.WardCode(huWard.Id);

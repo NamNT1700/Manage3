@@ -41,7 +41,7 @@ namespace Manage.API.Controllers
             var response = await _serviceWrapper.Allowance.Update(update);
             return response;
         }
-        [HttpPut("allowance-update")]
+        [HttpPut("allowance-update-status")]
         public async Task<BaseResponse> UpdateStatus(int id)
         {
             var response = await _serviceWrapper.Allowance.ChangeStatus(id);

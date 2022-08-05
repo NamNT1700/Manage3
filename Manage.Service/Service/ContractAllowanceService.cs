@@ -47,6 +47,8 @@ namespace Manage.Service.Service
                 if (huContract == null) return Response.NotFoundResponse("contract not exist");
                 HuAllowance huAllowance = await _repositoryWrapper.Allowance.FindByName(contractAllowanceDto.Allwance);
                 if (huAllowance == null) return Response.NotFoundResponse("allowance not exist");
+                if (await _repositoryWrapper.ContractAllowance.FindData(huContract.Id, huAllowance.Id) != null)
+                    return Response.DuplicateDataResponse("data already exist");
                 HuContractAllowance huContractAllowance = new HuContractAllowance
                 {
                     AllwanceId = huAllowance.Id,

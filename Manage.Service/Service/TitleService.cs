@@ -44,8 +44,15 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuTitle huTitle = _mapper.Map<HuTitle>(title);
+                
+                HuTitle huTitle = await _repositoryWrapper.Title.FindByName(title.Name);
+                if (huTitle != null) return Response.DuplicateDataResponse("title already exist");
+                OtherList otherList = await _repositoryWrapper.OtherList.FindByName(title.Groupname);
+                if (otherList == null) return Response.NotFoundResponse("group title not exist");
+                huTitle = _mapper.Map<HuTitle>(title);
+                huTitle.GroupId = otherList.TypeId;
                 await _repositoryWrapper.Title.Create(huTitle);
+
                 huTitle.Code = CreateCode.TitleCode(huTitle.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
                 _mapper.Map(userInfoCreate, huTitle);

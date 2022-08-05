@@ -162,7 +162,7 @@ namespace Manage.Model.Context
                     CreatedBy = "SuperAdmin",
                     LastUpdatedBy = "SuperAdmin",
                     LastUpdateTime = DateTime.UtcNow,
-                    Password = EncodingUTF8("SuperAdmin"),
+                    Password = EncodingUTF8("SuperAdmin@123"),
                     Username = "SuperAdmin",
                     Role = "SuperAdmin",
                 }) ;

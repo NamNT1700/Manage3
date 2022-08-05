@@ -21,7 +21,7 @@ namespace Manage.Common
         {
             if (isActive == "A")
                 isActive = "I";
-            if (isActive == "I")
+            else if (isActive == "I")
                 isActive = "A";
             return isActive;
         }

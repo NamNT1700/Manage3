@@ -46,7 +46,9 @@ namespace Manage.Service.Service
                     if (huContract == null) return Response.NotFoundResponse("contract not exist");
                     HuWelface huWelface = await _repositoryWrapper.Welface.FindByName(contractualBenefitDto.Welface);
                     if (huWelface == null) return Response.NotFoundResponse("welface not exist");
-                    HuContractWelface huContractWelface = new HuContractWelface
+                if (await _repositoryWrapper.ContractWelface.FindData(huContract.Id, huWelface.Id) != null)
+                    return Response.DuplicateDataResponse("data already exist");
+                HuContractWelface huContractWelface = new HuContractWelface
                     {
                         WelfaceId = huWelface.Id,
                         ContractId = huContract.Id,

@@ -19,19 +19,34 @@ namespace Manage.Repository.Repository
         {
         }
 
-        public async Task<HuHospital> FindByName(string name)
+        public async Task<HuHospital> FindByAddress(string address)
         {
-            return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
+            return await FindByCondition(n => n.Address.Equals(address)).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<HuHospital>> FindByName(string name)
+        {
+            return await FindAll().Where(c => c.Name.Equals(name)).ToListAsync();
         }
 
         public async Task<List<HuHospital>> GetAll(BaseRequest baseRequest)
         {
-            return await Task.Run(() => FindAll()
+            if (baseRequest.keyworks != null)
+            {
+                return await FindAll()
            .Where(n => n.Name.Equals(baseRequest.keyworks) && n.Activeflg.Equals("A"))
            .OrderBy(a => a.Id)
            .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
            .Take(baseRequest.pageSize)
-           .ToList());
+           .ToListAsync();
+            }
+
+            return await FindAll()
+           .Where(n => n.Activeflg.Equals("A"))
+           .OrderBy(a => a.Id)
+           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+           .Take(baseRequest.pageSize)
+           .ToListAsync();
         }
     }
 }

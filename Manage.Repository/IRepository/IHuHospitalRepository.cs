@@ -9,7 +9,8 @@ namespace Manage.Repository.IRepository
 {
     public interface IHuHospitalRepository : IRepositoryBase<HuHospital>
     {
-        Task<HuHospital> FindByName(string name);
+        Task<List<HuHospital>> FindByName(string name);
         Task<List<HuHospital>> GetAll(BaseRequest baseRequest);
+        Task<HuHospital> FindByAddress(string address);
     }
 }

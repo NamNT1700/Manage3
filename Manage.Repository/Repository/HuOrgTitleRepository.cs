@@ -21,11 +21,11 @@ namespace Manage.Repository.Repository
 
         public async Task<List<HuOrgTitle>> GetAll(BaseRequest baseRequest)
         {
-            return await Task.Run(() => FindAll()
-            .OrderBy(a => a.Id)
-            .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
-            .Take(baseRequest.pageSize)
-            .ToList());
+            return await FindAll()
+           .OrderBy(a => a.Id)
+           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+           .Take(baseRequest.pageSize)
+           .ToListAsync();
         }
     }
 }

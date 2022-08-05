@@ -44,7 +44,9 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuHospital huHospital = _mapper.Map<HuHospital>(hospital);
+                HuHospital huHospital = await _repositoryWrapper.Hospital.FindByAddress(hospital.Address);
+                if (huHospital != null) return Response.DuplicateDataResponse("address already faxit");
+                huHospital = _mapper.Map<HuHospital>(hospital);
                 await _repositoryWrapper.Hospital.Create(huHospital);
                 huHospital.Code = CreateCode.HospitalCode(huHospital.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);

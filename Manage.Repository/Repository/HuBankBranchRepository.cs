@@ -18,14 +18,28 @@ namespace Manage.Repository.Repository
         {
         }
 
+        public async Task<HuBankBranch> FindAddress(string address)
+        {
+            return await FindByCondition(a => a.Address.Equals(address)).FirstOrDefaultAsync();
+        }
+
         public async Task<List<HuBankBranch>> GetAll(BaseRequest baseRequest)
         {
-            return await Task.Run(() => FindAll()
-           .Where(n => n.Bank.Equals(baseRequest.keyworks) && n.Activeflg.Equals("A"))
-           .OrderBy(a => a.Id)
-           .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
-           .Take(baseRequest.pageSize)
-           .ToList());
+            if (baseRequest != null)
+            {
+                    return await FindAll()
+              .Where(n => n.Bank.Equals( baseRequest.keyworks) && n.Activeflg.Equals("A"))
+              .OrderBy(a => a.Id)
+              .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+              .Take(baseRequest.pageSize)
+              .ToListAsync();
+            }
+            return await FindAll()
+          .Where(n => n.Activeflg.Equals("A"))
+          .OrderBy(a => a.Id)
+          .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
+          .Take(baseRequest.pageSize)
+          .ToListAsync();
         }
     }
 }

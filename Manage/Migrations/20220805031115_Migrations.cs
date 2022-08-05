@@ -699,7 +699,7 @@ namespace Manage.API.Migrations
             migrationBuilder.InsertData(
                 table: "Se_User",
                 columns: new[] { "id", "Activeflg", "code", "created_by", "created_time", "last_update_time", "last_updated_by", "Password", "Role", "Username", "access_token", "expired_time", "refresh_token" },
-                values: new object[] { -1, "SuperActive", "UE00-1", "SuperAdmin", new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(6786), new DateTime(2022, 8, 4, 21, 30, 4, 125, DateTimeKind.Utc).AddTicks(7812), "SuperAdmin", "8311711210111465100109105110", "SuperAdmin", "SuperAdmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null });
+                values: new object[] { -1, "SuperActive", "UE00-1", "SuperAdmin", new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(2331), new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(3466), "SuperAdmin", "831171121011146510010910511064495051", "SuperAdmin", "SuperAdmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_hu_bank_branch_bank_id",

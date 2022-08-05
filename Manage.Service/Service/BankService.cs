@@ -42,7 +42,10 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuBank huBank = _mapper.Map<HuBank>(bank);
+                HuBank huBank = await _repositoryWrapper.Bank.FindByName(bank.Name);
+                if (huBank != null)
+                    return Response.DuplicateDataResponse("bank already exist");
+                huBank = _mapper.Map<HuBank>(bank);
                 await _repositoryWrapper.Bank.Create(huBank);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
                 huBank.Code = CreateCode.BankCode(huBank.Id);

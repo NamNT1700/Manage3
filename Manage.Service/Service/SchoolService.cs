@@ -44,7 +44,7 @@ namespace Manage.Service.Service
                 if (tokenResponse != null)
                     return tokenResponse;
                 HuEmployee huEmployee = await _repositoryWrapper.Employee.FindByName(schoolDto.EmployeeName);
-                if (huEmployee == null) return Response.NotFoundResponse();
+                if (huEmployee == null) return Response.NotFoundResponse("employee not exist");
                 HuSchool huSchool = _mapper.Map<HuSchool>(schoolDto);
                 huSchool.Id = huEmployee.Id;
                 await _repositoryWrapper.School.Create(huSchool);

@@ -44,9 +44,11 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
+                HuProvince huProvince = await _repositoryWrapper.Province.FindByName(provinceDto.Name);
+                if (huProvince != null) return Response.NotFoundResponse("province already exist");
                 HuNation huNation = await _repositoryWrapper.Nation.FindByName(provinceDto.NationName);
                 if (huNation == null) return Response.NotFoundResponse("nation not exist");
-                HuProvince huProvince = _mapper.Map<HuProvince>(provinceDto);
+                huProvince = _mapper.Map<HuProvince>(provinceDto);
                 huProvince.NationId = huNation.Id;
                 await _repositoryWrapper.Province.Create(huProvince);
                 huProvince.Code = CreateCode.ProvinceCode(huProvince.Id);

@@ -7,5 +7,7 @@ namespace Manage.Model.DTO.Title
     {
         [Required]
         public string Name { get; set; }
+        [Required]
+        public string Groupname { get; set; }
     }
 }

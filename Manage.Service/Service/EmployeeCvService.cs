@@ -46,6 +46,8 @@ namespace Manage.Service.Service
                 if (otherList == null) return Response.NotFoundResponse("invalid gender");
                 otherList = await _repositoryWrapper.OtherList.FindByName(employeeCvDto.Religion);
                 if (otherList == null) return Response.NotFoundResponse("invalid religion");
+                otherList = await _repositoryWrapper.OtherList.FindByName(employeeCvDto.MaritalStatus);
+                if (otherList == null) return Response.NotFoundResponse("invalid marital status");
                 HuEmployeeCv huEmployeeCv = _mapper.Map<HuEmployeeCv>(employeeCvDto);
                 await _repositoryWrapper.EmployeeCv.Create(huEmployeeCv);
                 huEmployeeCv.Code = CreateCode.EmployeeCode(huEmployeeCv.Id);

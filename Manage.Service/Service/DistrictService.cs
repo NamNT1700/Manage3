@@ -42,9 +42,11 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
+                HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(districtDto.Name);
+                if (huDistrict != null) return Response.DuplicateDataResponse("district already exist");
                 HuProvince huProvince = await _repositoryWrapper.Province.FindByName(districtDto.ProvinceName);
                 if (huProvince == null) return Response.NotFoundResponse();
-                HuDistrict huDistrict = _mapper.Map<HuDistrict>(districtDto);
+                huDistrict = _mapper.Map<HuDistrict>(districtDto);
                 huDistrict.ProvinceId = huProvince.Id;
                 await _repositoryWrapper.District.Create(huDistrict);
                 huDistrict.Code = CreateCode.DistrictCode(huDistrict.Id);

@@ -44,7 +44,9 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuContract huContract = _mapper.Map<HuContract>(contract);
+                HuContract huContract = await _repositoryWrapper.Contract.FindByName(contract.Name);
+                if (huContract != null) return Response.DuplicateDataResponse("contract already exist");
+                huContract = _mapper.Map<HuContract>(contract);
                 await _repositoryWrapper.Contract.Create(huContract);
                 huContract.Code = CreateCode.ContractCode(huContract.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
