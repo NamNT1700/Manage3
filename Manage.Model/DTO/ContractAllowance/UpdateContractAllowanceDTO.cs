@@ -9,9 +9,9 @@ namespace Manage.Model.DTO.ContractAllowance
     public class UpdateContractAllowanceDTO
     {
         public int id { get; set; }
-        public UpdateDataAllowance updateData { get; set; }
+        public UpdateContractAllowance updateData { get; set; }
     }
-    public class UpdateDataAllowance
+    public class UpdateContractAllowance
     {
         public double? Money { get; set; }
     }

@@ -16,7 +16,7 @@ using Manage.Model.DTO.User;
 
 namespace Manage.Service.Service
 {
-    public  class AllowanceService : IAllowanceService
+    public class AllowanceService : IAllowanceService
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
@@ -34,10 +34,11 @@ namespace Manage.Service.Service
         }
         public async Task<BaseResponse> AddNew(AllowanceDTO allowance)
         {
-           
+
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token);
+                if (isHasToken == false) return Response.AuthHeaderResponse();
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -53,16 +54,17 @@ namespace Manage.Service.Service
                 await _context.SaveChangesAsync();
                 return Response.SuccessResponse();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Response.ExceptionResponse(ex);
             }
-        } 
+        }
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token);
+                if (isHasToken == false) return Response.AuthHeaderResponse();
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -80,14 +82,15 @@ namespace Manage.Service.Service
             {
                 return Response.ExceptionResponse(ex);
             }
-           
+
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
+
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -103,14 +106,15 @@ namespace Manage.Service.Service
             {
                 return Response.ExceptionResponse(ex);
             }
-            
+
         }
 
         public async Task<BaseResponse> Update(UpdateAllowanceDTO update)
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
+
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -119,7 +123,7 @@ namespace Manage.Service.Service
                 HuAllowance allowance = await _repositoryWrapper.Allowance.FindById(update.id);
                 if (allowance == null)
                     return Response.NotFoundResponse();
-                _mapper.Map(update.updateData,allowance);
+                _mapper.Map(update.updateData, allowance);
                 await _repositoryWrapper.Allowance.Update(allowance);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, allowance);
@@ -130,13 +134,14 @@ namespace Manage.Service.Service
             {
                 return Response.ExceptionResponse(ex);
             }
-            
+
         }
         public async Task<BaseResponse> Delete(List<int> ids)
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
+
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -163,13 +168,14 @@ namespace Manage.Service.Service
             {
                 return Response.ExceptionResponse(ex);
             }
-            
+
         }
         public async Task<BaseResponse> ChangeStatus(int id)
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
+
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);

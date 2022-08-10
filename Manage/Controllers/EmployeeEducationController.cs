@@ -22,31 +22,31 @@ namespace Manage.API.Controllers
             _serviceWrapper = serviceWrapper;
         }
         [HttpPost("employeeEducation-insert")]
-        public async Task<IActionResult> AllNew(EmployeeEducationDTO employeeEducationDto)
+        public async Task<IActionResult> AllNew([FromBody] EmployeeEducationDTO employeeEducationDto)
         {
             var response = await _serviceWrapper.EmployeeEducation.AddNew(employeeEducationDto);
             return Ok(response);
         }
         //[HttpPost("employeeEducation-get-all")]
-        //public async Task<IActionResult> GetAll(BaseRequest request)
+        //public async Task<IActionResult> GetAll([FromBody]BaseRequest request)
         //{
         //    var response = await _employeeEducationService.GetAll(request);
         //    return Ok(response);
         //}
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetAll(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var response = await _serviceWrapper.EmployeeEducation.GetById(id);
             return Ok(response);
         }
         [HttpPut("employeeEducation-update")]
-        public async Task<BaseResponse> Update(UpdateEmployeeEducationDTO update)
+        public async Task<IActionResult> Update([FromBody] UpdateEmployeeEducationDTO update)
         {
             var response = await _serviceWrapper.EmployeeEducation.Update(update);
-            return response;
+            return Ok(response);
         }
         [HttpDelete("employeeEducation-delete")]
-        public async Task<IActionResult> Delete(List<int> ids)
+        public async Task<IActionResult> Delete([FromBody] List<int> ids)
         {
             var response = await _serviceWrapper.EmployeeEducation.Delete(ids);
             return Ok(response);

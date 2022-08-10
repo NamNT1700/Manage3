@@ -119,13 +119,23 @@ namespace Manage.Common
             };
             return response;
         }
+        public static BaseResponse AuthHeaderResponse()
+        {
+            BaseResponse response = new BaseResponse
+            {
+                success = false,
+                status = "408",
+                message = "token null"
+            };
+            return response;
+        }
         public static BaseResponse ExceptionResponse(Exception ex)
         {
             BaseResponse response = new BaseResponse
             {
                 success = false,
                 status = "500",
-                message = "something wrong",
+                message = "server error",
                 item = ex.Message,
             };
             return response;

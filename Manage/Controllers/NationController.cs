@@ -22,40 +22,40 @@ namespace Manage.API.Controllers
             _serviceWrapper = serviceWrapper;
         }
         [HttpPost("nation-insert")]
-        public async Task<IActionResult> AllNew( NationDTO nation)
+        public async Task<IActionResult> AllNew([FromBody] NationDTO nation)
         {
             var response = await _serviceWrapper.Nation.AddNew(nation);
             return Ok(response);
         }
         [HttpPost("nation-get-all")]
-        public async Task<IActionResult> GetAll( BaseRequest request)
+        public async Task<IActionResult> GetAll([FromBody] BaseRequest request)
         {
             var response = await _serviceWrapper.Nation.GetAll(request);
             return Ok(response);
         }
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetAll(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var response = await _serviceWrapper.Nation.GetById(id);
             return Ok(response);
         }
         [HttpPut("nation-update")]
-        public async Task<IActionResult> Update(UpdateNationDTO update)
+        public async Task<IActionResult> Update([FromBody] UpdateNationDTO update)
         {
             var response = await _serviceWrapper.Nation.Update(update);
             return Ok(response);
         }
         [HttpDelete("nation-delete")]
-        public async Task<IActionResult> Delete(List<int> ids)
+        public async Task<IActionResult> Delete([FromBody] List<int> ids)
         {
             var response = await _serviceWrapper.Nation.Delete(ids);
             return Ok(response);
         }
         [HttpPut("nation-update-status")]
-        public async Task<BaseResponse> UpdateStatus(int id)
+        public async Task<IActionResult> UpdateStatus([FromBody] int id)
         {
             var response = await _serviceWrapper.Nation.ChangeStatus(id);
-            return response;
+            return Ok(response);
         }
     }
 }

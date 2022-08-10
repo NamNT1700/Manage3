@@ -10,7 +10,13 @@ namespace Manage.Model.DTO.Ward
     public class UpdateWard
     {
         public string Name { get; set; }
-        public string Districname { get; set; }
+        public string DistrictName { get; set; }
 
     }
+    //public class UpadteWardMap
+    //{
+    //    public string Name { get; set; }
+    //    public string Districname { get; set; }
+    //    public int DistrictId { get; set; }
+    //}
 }

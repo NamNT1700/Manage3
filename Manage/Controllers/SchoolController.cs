@@ -22,32 +22,32 @@ namespace Manage.API.Controllers
             _serviceWrapper = serviceWrapper;
         }
         [HttpPost("school-insert")]
-        public async Task<IActionResult> AllNew(SchoolDTO schoolDto)
+        public async Task<IActionResult> AllNew([FromBody] SchoolDTO schoolDto)
         {
             var response = await _serviceWrapper.School.AddNew(schoolDto);
             return Ok(response);
         }
         [HttpPost("school-get-all")]
-        public async Task<IActionResult> GetAll(BaseRequest request)
+        public async Task<IActionResult> GetAll([FromBody] BaseRequest request)
         {
             var response = await _serviceWrapper.School.GetAll(request);
             return Ok(response);
         }
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetAll(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var response = await _serviceWrapper.School.GetById(id);
             return Ok(response);
         }
         [HttpPut("school-update")]
-        public async Task<BaseResponse> Update(UpdateSchoolDTO update)
+        public async Task<BaseResponse> Update([FromBody] UpdateSchoolDTO update)
         {
             var response = await _serviceWrapper.School.Update(update);
             return response;
         }
 
         [HttpDelete("school-delete")]
-        public async Task<IActionResult> Delete(List<int> ids)
+        public async Task<IActionResult> Delete([FromBody] List<int> ids)
         {
             var response = await _serviceWrapper.School.Delete(ids);
             return Ok(response);

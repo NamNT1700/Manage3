@@ -38,7 +38,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -64,7 +64,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -97,7 +97,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -117,7 +117,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -138,7 +138,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);

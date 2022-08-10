@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage.Model.Models
 {
     [Table("hu_ward")]
-    [Index(nameof(DistricId), Name = "IX_hu_ward_distric_id")]
+    [Index(nameof(DistrictId), Name = "IX_hu_ward_distric_id")]
     public partial class HuWard : IEntityBase
     {
         [Key]
@@ -33,11 +33,11 @@ namespace Manage.Model.Models
         [StringLength(255)]
         public string Name { get; set; }
         [Column("distric_id")]
-        public int? DistricId { get; set; }
+        public int? DistrictId { get; set; }
         [Column("activeflg")]
         public string Activeflg { get; set; }
 
-        [ForeignKey(nameof(DistricId))]
+        [ForeignKey(nameof(DistrictId))]
         [InverseProperty(nameof(HuDistrict.HuWards))]
         public virtual HuDistrict Distric { get; set; }
     }

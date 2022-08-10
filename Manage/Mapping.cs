@@ -61,7 +61,7 @@ namespace Manage.API
             CreateMap<ContractAllowanceDTO, HuContractAllowance>();
             CreateMap<HuContractAllowance, ContractAllowanceDTO>();
             CreateMap<HuContractAllowance, ListContractAllowanceDTO>();
-            CreateMap<UpdateContractAllowanceDTO, HuContractAllowance>();
+            CreateMap<UpdateContractAllowance, HuContractAllowance>();
             CreateMap<UserInfoCreate, HuContractAllowance>();
             CreateMap<UserInfoUpdate, HuContractAllowance>();
 
@@ -75,7 +75,7 @@ namespace Manage.API
             CreateMap<ContractualBenefitDTO, HuContractWelface>();
             CreateMap<HuContractWelface, ContractualBenefitDTO>();
             CreateMap<HuContractWelface, ListContractualBenefitDTO>();
-            CreateMap<UpdateContractualBenefitDTO, HuContractWelface>();
+            CreateMap<UpdateContractualBenefit, HuContractWelface>();
             CreateMap<UserInfoCreate, HuContractWelface>();
             CreateMap<UserInfoUpdate, HuContractWelface>();
 
@@ -83,7 +83,7 @@ namespace Manage.API
             CreateMap<HuDistrict, DistrictDTO>();
             CreateMap<HuDistrict, ListDistrict>();
             CreateMap<ListDistrict, ListDistrictDTO>();
-            CreateMap<UpdateDistrictDTO, HuDistrict>();
+            CreateMap<UpdateDistrict, HuDistrict>();
             CreateMap<UserInfoCreate, HuDistrict>();
             CreateMap<UserInfoUpdate, HuDistrict>();
 
@@ -92,7 +92,7 @@ namespace Manage.API
             CreateMap<EmployeeDTO, HuEmployee>();
             CreateMap<HuEmployee, EmployeeDTO>();
             CreateMap<HuEmployee, ListEmployeeDTO>();
-            CreateMap<UpdateEmployeeDTO, HuEmployee>();
+            CreateMap<UpdateEmployee, HuEmployee>();
             CreateMap<UserInfoCreate, HuEmployee>();
             CreateMap<UserInfoUpdate, HuEmployee>();
 
@@ -106,21 +106,15 @@ namespace Manage.API
             CreateMap<EmployeeEducationDTO, HuEmployeeEducation>();
             CreateMap<HuEmployeeEducation, EmployeeEducationDTO>();
             CreateMap<HuEmployeeEducation, ListEmployeeEducationDTO>();
-            CreateMap<UpdateEmployeeEducationDTO, HuEmployeeEducation>();
+            CreateMap<UpdateEmployeeEducation, HuEmployeeEducation>();
             CreateMap<UserInfoCreate, HuEmployeeEducation>();
             CreateMap<UserInfoUpdate, HuEmployeeEducation>();
 
-            CreateMap<EmployeeFamilyDTO, HuEmployeeFamily>();
-            CreateMap<HuEmployeeFamily, EmployeeFamilyDTO>();
-            CreateMap<HuEmployeeFamily, EmployeeFamilyDTO>();
-            CreateMap<UpdateEmployeeFamilyDTO, HuEmployeeFamily>();
-            CreateMap<UserInfoCreate, HuEmployeeFamily>();
-            CreateMap<UserInfoUpdate, HuEmployeeFamily>();
 
             CreateMap<EmployeeFamilyDTO, HuEmployeeFamily>();
             CreateMap<HuEmployeeFamily, EmployeeFamilyDTO>();
             CreateMap<HuEmployeeFamily, EmployeeFamilyDTO>();
-            CreateMap<UpdateEmployeeFamilyDTO, HuEmployeeFamily>();
+            CreateMap<UpdateEmployeeFamily, HuEmployeeFamily>();
             CreateMap<UserInfoCreate, HuEmployeeFamily>();
             CreateMap<UserInfoUpdate, HuEmployeeFamily>();
 
@@ -135,7 +129,7 @@ namespace Manage.API
             CreateMap<OrganizationDTO, HuOrganization>();
             CreateMap<HuOrganization, OrganizationDTO>();
             CreateMap<HuOrganization, ListOrganizationDTO>();
-            CreateMap<UpdateOrganizationDTO, HuOrganization>();
+            CreateMap<UpdateOrganization, HuOrganization>();
             CreateMap<UserInfoCreate, HuOrganization>();
             CreateMap<UserInfoUpdate, HuOrganization>();
 
@@ -143,21 +137,21 @@ namespace Manage.API
             CreateMap<HuOrgTitle, OrgTitleDTO>();
             CreateMap<HuOrgTitle, ListOrgTitle>();
             CreateMap<ListOrgTitle, ListOrgTitleDTO>();
-            CreateMap<UpdateOrgTitleDTO, HuOrgTitle>();
+            CreateMap<UpdateOrgTitle, HuOrgTitle>();
             CreateMap<UserInfoCreate, HuOrgTitle>();
             CreateMap<UserInfoUpdate, HuOrgTitle>();
 
             CreateMap<OtherListDTO, OtherList>();
             CreateMap<OtherList, OtherListDTO>();
             CreateMap<OtherList, ListOtherListDTO>();
-            CreateMap<UpdateOtherListDTO, OtherList>();
+            CreateMap<UpdateOtherList, OtherList>();
             CreateMap<UserInfoCreate, OtherList>();
             CreateMap<UserInfoUpdate, OtherList>();
 
             CreateMap<OtherListTypeDTO, OtherListType>();
             CreateMap<OtherListType, OtherListTypeDTO>();
             CreateMap<OtherListType, ListOtherListTypeDTO>();
-            CreateMap<UpdateOtherListTypeDTO, OtherListType>();
+            CreateMap<UpdateOtherListType, OtherListType>();
             CreateMap<UserInfoCreate, OtherListType>();
             CreateMap<UserInfoUpdate, OtherListType>();
 
@@ -171,31 +165,17 @@ namespace Manage.API
 
             CreateMap<SalaryRecordDTO, HuSalaryRecord>();
             CreateMap<HuSalaryRecord, SalaryRecordDTO>();
-            CreateMap<UpdateSalaryRecordDTO, HuSalaryRecord>();
+            CreateMap<UpdateSalaryRecord, HuSalaryRecord>();
             CreateMap<HuSalaryRecord, ListSalaryRecordDTO>();
             CreateMap<UserInfoCreate, HuSalaryRecord>();
             CreateMap<UserInfoUpdate, HuSalaryRecord>();
 
             CreateMap<SchoolDTO, HuSchool>();
             CreateMap<HuSchool, SchoolDTO>();
-            CreateMap<UpdateSchoolDTO, HuSchool>();
+            CreateMap<UpdateSchool, HuSchool>();
             CreateMap<HuSchool, ListSchoolDTO>();
             CreateMap<UserInfoCreate, HuSchool>();
             CreateMap<UserInfoUpdate, HuSchool>();
-
-            CreateMap<TitleDTO, HuTitle>();
-            CreateMap<HuTitle, TitleDTO>();
-            CreateMap<UpdateTitleDTO, HuTitle>();
-            CreateMap<HuTitle, ListTitleDTO>();
-            CreateMap<UserInfoCreate, HuTitle>();
-            CreateMap<UserInfoUpdate, HuTitle>();
-
-            CreateMap<TitleDTO, HuTitle>();
-            CreateMap<HuTitle, TitleDTO>();
-            CreateMap<UpdateTitleDTO, HuTitle>();
-            CreateMap<HuTitle, ListTitleDTO>();
-            CreateMap<UserInfoCreate, HuTitle>();
-            CreateMap<UserInfoUpdate, HuTitle>();
 
             CreateMap<NationDTO, HuNation>();
             CreateMap<HuNation, NationDTO>();
@@ -206,7 +186,7 @@ namespace Manage.API
 
             CreateMap<TitleDTO, HuTitle>();
             CreateMap<HuTitle, TitleDTO>();
-            CreateMap<UpdateTitleDTO, HuTitle>();
+            CreateMap<UpdateTitle, HuTitle>();
             CreateMap<HuTitle, ListTitleDTO>();
             CreateMap<UserInfoCreate, HuTitle>();
             CreateMap<UserInfoUpdate, HuTitle>();  
@@ -222,14 +202,14 @@ namespace Manage.API
             CreateMap<HuWard, WardDTO>();
             CreateMap<HuWard, ListWard>();
             CreateMap<ListWard, ListWardDTO>();
-            CreateMap<UpdateWardDTO, HuWard>();
+            CreateMap<UpdateWard, HuWard>(); 
             CreateMap<UserInfoCreate, HuWard>();
             CreateMap<UserInfoUpdate, HuWard>();
 
             CreateMap<WelfaceDTO, HuWelface>();
             CreateMap<HuWelface, WelfaceDTO>();
             CreateMap<HuWelface, ListWelfaceDTO> ();
-            CreateMap<UpdateWelfaceDTO, HuWelface>();
+            CreateMap<UpdateWelface, HuWelface>();
             CreateMap<UserInfoCreate, HuWelface>();
             CreateMap<UserInfoUpdate, HuWelface>();
         }

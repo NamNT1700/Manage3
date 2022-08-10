@@ -25,10 +25,10 @@ namespace Manage.Repository.Repository
 
         public async Task<List<HuBankBranch>> GetAll(BaseRequest baseRequest)
         {
-            if (baseRequest != null)
+            if (baseRequest.keyworks != null)
             {
                     return await FindAll()
-              .Where(n => n.Bank.Equals( baseRequest.keyworks) && n.Activeflg.Equals("A"))
+              .Where(n => n.Bank.Name.Equals(baseRequest.keyworks) && n.Activeflg.Equals("A"))
               .OrderBy(a => a.Id)
               .Skip((baseRequest.pageNum - 1) * baseRequest.pageSize)
               .Take(baseRequest.pageSize)

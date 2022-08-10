@@ -22,31 +22,31 @@ namespace Manage.API.Controllers
             _serviceWrapper = serviceWrapper;
         }
         [HttpPost("orgTitle-insert")]
-        public async Task<IActionResult> AllNew(OrgTitleDTO orgTitleDto)
+        public async Task<IActionResult> AllNew([FromBody] OrgTitleDTO orgTitleDto)
         {
             var response = await _serviceWrapper.OrgTitle.AddNew(orgTitleDto);
             return Ok(response);
         }
         [HttpPost("orgTitle-get-all")]
-        public async Task<IActionResult> GetAll(BaseRequest request)
+        public async Task<IActionResult> GetAll([FromBody] BaseRequest request)
         {
             var response = await _serviceWrapper.OrgTitle.GetAll(request);
             return Ok(response);
         }
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetAll(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var response = await _serviceWrapper.OrgTitle.GetById(id);
             return Ok(response);
         }
         [HttpPut("orgTitle-update")]
-        public async Task<BaseResponse> Update(UpdateOrgTitleDTO update)
+        public async Task<IActionResult> Update([FromBody] UpdateOrgTitleDTO update)
         {
             var response = await _serviceWrapper.OrgTitle.Update(update);
-            return response;
+            return Ok(response);
         }
         [HttpDelete("orgTitle-delete")]
-        public async Task<IActionResult> Delete(List<int> ids)
+        public async Task<IActionResult> Delete([FromBody] List<int> ids)
         {
             var response = await _serviceWrapper.OrgTitle.Delete(ids);
             return Ok(response);

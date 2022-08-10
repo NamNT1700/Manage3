@@ -22,6 +22,11 @@ namespace Manage.Repository.Repository
             return await FindByCondition(n => n.Name.Equals(name)).FirstOrDefaultAsync();
         }
 
+        public HuAllowance FindByName2(string name)
+        {
+            return FindByCondition(n => n.Name.Equals(name)).FirstOrDefault();
+        }
+
         public async Task<List<HuAllowance>> GetAll(BaseRequest baseRequest)
         {
             if(baseRequest.keyworks != null)

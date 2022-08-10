@@ -23,39 +23,39 @@ namespace Manage.API.Controllers
         }
 
         [HttpPost("register-user")]
-        public async Task<IActionResult> RegisterUser( UserDTO user)
+        public async Task<IActionResult> RegisterUser([FromBody] UserDTO user)
         {
             BaseResponse res = await _serviceWrapper.User.Register(user);
             return Ok(res);
         }
         [HttpPost("get-all-users")]
-        public async Task<IActionResult> GetAllUsers(BaseRequest baseRequest)
+        public async Task<IActionResult> GetAllUsers([FromBody] BaseRequest baseRequest)
         {
             BaseResponse res = await _serviceWrapper.User.GetAllUsers(baseRequest);
             return Ok(res);
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO user)
+        public async Task<IActionResult> Login([FromBody] LoginDTO user)
         {
             BaseResponse res = await _serviceWrapper.User.Login(user);
             return Ok(res);
         }
         [HttpDelete("delete-user")]
-        public async Task<IActionResult> Delete(List<int> id)
+        public async Task<IActionResult> Delete([FromBody] List<int> id)
         {
             BaseResponse res = await _serviceWrapper.User.DeleteUsers(id);
             return Ok(res);
         }
         [HttpPut("user-update-status")]
         // [Authorize(Roles="Admin")]
-        public async Task<IActionResult> UpdateStatus(int id)
+        public async Task<IActionResult> UpdateStatus([FromBody] int id)
         {
             BaseResponse res = await _serviceWrapper.User.ChangeStatus(id);
             return Ok(res);
         }
 
         [HttpPost("renew-token")]
-        public async Task<IActionResult> RenewToken(RefreshTokenDTO refreshTokenDTO)
+        public async Task<IActionResult> RenewToken([FromBody] RefreshTokenDTO refreshTokenDTO)
         {
             BaseResponse res = await _serviceWrapper.User.RenewToken(refreshTokenDTO);
             return Ok(res);

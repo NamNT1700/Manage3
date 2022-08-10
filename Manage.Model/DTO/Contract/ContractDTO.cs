@@ -7,7 +7,6 @@ namespace Manage.Model.DTO.Contract
     {
         [Required]
         public string Name { get; set; }
-        [Required]
         public string Note { get; set; }
         [Required]
         public int? NumberOfMonth { get; set; }

@@ -37,7 +37,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -59,33 +59,33 @@ namespace Manage.Service.Service
 
         public async Task<BaseResponse> GetAll(BaseRequest request)
         {
-                try
-                {
-                    string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-                    TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
-                    TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
-                    BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
-                    if (tokenResponse != null)
-                        return tokenResponse;
-                    if (request.pageNum < 1 || request.pageSize < 1)
-                        return Response.NotFoundResponse();
-                    if (request.pageNum > request.pageSize)
-                        return Response.NotFoundResponse();
-                    List<HuEmployee> huEmployees = await _repositoryWrapper.Employee.GetAll(request);
-                    List<EmployeeDTO> employeeDTOs = _mapper.Map<List<EmployeeDTO>>(huEmployees);
-                    return Response.SuccessResponse(employeeDTOs);
-                }
-                catch (Exception ex)
-                {
-                    return Response.ExceptionResponse(ex);
-                }
+            try
+            {
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
+                TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
+                TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
+                BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                if (tokenResponse != null)
+                    return tokenResponse;
+                if (request.pageNum < 1 || request.pageSize < 1)
+                    return Response.NotFoundResponse();
+                if (request.pageNum > request.pageSize)
+                    return Response.NotFoundResponse();
+                List<HuEmployee> huEmployees = await _repositoryWrapper.Employee.GetAll(request);
+                List<EmployeeDTO> employeeDTOs = _mapper.Map<List<EmployeeDTO>>(huEmployees);
+                return Response.SuccessResponse(employeeDTOs);
+            }
+            catch (Exception ex)
+            {
+                return Response.ExceptionResponse(ex);
+            }
         }
 
         public async Task<BaseResponse> GetById(int id)
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -107,7 +107,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -116,7 +116,7 @@ namespace Manage.Service.Service
                 HuEmployee huEmployee = await _repositoryWrapper.Employee.FindById(update.id);
                 if (huEmployee == null)
                     return Response.NotFoundResponse();
-                  _mapper.Map(update.updateData, huEmployee);
+                _mapper.Map(update.updateData, huEmployee);
                 await _repositoryWrapper.Employee.Update(huEmployee);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huEmployee);
@@ -133,7 +133,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -165,7 +165,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse();
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);

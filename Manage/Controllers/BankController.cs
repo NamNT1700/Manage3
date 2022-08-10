@@ -21,37 +21,37 @@ namespace Manage.API.Controllers
             _serviceWrapper = serviceWrapper;
         }
         [HttpPost("bank-insert")]
-        public async Task<IActionResult> AllNew(BankDTO bankDto)
+        public async Task<IActionResult> AllNew([FromBody] BankDTO bankDto)
         {
             var response = await _serviceWrapper.Bank.AddNew(bankDto);
             return Ok(response);
         }
         [HttpPost("bank-get-all")]
-        public async Task<IActionResult> GetAll( BaseRequest request)
+        public async Task<IActionResult> GetAll([FromBody] BaseRequest request)
         {
             var response = await _serviceWrapper.Bank.GetAll(request);
             return Ok(response);
         }
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetAll(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var response = await _serviceWrapper.Bank.GetById(id);
             return Ok(response);
         }
         [HttpPut("bank-update")]
-        public async Task<IActionResult> Update(UpdateBankDTO update)
+        public async Task<IActionResult> Update([FromBody] UpdateBankDTO update)
         {
             var response = await _serviceWrapper.Bank.Update(update);
             return Ok(response);
         }
         [HttpPut("bank-update-status")]
-        public async Task<BaseResponse> UpdateStatus(int id)
+        public async Task<IActionResult> UpdateStatus([FromBody] int id)
         {
             var response = await _serviceWrapper.Bank.ChangeStatus(id);
-            return response;
+            return Ok(response);
         }
         [HttpDelete("bank-delete")]
-        public async Task<IActionResult> Delete(List<int> ids)
+        public async Task<IActionResult> Delete([FromBody] List<int> ids)
         {
             var response = await _serviceWrapper.Bank.Delete(ids);
             return Ok(response);

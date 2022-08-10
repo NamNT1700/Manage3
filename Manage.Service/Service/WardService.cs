@@ -37,7 +37,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -48,7 +48,7 @@ namespace Manage.Service.Service
                 HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(wardDto.DistrictName);
                 if (huDistrict == null) return Response.NotFoundResponse("district not exist");
                  huWard = _mapper.Map<HuWard>(wardDto);
-                huWard.DistricId = huDistrict.Id;
+                huWard.DistrictId = huDistrict.Id;
                 await _repositoryWrapper.Ward.Create(huWard);
                 huWard.Code = CreateCode.WardCode(huWard.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
@@ -67,7 +67,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -94,7 +94,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -103,7 +103,7 @@ namespace Manage.Service.Service
                 HuWard huWard = await _repositoryWrapper.Ward.FindById(id);
                 if (huWard == null)
                     return Response.NotFoundResponse();
-                HuDistrict huDistrict = await _repositoryWrapper.District.FindById(huWard.DistricId);
+                HuDistrict huDistrict = await _repositoryWrapper.District.FindById(huWard.DistrictId);
                 WardDTO ward = _mapper.Map<WardDTO>(huWard);
                 ward.DistrictName = huDistrict.Name;
                 return Response.SuccessResponse(ward);
@@ -119,7 +119,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -128,9 +128,9 @@ namespace Manage.Service.Service
                 HuWard huWard = await _repositoryWrapper.Ward.FindById(update.Id);
                 if (huWard == null)
                     return Response.NotFoundResponse();
-                HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(update.updateData.Districname);
+                HuDistrict huDistrict = await _repositoryWrapper.District.FindByName(update.updateData.DistrictName);
                 _mapper.Map(update.updateData, huWard);
-                huWard.DistricId = huDistrict.Id;
+                huWard.DistrictId = huDistrict.Id;
                 await _repositoryWrapper.Ward.Update(huWard);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huWard);
@@ -148,7 +148,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
@@ -181,7 +181,7 @@ namespace Manage.Service.Service
         {
             try
             {
-                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                bool isHasToken = _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out var token); if (isHasToken == false) return Response.AuthHeaderResponse(); 
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
