@@ -42,7 +42,7 @@ namespace Manage.API.Controllers
             return Ok(response);
         }
         [HttpPut("allowance-update-status")]
-        public async Task<IActionResult> UpdateStatus([FromForm] int id)
+        public async Task<IActionResult> UpdateStatus([FromBody] int id)
         {
             var response = await _serviceWrapper.Allowance.ChangeStatus(id);
             return Ok(response);
