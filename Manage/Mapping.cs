@@ -60,6 +60,8 @@ namespace Manage.API
 
             CreateMap<ContractAllowanceDTO, HuContractAllowance>();
             CreateMap<HuContractAllowance, ContractAllowanceDTO>();
+            CreateMap<HuContractAllowance, ContractAllowance>();
+            CreateMap<ContractAllowance, ContractAllowanceDTO>();
             CreateMap<HuContractAllowance, ListContractAllowanceDTO>();
             CreateMap<UpdateContractAllowance, HuContractAllowance>();
             CreateMap<UserInfoCreate, HuContractAllowance>();

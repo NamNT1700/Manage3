@@ -51,6 +51,7 @@ namespace Manage.Service.Service
                 await _repositoryWrapper.Welface.Create(huWelface);
                 huWelface.Code = CreateCode.WelfaceCode(huWelface.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huWelface);
                 await _context.SaveChangesAsync();
                 return Response.SuccessResponse();
             }
@@ -149,7 +150,7 @@ namespace Manage.Service.Service
                 HuWelface welface = await _repositoryWrapper.Welface.FindById(id);
                 if (welface == null)
                 {
-                    return Response.NotFoundResponse();
+                    return Response.NotFoundResponse($"welface with id {id} not exist");
                 }
 
             }

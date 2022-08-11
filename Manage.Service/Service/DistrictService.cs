@@ -51,6 +51,7 @@ namespace Manage.Service.Service
                 await _repositoryWrapper.District.Create(huDistrict);
                 huDistrict.Code = CreateCode.DistrictCode(huDistrict.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
+                _mapper.Map(userInfoCreate, huDistrict);
                 await _context.SaveChangesAsync();
                 return Response.SuccessResponse();
             }
@@ -127,7 +128,8 @@ namespace Manage.Service.Service
                 if (huDistrict == null)
                     return Response.NotFoundResponse();
                 _mapper.Map(update.updateData, huDistrict);
-                HuProvince huProvince = await _repositoryWrapper.Province.FindByName(update.updateData.Province);
+                HuProvince huProvince = await _repositoryWrapper.Province.FindByName(update.updateData.ProvinceName);
+                if (huProvince == null) return Response.NotFoundResponse("province not exist");
                 huDistrict.ProvinceId = huProvince.Id;
                 await _repositoryWrapper.District.Update(huDistrict);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);

@@ -123,7 +123,7 @@ namespace Manage.Service.Service
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, bank);
                 await _context.SaveChangesAsync();
-                return Response.SuccessResponse(bank);
+                return Response.SuccessResponse();
             }
             catch (Exception ex)
             {

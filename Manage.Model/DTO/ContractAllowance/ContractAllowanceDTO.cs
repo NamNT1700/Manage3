@@ -16,4 +16,13 @@ namespace Manage.Model.DTO.ContractAllowance
         [Required]
         public string Contract { get; set; }
     }
+    public class ContractAllowance
+    {
+        public int AllwanceId { get; set; }
+        public int ContractId { get; set; }
+        public string Allwance { get; set; }
+        public double? Money { get; set; }
+        public string Contract { get; set; }
+
+    }
 }

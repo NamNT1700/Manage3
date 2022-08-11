@@ -101,11 +101,15 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuWelface huWelface = await _repositoryWrapper.Welface.FindById(id);
-                if (huWelface == null)
+                HuContractWelface huContractWelface = await _repositoryWrapper.ContractWelface.FindById(id);
+                if (huContractWelface == null)
                     return Response.NotFoundResponse();
-                ContractualBenefitDTO huContractWelface = _mapper.Map<ContractualBenefitDTO>(huWelface);
-                return Response.SuccessResponse(huContractWelface);
+                HuContract huContract = await _repositoryWrapper.Contract.FindById(huContractWelface.ContractId);
+                HuWelface huWelface = await _repositoryWrapper.Welface.FindById(huContractWelface.WelfaceId);
+                ContractualBenefitDTO contractualBenefitDTO = _mapper.Map<ContractualBenefitDTO>(huContractWelface);
+                contractualBenefitDTO.Welface = huWelface.Name;
+                contractualBenefitDTO.Contract = huContract.Name;
+                return Response.SuccessResponse(contractualBenefitDTO);
             }
             catch (Exception ex)
             {
@@ -126,7 +130,7 @@ namespace Manage.Service.Service
                 HuContractWelface huContractWelface = await _repositoryWrapper.ContractWelface.FindById(update.id);
                 if (huContractWelface == null)
                     return Response.NotFoundResponse();
-                _mapper.Map(update, huContractWelface);
+                _mapper.Map(update.updateData, huContractWelface);
                 await _repositoryWrapper.ContractWelface.Update(huContractWelface);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huContractWelface);
@@ -181,13 +185,13 @@ namespace Manage.Service.Service
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
                 if (tokenResponse != null)
                     return tokenResponse;
-                HuContractAllowance huContractAllowance = await _repositoryWrapper.ContractAllowance.FindById(id);
-                if (huContractAllowance == null)
+                HuContractWelface huContractWelface = await _repositoryWrapper.ContractWelface.FindById(id);
+                if (huContractWelface == null)
                     return Response.NotFoundResponse();
-                huContractAllowance.Activeflg = Tools.ChangeStatus(huContractAllowance.Activeflg);
-                await _repositoryWrapper.ContractAllowance.Update(huContractAllowance);
+                huContractWelface.Activeflg = Tools.ChangeStatus(huContractWelface.Activeflg);
+                await _repositoryWrapper.ContractWelface.Update(huContractWelface);
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
-                _mapper.Map(userInfoUpdate, huContractAllowance);
+                _mapper.Map(userInfoUpdate, huContractWelface);
                 await _context.SaveChangesAsync();
                 return Response.SuccessResponse();
             }
