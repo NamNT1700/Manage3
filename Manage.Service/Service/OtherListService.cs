@@ -42,12 +42,13 @@ namespace Manage.Service.Service
                 TokenConfiguration tokenConfiguration = new TokenConfiguration(_configuration);
                 TokenDecode tokenDecode = tokenConfiguration.TokenInfo(token);
                 BaseResponse tokenResponse = tokenConfiguration.CheckToken(tokenDecode);
+                
                 if (tokenResponse != null)
                     return tokenResponse;
                 OtherList otherList = await _repositoryWrapper.OtherList.FindByName(otherListDTO.Name);
                 if (otherList != null) return Response.DuplicateDataResponse("list already exist");
-                OtherListType otherListType = await _repositoryWrapper.OtherListType.FindByName(otherListDTO.Type);
-                if (otherListType != null) return Response.DuplicateDataResponse("type not exist");
+                OtherListType otherListType = await _repositoryWrapper.OtherListType.FindByName(otherListDTO.TypeName);
+                if (otherListType == null) return Response.DuplicateDataResponse("type not exist");
                 otherList = _mapper.Map<OtherList>(otherListDTO);
                 otherList.TypeId = otherListType.Id;
                 await _repositoryWrapper.OtherList.Create(otherList);

@@ -34,8 +34,14 @@ namespace Manage.Repository.Repository
         {
             foreach (ListOrganization listOrganization in listOrganizations)
             {
-                HuOrganization huOrganization = await FindById(listOrganization.ParentId);
-                listOrganization.Parent = huOrganization.Name;
+                if (listOrganization.ParentId == 0)
+                    listOrganization.Parent = "none";
+                else
+                {
+                    HuOrganization huOrganization = await FindById(listOrganization.ParentId);
+                    listOrganization.Parent = huOrganization.Name;
+                }
+                
             }
             return listOrganizations;
         }

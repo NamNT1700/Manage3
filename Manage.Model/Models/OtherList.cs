@@ -41,8 +41,8 @@ namespace Manage.Model.Models
         [ForeignKey(nameof(TypeId))]
         [InverseProperty(nameof(OtherListType.OtherList))]
         public virtual OtherListType IdNavigation { get; set; }
-        [ForeignKey(nameof(TypeId))]
+        
         [InverseProperty(nameof(HuTitle.OtherLists))]
-        public virtual HuTitle Type { get; set; }
+        public virtual ICollection<HuTitle> Title { get; set; }
     }
 }

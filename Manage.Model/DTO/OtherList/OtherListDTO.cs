@@ -10,7 +10,7 @@ namespace Manage.Model.DTO.OtherList
     public class OtherListDTO
     {
         [Required]
-        public string Type { get; set; }
+        public string TypeName { get; set; }
         [Required]
         public string Name { get; set; }
 

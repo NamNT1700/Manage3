@@ -147,25 +147,6 @@ namespace Manage.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "hu_title",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    group_id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_hu_title", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "hu_welface",
                 columns: table => new
                 {
@@ -312,61 +293,6 @@ namespace Manage.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "hu_employee",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    EmployeeCode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    first_name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    last_name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    full_name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    org_id = table.Column<int>(type: "int", nullable: true),
-                    join_date = table.Column<DateTime>(type: "datetime", nullable: true),
-                    work_status = table.Column<bool>(type: "bit", nullable: true),
-                    contract_id = table.Column<int>(type: "int", nullable: true),
-                    title_id = table.Column<int>(type: "int", nullable: true),
-                    working_id = table.Column<int>(type: "int", nullable: true),
-                    direct_manager = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    itime_id = table.Column<int>(type: "int", nullable: true),
-                    last_working_id = table.Column<int>(type: "int", nullable: true),
-                    last_working_day = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_hu_employee", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_hu_employee_hu_contract_contract_id",
-                        column: x => x.contract_id,
-                        principalTable: "hu_contract",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_hu_employee_hu_org_title_org_id",
-                        column: x => x.org_id,
-                        principalTable: "hu_org_title",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_hu_employee_hu_organization",
-                        column: x => x.org_id,
-                        principalTable: "hu_organization",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_hu_employee_hu_title_title_id",
-                        column: x => x.title_id,
-                        principalTable: "hu_title",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "hu_contractual_benefits",
                 columns: table => new
                 {
@@ -418,12 +344,6 @@ namespace Manage.API.Migrations
                 {
                     table.PrimaryKey("PK_other_list", x => x.id);
                     table.ForeignKey(
-                        name: "FK_other_list_hu_title_type_id",
-                        column: x => x.type_id,
-                        principalTable: "hu_title",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_other_list_other_list_type_type_id",
                         column: x => x.type_id,
                         principalTable: "other_list_type",
@@ -453,6 +373,112 @@ namespace Manage.API.Migrations
                         name: "FK_hu_district_hu_province_province_id",
                         column: x => x.province_id,
                         principalTable: "hu_province",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "hu_title",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    group_id = table.Column<int>(type: "int", maxLength: 255, nullable: true),
+                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_hu_title", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_hu_title_other_list_group_id",
+                        column: x => x.group_id,
+                        principalTable: "other_list",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "hu_ward",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    distric_id = table.Column<int>(type: "int", nullable: true),
+                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_hu_ward", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_hu_ward_hu_district_distric_id",
+                        column: x => x.distric_id,
+                        principalTable: "hu_district",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "hu_employee",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
+                    EmployeeCode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    first_name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    last_name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    full_name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    org_id = table.Column<int>(type: "int", nullable: true),
+                    join_date = table.Column<DateTime>(type: "datetime", nullable: true),
+                    work_status = table.Column<bool>(type: "bit", nullable: true),
+                    contract_id = table.Column<int>(type: "int", nullable: true),
+                    title_id = table.Column<int>(type: "int", nullable: true),
+                    working_id = table.Column<int>(type: "int", nullable: true),
+                    direct_manager = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    itime_id = table.Column<int>(type: "int", nullable: true),
+                    last_working_id = table.Column<int>(type: "int", nullable: true),
+                    last_working_day = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_hu_employee", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_hu_contract_contract_id",
+                        column: x => x.contract_id,
+                        principalTable: "hu_contract",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_hu_org_title_org_id",
+                        column: x => x.org_id,
+                        principalTable: "hu_org_title",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_hu_organization",
+                        column: x => x.org_id,
+                        principalTable: "hu_organization",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_hu_employee_hu_title_title_id",
+                        column: x => x.title_id,
+                        principalTable: "hu_title",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -670,36 +696,10 @@ namespace Manage.API.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "hu_ward",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    code = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    created_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    last_updated_by = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    last_update_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    distric_id = table.Column<int>(type: "int", nullable: true),
-                    activeflg = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_hu_ward", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_hu_ward_hu_district_distric_id",
-                        column: x => x.distric_id,
-                        principalTable: "hu_district",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.InsertData(
                 table: "Se_User",
                 columns: new[] { "id", "Activeflg", "code", "created_by", "created_time", "last_update_time", "last_updated_by", "Password", "Role", "Username", "access_token", "expired_time", "refresh_token" },
-                values: new object[] { -1, "SuperActive", "UE00-1", "SuperAdmin", new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(2331), new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(3466), "SuperAdmin", "831171121011146510010910511064495051", "SuperAdmin", "SuperAdmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null });
+                values: new object[] { -1, "SuperActive", "UE00-1", "SuperAdmin", new DateTime(2022, 8, 12, 6, 40, 49, 500, DateTimeKind.Utc).AddTicks(9606), new DateTime(2022, 8, 12, 6, 40, 49, 501, DateTimeKind.Utc).AddTicks(780), "SuperAdmin", "831171121011146510010910511064495051", "SuperAdmin", "SuperAdmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_hu_bank_branch_bank_id",
@@ -837,6 +837,11 @@ namespace Manage.API.Migrations
                 filter: "[employee_id] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_hu_title_group_id",
+                table: "hu_title",
+                column: "group_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_hu_ward_distric_id",
                 table: "hu_ward",
                 column: "distric_id");
@@ -871,9 +876,6 @@ namespace Manage.API.Migrations
                 name: "hu_ward");
 
             migrationBuilder.DropTable(
-                name: "other_list");
-
-            migrationBuilder.DropTable(
                 name: "Se_User");
 
             migrationBuilder.DropTable(
@@ -893,9 +895,6 @@ namespace Manage.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "hu_district");
-
-            migrationBuilder.DropTable(
-                name: "other_list_type");
 
             migrationBuilder.DropTable(
                 name: "hu_bank");
@@ -919,7 +918,13 @@ namespace Manage.API.Migrations
                 name: "hu_province");
 
             migrationBuilder.DropTable(
+                name: "other_list");
+
+            migrationBuilder.DropTable(
                 name: "hu_nation");
+
+            migrationBuilder.DropTable(
+                name: "other_list_type");
         }
     }
 }

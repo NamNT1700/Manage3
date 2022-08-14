@@ -14,6 +14,6 @@ namespace Manage.Model.DTO.Organization
     public class UpdateOrganization
     {
         public string Name { get; set; }
-        public string Parent { get; set; }
+        public string ParentName { get; set; }
     }
 }

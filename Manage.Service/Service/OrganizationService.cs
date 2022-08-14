@@ -46,10 +46,16 @@ namespace Manage.Service.Service
                     return tokenResponse;
                 if (await _repositoryWrapper.Organization.FindByName(organizationDto.Name) != null)
                     return Response.DuplicateDataResponse("organization already exist");
+                HuOrganization huOrganizationParent = await _repositoryWrapper.Organization.FindByName(organizationDto.ParentName);
+                if (huOrganizationParent == null && organizationDto.ParentName != null)
+                    return Response.NotFoundResponse("organization parent not exist");
                 HuOrganization HuOrganization = _mapper.Map<HuOrganization>(organizationDto);
                 await _repositoryWrapper.Organization.Create(HuOrganization);
                 HuOrganization.Code = CreateCode.OrgCode(HuOrganization.Id);
                 HuOrganization.OrderNumber = HuOrganization.Id;
+                if (organizationDto.ParentName != null)
+                    HuOrganization.ParentId = huOrganizationParent.Id;
+                else HuOrganization.ParentId = 0;
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
                 _mapper.Map(userInfoCreate, HuOrganization);
                 await _context.SaveChangesAsync();
@@ -104,7 +110,9 @@ namespace Manage.Service.Service
                     return Response.NotFoundResponse();
                 HuOrganization HuOrganizationParent = await _repositoryWrapper.Organization.FindById(HuOrganization.ParentId);
                 OrganizationDTO organizationDTO = _mapper.Map<OrganizationDTO>(HuOrganization);
-                organizationDTO.Parent = HuOrganizationParent.Name;
+                if (HuOrganization.ParentId != 0)
+                    organizationDTO.ParentName = HuOrganizationParent.Name;
+                else organizationDTO.ParentName = "none";
                 return Response.SuccessResponse(organizationDTO);
             }
             catch (Exception ex)
@@ -127,10 +135,14 @@ namespace Manage.Service.Service
                 HuOrganization huOrganization = await _repositoryWrapper.Organization.FindById(update.id);
                 if (huOrganization == null)
                     return Response.NotFoundResponse();
-                HuOrganization huOrganizationParent = await _repositoryWrapper.Organization.FindByName(update.updateData.Parent);
+                HuOrganization huOrganizationParent = await _repositoryWrapper.Organization.FindByName(update.updateData.ParentName);
+                if(huOrganizationParent == null && update.updateData.ParentName != null)
+                return Response.NotFoundResponse("Organization not exist");
                 _mapper.Map(update.updateData, huOrganization);
+                
                 await _repositoryWrapper.Organization.Update(huOrganization);
-                huOrganization.ParentId = huOrganizationParent.Id;
+                if (update.updateData.ParentName != null)
+                    huOrganization.ParentId = huOrganizationParent.Id;
                 UserInfoUpdate userInfoUpdate = UserCreateAndUpdate.GetUserInfoUpdate(tokenDecode);
                 _mapper.Map(userInfoUpdate, huOrganization);
                 await _context.SaveChangesAsync();

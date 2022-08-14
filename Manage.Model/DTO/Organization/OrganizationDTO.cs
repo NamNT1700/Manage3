@@ -11,7 +11,6 @@ namespace Manage.Model.DTO.Organization
     {
         [Required]
         public string Name { get; set; }
-        [Required]
-        public string Parent { get; set; }
+        public string? ParentName { get; set; }
     }
 }

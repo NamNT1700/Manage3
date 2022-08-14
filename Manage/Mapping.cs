@@ -130,7 +130,8 @@ namespace Manage.API
 
             CreateMap<OrganizationDTO, HuOrganization>();
             CreateMap<HuOrganization, OrganizationDTO>();
-            CreateMap<HuOrganization, ListOrganizationDTO>();
+            CreateMap<HuOrganization, ListOrganization>();
+            CreateMap<ListOrganization, ListOrganizationDTO>();
             CreateMap<UpdateOrganization, HuOrganization>();
             CreateMap<UserInfoCreate, HuOrganization>();
             CreateMap<UserInfoUpdate, HuOrganization>();

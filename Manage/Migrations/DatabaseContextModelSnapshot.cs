@@ -1212,9 +1212,9 @@ namespace Manage.API.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_time");
 
-                    b.Property<string>("GroupId")
+                    b.Property<int?>("GroupId")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("int")
                         .HasColumnName("group_id");
 
                     b.Property<DateTime?>("LastUpdateTime")
@@ -1232,6 +1232,8 @@ namespace Manage.API.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.ToTable("hu_title");
                 });
@@ -1262,7 +1264,7 @@ namespace Manage.API.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_time");
 
-                    b.Property<int?>("DistricId")
+                    b.Property<int?>("DistrictId")
                         .HasColumnType("int")
                         .HasColumnName("distric_id");
 
@@ -1282,7 +1284,7 @@ namespace Manage.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "DistricId" }, "IX_hu_ward_distric_id");
+                    b.HasIndex(new[] { "DistrictId" }, "IX_hu_ward_distric_id");
 
                     b.ToTable("hu_ward");
                 });
@@ -1493,8 +1495,8 @@ namespace Manage.API.Migrations
                             Activeflg = "SuperActive",
                             Code = "UE00-1",
                             CreatedBy = "SuperAdmin",
-                            CreatedTime = new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(2331),
-                            LastUpdateTime = new DateTime(2022, 8, 5, 3, 11, 15, 200, DateTimeKind.Utc).AddTicks(3466),
+                            CreatedTime = new DateTime(2022, 8, 12, 6, 40, 49, 500, DateTimeKind.Utc).AddTicks(9606),
+                            LastUpdateTime = new DateTime(2022, 8, 12, 6, 40, 49, 501, DateTimeKind.Utc).AddTicks(780),
                             LastUpdatedBy = "SuperAdmin",
                             Password = "831171121011146510010910511064495051",
                             Role = "SuperAdmin",
@@ -1683,28 +1685,31 @@ namespace Manage.API.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Manage.Model.Models.HuTitle", b =>
+                {
+                    b.HasOne("Manage.Model.Models.OtherList", "OtherLists")
+                        .WithMany("Title")
+                        .HasForeignKey("GroupId");
+
+                    b.Navigation("OtherLists");
+                });
+
             modelBuilder.Entity("Manage.Model.Models.HuWard", b =>
                 {
                     b.HasOne("Manage.Model.Models.HuDistrict", "Distric")
                         .WithMany("HuWards")
-                        .HasForeignKey("DistricId");
+                        .HasForeignKey("DistrictId");
 
                     b.Navigation("Distric");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.OtherList", b =>
                 {
-                    b.HasOne("Manage.Model.Models.HuTitle", "Type")
-                        .WithMany("OtherLists")
-                        .HasForeignKey("TypeId");
-
                     b.HasOne("Manage.Model.Models.OtherListType", "IdNavigation")
                         .WithMany("OtherList")
                         .HasForeignKey("TypeId");
 
                     b.Navigation("IdNavigation");
-
-                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuAllowance", b =>
@@ -1788,8 +1793,6 @@ namespace Manage.API.Migrations
             modelBuilder.Entity("Manage.Model.Models.HuTitle", b =>
                 {
                     b.Navigation("HuEmployees");
-
-                    b.Navigation("OtherLists");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.HuWelface", b =>
@@ -1797,6 +1800,11 @@ namespace Manage.API.Migrations
                     b.Navigation("HuContractWelfaces");
 
                     b.Navigation("HuSalaryRecords");
+                });
+
+            modelBuilder.Entity("Manage.Model.Models.OtherList", b =>
+                {
+                    b.Navigation("Title");
                 });
 
             modelBuilder.Entity("Manage.Model.Models.OtherListType", b =>

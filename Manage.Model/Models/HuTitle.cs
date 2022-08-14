@@ -15,7 +15,6 @@ namespace Manage.Model.Models
         public HuTitle()
         {
             HuEmployees = new HashSet<HuEmployee>();
-            OtherLists = new HashSet<OtherList>();
         }
 
         [Key]
@@ -44,8 +43,9 @@ namespace Manage.Model.Models
 
         [InverseProperty(nameof(HuEmployee.Title))]
         public virtual ICollection<HuEmployee> HuEmployees { get; set; }
-        [InverseProperty(nameof(OtherList.Type))]
-        public virtual ICollection<OtherList> OtherLists { get; set; }
+        [ForeignKey(nameof(GroupId))]
+        [InverseProperty(nameof(OtherList.Title))]
+        public virtual OtherList OtherLists { get; set; }
         
     }
 }
