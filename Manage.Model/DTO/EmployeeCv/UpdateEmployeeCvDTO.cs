@@ -13,7 +13,6 @@ namespace Manage.Model.DTO.EmployeeCv
     }
     public class UpdateEmployeeCv
     {
-        public string Name { get; set; }
         public int? EmployeeId { get; set; }
         public string Gender { get; set; }
         public string Image { get; set; }
