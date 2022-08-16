@@ -38,7 +38,7 @@ namespace Manage.Common
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretkeyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
-            var tokenConfiguration = jwtTokenHandle.CreateToken(tokenDescription);           
+            var tokenConfiguration = jwtTokenHandle.CreateToken(tokenDescription);
             return jwtTokenHandle.WriteToken(tokenConfiguration);
         }
         public string GenerateRefreshToken()

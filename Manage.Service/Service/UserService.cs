@@ -176,7 +176,6 @@ namespace Manage.Service.Service
                 newUser.Code = CreateCode.UserCode(newUser.Id);
                 UserInfoCreate userInfoCreate = UserCreateAndUpdate.GetUserInfoCreate(tokenDecode);
                 _mapper.Map(userInfoCreate, newUser);
-                newUser.Code = CreateCode.UserCode(newUser.Id);
                 await _context.SaveChangesAsync();
                 return Response.SuccessResponse();
             }
