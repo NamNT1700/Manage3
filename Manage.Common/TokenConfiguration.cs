@@ -54,7 +54,7 @@ namespace Manage.Common
         {
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
             var handler = new JwtSecurityTokenHandler();
-            var tokenSecure = handler.ReadToken(Input) as SecurityToken;
+            var tokenSecure = handler.ReadToken(Input);
             var validations = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,

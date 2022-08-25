@@ -1,4 +1,5 @@
 using AutoMapper;
+using Manage.Common;
 using Manage.Logger;
 using Manage.Model.Context;
 using Manage.Repository.Base.IRepository;
@@ -112,6 +113,7 @@ namespace Manage.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Manage v1"));
             }
+            app.UseMiddleware<CheckTokenRequest>();
             app.UseMiddleware<LoggingMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthentication();
@@ -121,6 +123,7 @@ namespace Manage.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+               
             });
         }
     }

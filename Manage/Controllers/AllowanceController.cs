@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Manage.Model.DTO.Allowance;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Manage.API.Controllers
 {
     [Route("api/[controller]")]
     [Controller]
+    [Authorize]
     public class AllowanceController : ControllerBase
     {
         private readonly IServiceWrapper _serviceWrapper;
@@ -24,6 +26,7 @@ namespace Manage.API.Controllers
             return Ok(response);
         }
         [HttpPost("allowance-get-all")]
+       // [Authorize(Roles = "User")]
         public async Task<IActionResult> GetAll([FromBody] BaseRequest request)
         {
             var response = await _serviceWrapper.Allowance.GetAll(request);
